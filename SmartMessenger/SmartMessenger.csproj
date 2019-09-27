@@ -149,7 +149,9 @@
     <Content Include="scripts\js\bootstrap.js" />
     <Content Include="scripts\js\bootstrap.min.js" />
     <Content Include="scripts\js\npm.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptPage.aspx.cs">
@@ -193,6 +195,7 @@
     <Compile Include="ReportPage.aspx.designer.cs">
       <DependentUpon>ReportPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\MessengerRepository.cs" />
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
