@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SFA" Class="MessengerDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=150.152.163.191;Initial Catalog=SFA;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SFAConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.msgctrl" Member="msgctrls">
+    <Type Name="msgctrl">
+      <Column Name="msg_id" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="msg_entry" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="msg_date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="msg_by" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="msg_section" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="msg_phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="msg_contact_name" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="msg_company" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="msg_address" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="msg_telephone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="msg_map" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="msg_send" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="msg_receive" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="msg_doctype" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="msg_priority_normal" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="msg_priority_urgent" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="msg_on_date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="msg_msg_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="msg_close_status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="msg_close_date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="msg_close_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="msg_remark" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="msg_print_label" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

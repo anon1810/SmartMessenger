@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="SmartMessenger.Site1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <!--<link rel="stylesheet" href="scripts/css/bootstrap.min.css"></link>-->
+    <!--<script src="scripts/js/bootstrap.min.js"></script>-->
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <asp:ContentPlaceHolder ID="head" runat="server"> </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div class="w3-bar w3-black">
+      <a href="HomePage.aspx" class="w3-bar-item w3-button">Messager</a>
+      <a href="AcceptPage.aspx" class="w3-bar-item w3-button">Accept</a>
+      <a href="ClosePage.aspx" class="w3-bar-item w3-button">Close</a>
+      <a href="ReportPage.aspx" class="w3-bar-item w3-button">Report</a>
+    </div>
+
+    <form id="form1" runat="server" class="w3-padding-16">
+    <div>
+     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+     </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
