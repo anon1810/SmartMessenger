@@ -104,6 +104,16 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\MessengerModel1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MessengerModel1.edmx</DependentUpon>
+      <LastGenOutput>MessengerModel1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\MessengerModel1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MessengerModel1.edmx</DependentUpon>
+      <LastGenOutput>MessengerModel1.cs</LastGenOutput>
+    </Content>
     <Content Include="jquery-3.3.1.min.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -124,6 +134,13 @@
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>MessengerDataClasses.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </Content>
+    <EntityDeploy Include="Data\MessengerModel1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MessengerModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Data\MessengerModel1.edmx.diagram">
+      <DependentUpon>MessengerModel1.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\SmartMessenger.pubxml" />
     <None Include="Web.Debug.config">
@@ -179,6 +196,24 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessengerDataClasses.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MessengerModel1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessengerModel1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MessengerModel1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessengerModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MessengerModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessengerModel1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\msgctrlDev.cs">
+      <DependentUpon>MessengerModel1.tt</DependentUpon>
     </Compile>
     <Compile Include="HomePage.aspx.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>

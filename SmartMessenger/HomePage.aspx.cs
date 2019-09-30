@@ -12,7 +12,7 @@ namespace SmartMessenger
 {
     public partial class HomePage : System.Web.UI.Page
     {
-        List<msgctrl> mesList = new List<msgctrl>();
+        List<msgctrlDev> mesList = new List<msgctrlDev>();
         protected void Page_Load(object sender, EventArgs e)
         {
             LoadGridData();
