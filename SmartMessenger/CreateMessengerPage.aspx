@@ -31,13 +31,13 @@
             <label>ประเภทเอกสารที่จะส่ง</label>
             <div class="w3-cell-row">
               <div class="w3-cell">
-                <select class="w3-select w3-border" name="option" runat="server" id="opSendCreateP" onchange="selectFunction()">
+                <select class="w3-select w3-border" name="option" runat="server" id="opSendCreateP" onchange="selectSend()">
                   <option value="0" selected>&nbsp;-</option>
                   <option value="สัญญา">สัญญา</option>
                   <option value="ใบเสนอราคา">ใบเสนอราคา</option>
                   <option value="เช็ค">เช็ค</option>
                   <option value="ตั๋วอาวัล">ตั๋วอาวัล</option>
-                  <option value="อื่นๆ โปรดระบุ">อื่นๆ โปรดระบุ</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
                 </select>
               </div>
               <div class="w3-cell">
@@ -51,13 +51,13 @@
             <label>ประเภทเอกสารที่จะรับ</label>
             <div class="w3-cell-row">
               <div class="w3-cell">
-                <select class="w3-select w3-border" name="option" runat="server" id="opReceiveCreateP">
+                <select class="w3-select w3-border" name="option" runat="server" id="opReceiveCreateP" onchange="selectRecieve()">
                   <option value="0" selected>&nbsp;-</option>
                   <option value="สัญญา">สัญญา</option>
                   <option value="ใบเสนอราคา">ใบเสนอราคา</option>
                   <option value="เช็ค">เช็ค</option>
                   <option value="ตั๋วอาวัล">ตั๋วอาวัล</option>
-                  <option value="อื่นๆ โปรดระบุ">อื่นๆ โปรดระบุ</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
                 </select>
               </div>
               <div class="w3-cell">
@@ -98,8 +98,8 @@
               <textarea class = "w3-input  w3-border"  runat="server" id="txtContratAddrCreateP" required></textarea>
             </p>
             <p>
-              <label>แนบไฟล์แผนที่</label>
-              <input class="w3-input w3-border" type="file"  runat="server" id="fileContratMapCreateP">
+              <label>แนบไฟล์แผนที่</label><br>
+              <asp:FileUpload id="FileUploadMap" runat="server" CssClass = "w3-input w3-border" />
             </p>
             <p>
               <label>ส่งภายในวันที่</label>
@@ -123,7 +123,7 @@
 
       <script type="text/javascript" language="javascript">
           function selectSend() {
-              if (document.getElementById("<%=opSendCreateP.ClientID %>").value == 5) {
+              if (document.getElementById("<%=opSendCreateP.ClientID %>").value == "อื่นๆ") {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
               } else {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = true;
@@ -131,7 +131,7 @@
           }
 
           function selectRecieve() {
-              if (document.getElementById("<%=opReceiveCreateP.ClientID %>").value == 5) {
+              if (document.getElementById("<%=opReceiveCreateP.ClientID %>").value == "อื่นๆ") {
                   document.getElementById("<%=txtReceiveCreateP.ClientID %>").disabled = false;
               } else {
                   document.getElementById("<%=txtReceiveCreateP.ClientID %>").disabled = true;

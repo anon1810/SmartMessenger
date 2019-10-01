@@ -16,14 +16,14 @@ namespace SmartMessenger.Repositories
             }
         }
 
-        public void InsertMessager(DateTime mDate, string mBy, string mSection, string mPhone, string mSend, string mRecieve, string mDocType, string isNormale, string isUrgent, string mContractName, string mAddress, string mTelephone, string mMAP, DateTime mOndate, string mMesName,string mRemark)
+        public void InsertMessager(DateTime mDate, string mBy, string mSection, string mPhone, string mSend, string mRecieve, string mDocType, string isNormale, string isUrgent, string mContractName, string mAddress, string mTelephone, string mMAP, DateTime mOndate, string mMesName,string mRemark, string mStatus)
         {
             using (SFAEntities en = new SFAEntities())
             {
                 msgctrlDev mes = new msgctrlDev();
                 mes.msg_date = mDate;
-                mes.msg_by = "";
-                mes.msg_section = "";
+                mes.msg_by = mBy;
+                mes.msg_section = mSection;
                 mes.msg_phone = mPhone;
                 mes.msg_send = mSend;
                 mes.msg_receive = mRecieve;
@@ -37,6 +37,7 @@ namespace SmartMessenger.Repositories
                 mes.msg_map = mMAP;
                 mes.msg_msg_name = mMesName;
                 mes.msg_remark = mRemark;
+                mes.msg_close_status = mStatus;
                 
                 en.msgctrlDevs.Add(mes);
                 en.SaveChanges();

@@ -48,8 +48,8 @@
           <Property Name="msg_id" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="msg_entry" Type="DateTime" Precision="3" />
           <Property Name="msg_date" Type="DateTime" Precision="3" />
-          <Property Name="msg_by" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="msg_section" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="msg_by" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="msg_section" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="msg_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="msg_contact_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="msg_company" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />

@@ -121,13 +121,13 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txtContratAddrCreateP;
         
         /// <summary>
-        /// fileContratMapCreateP control.
+        /// FileUploadMap control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputFile fileContratMapCreateP;
+        protected global::System.Web.UI.WebControls.FileUpload FileUploadMap;
         
         /// <summary>
         /// dateContratCreatePage control.

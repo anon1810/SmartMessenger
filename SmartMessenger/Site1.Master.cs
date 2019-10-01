@@ -1,4 +1,5 @@
 ﻿using SmartMessenger.Data;
+using SmartMessenger.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,25 @@ namespace SmartMessenger
 
     public partial class Site1 : System.Web.UI.MasterPage
     {
-        public string MyText { get { return notiAcceptPage.InnerText; } set { notiAcceptPage.InnerText = value; } }
+        public string notiAccept { get { return notiAcceptPage.InnerText; } set { notiAcceptPage.InnerText = value; } }
+        public string notiClose { get { return notiClosePage.InnerText; } set { notiClosePage.InnerText = value; } }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            CheckAccept();
+            CheckClose();
+        }
+
+        public void CheckAccept() {
+            MessengerRepository mes = new MessengerRepository();
+            var result = mes.GetMessagerList().Where(a=>a.msg_close_status== "รอปล่อยงาน").ToList();
+            notiAccept = result.Count.ToString();
+        }
+        public void CheckClose()
+        {
+            MessengerRepository mes = new MessengerRepository();
+            var result = mes.GetMessagerList().Where(a => a.msg_close_status == "ระหว่างดำเนินการ").ToList();
+            notiClose = result.Count.ToString();
         }
     }
 }

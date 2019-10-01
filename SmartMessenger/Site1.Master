@@ -10,14 +10,16 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     <asp:ContentPlaceHolder ID="head" runat="server"> </asp:ContentPlaceHolder>
 </head>
 <body>
     <div class="w3-bar w3-black w3-small">
       <a href="HomePage.aspx" class="w3-bar-item w3-button w3-amber">Messenger</a>
-      <a href="AcceptPage.aspx" class="w3-bar-item w3-button">Accept<span runat="server" id="notiAcceptPage" class="w3-tag w3-round w3-red w3-center">2</span></a>
-      <a href="ClosePage.aspx" class="w3-bar-item w3-button">Close<span class="w3-tag w3-round w3-red w3-center">5</span></a>
+      <a href="HomePage.aspx?SendAcc=testQ" class="w3-bar-item w3-button">Accept<span runat="server" id="notiAcceptPage" class="w3-tag w3-round w3-red w3-center"></span></a>
+      <a href="ClosePage.aspx" class="w3-bar-item w3-button">Close<span runat="server" id="notiClosePage"  class="w3-tag w3-round w3-red w3-center"></span></a>
       <a href="ReportPage.aspx" class="w3-bar-item w3-button">Report</a>
     </div>
 
