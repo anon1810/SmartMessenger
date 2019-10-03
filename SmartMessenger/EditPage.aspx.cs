@@ -90,8 +90,8 @@ namespace SmartMessenger
                 msg_doctype += "|||รับ|" + opReceiveCreateP.Value + "|" + txtReceiveCreateP.Value + "|";
             }
 
-            string msg_priority_normal = "";
-            string msg_priority_urgent = "";
+            string msg_priority_normal = "-";
+            string msg_priority_urgent = "-";
             if (nmCreateP.Checked)
             {
                 msg_priority_normal = "Yes";
@@ -116,7 +116,7 @@ namespace SmartMessenger
             }
 
             
-            mesRes.UpdateMessager(idRequest, msg_by, msg_section, msg_phone, msg_send, msg_receive, msg_doctype, msg_priority_normal, msg_priority_urgent, msg_contact_name, msg_address, msg_telephone, msg_map, msg_on_date, msg_msg_name, msg_remark, msg_status);
+            mesRes.UpdateMessenger(idRequest, msg_by, msg_section, msg_phone, msg_send, msg_receive, msg_doctype, msg_priority_normal, msg_priority_urgent, msg_contact_name, msg_address, msg_telephone, msg_map, msg_on_date, msg_msg_name, msg_remark, msg_status);
             Response.Redirect("HomePage.aspx");
         }
         public void UploadFile(FileUpload file)

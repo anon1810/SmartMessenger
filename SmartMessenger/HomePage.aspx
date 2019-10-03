@@ -6,10 +6,10 @@
 
 
     <div class="w3-container w3-row w3-small">
-      <div class="w3-col m9">
+      <div class="w3-container w3-col m9">
             <button class="w3-button w3-blue" id="Create" runat="server" onserverclick="Create_ServerClick">Create</button> 
       </div>
-      <div class="w3-col m3 w3-center">
+      <div class="w3-container w3-col m3 w3-center">
          <div class="w3-cell-row">
               <div class="w3-cell">
                   <div class="w3-cell-row">
@@ -54,20 +54,20 @@
     <div class="w3-container w3-padding-16">
             <asp:GridView ID="gvMessager" HeaderStyle-BackColor="#566573" HeaderStyle-ForeColor="White" BorderWidth="0" GridLines="None" runat="server" AutoGenerateColumns="false" CssClass="w3-table-all w3-small" PageSize="14" AllowPaging="true" OnPageIndexChanging="gvMessager_PageIndexChanging" OnRowCommand="gvMessager_RowCommand">
                 <Columns>
-                    <asp:BoundField DataField="msg_id" HeaderText="รหัส" ItemStyle-Width="20px"/>
-                    <asp:BoundField DataField="msg_date" HeaderText="วันที่สร้าง" dataformatstring="{0:dd/MM/yyyy}" ItemStyle-Width="50px"/>
-                    <asp:BoundField DataField="msg_by" HeaderText="ผู้ขอรับบริการ" ItemStyle-Width="100px"/>
-                    <asp:BoundField DataField="msg_section" HeaderText="แผนก" ItemStyle-Width="100px"/>
+                    <asp:BoundField DataField="msg_id" HeaderText="รหัส"/>
+                    <asp:BoundField DataField="msg_date" HeaderText="วันที่สร้าง" dataformatstring="{0:dd/MM/yyyy}" />
+                    <asp:BoundField DataField="msg_by" HeaderText="ผู้ขอรับบริการ"/>
+                    <asp:BoundField DataField="msg_section" HeaderText="แผนก"/>
 <%--                    <asp:BoundField DataField="msg_phone" HeaderText="เบอร์โทร"  ItemStyle-Width="100px"/>--%>
-                    <asp:BoundField DataField="msg_doctype" HeaderText="เอกสาร"  ItemStyle-Width="150px"/>
+                    <asp:BoundField DataField="msg_doctype" HeaderText="เอกสาร" />
 
-                    <asp:BoundField DataField="msg_send" HeaderText="ประเภท" ItemStyle-Width="50px"/>
-                    <asp:BoundField DataField="msg_priority_normal" HeaderText="ความสำคัญ"  ItemStyle-Width="70px"/>
+                    <asp:BoundField DataField="msg_send" HeaderText="ประเภท" />
+<%--                    <asp:BoundField DataField="msg_priority_normal" HeaderText="ความสำคัญ" />--%>
 
-                    <asp:BoundField DataField="msg_contact_name" HeaderText="ชื่อผู้ติดต่อ"  ItemStyle-Width="70px"/>
-                    <asp:BoundField DataField="msg_address" HeaderText="ที่อยู่ผู้ติดต่อ" ItemStyle-Width="200px"/>
-                    <asp:BoundField DataField="msg_telephone" HeaderText="เบอร์ติดต่อ" ItemStyle-Width="100px"/>
-                    <asp:TemplateField HeaderText="แผนที่" ItemStyle-Width="50px">  
+                    <asp:BoundField DataField="msg_contact_name" HeaderText="ชื่อผู้ติดต่อ" />
+                    <asp:BoundField DataField="msg_address" HeaderText="ที่อยู่ผู้ติดต่อ" />
+                    <asp:BoundField DataField="msg_telephone" HeaderText="เบอร์ติดต่อ" />
+                    <asp:TemplateField HeaderText="แผนที่">  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkDownload" 
@@ -75,16 +75,40 @@
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_map") %>'  
                                 CommandName="lnkDownload"  
-                                CssClass="glyphicon glyphicon-file" 
+                                CssClass="glyphicon glyphicon-file w3-large" 
                                 Visible='<%# (Convert.ToString(Eval("msg_map")) == "-" || Convert.ToString(Eval("msg_map")) == "แนบแผนทีี่"|| Convert.ToString(Eval("msg_map")) == "") ? Convert.ToBoolean("false"):Convert.ToBoolean("true") %>'/>
                         </ItemTemplate>  
                     </asp:TemplateField> 
                                                         
-                    <asp:BoundField DataField="msg_on_date" HeaderText="ส่งภายในวันที่"  dataformatstring="{0:dd/MM/yyyy}"  ItemStyle-Width="50px"/>
-                    <asp:BoundField DataField="msg_msg_name" HeaderText="Messenger" ItemStyle-Width="50px"/>                   
-                    <asp:BoundField DataField="msg_close_status" HeaderText="สถานะ" ItemStyle-Width="100px"/>
+                    <asp:BoundField DataField="msg_on_date" HeaderText="ส่งภายในวันที่"  dataformatstring="{0:dd/MM/yyyy}"  />
+                    <asp:BoundField DataField="msg_msg_name" HeaderText="Messenger" />                   
+                    <asp:BoundField DataField="msg_close_status" HeaderText="สถานะ" />
 <%--                    <asp:BoundField DataField="msg_remark" HeaderText="หมายเหตุ" ItemStyle-Width="100px"/>--%>
-                    <asp:TemplateField HeaderText="" ItemStyle-Width="10px" >  
+                    <asp:TemplateField HeaderText="" >  
+                        <ItemTemplate>  
+                            <asp:LinkButton 
+                                ID="lnkView" 
+                                runat="server" 
+                                CausesValidation="False" 
+                                CommandArgument='<%# Eval("msg_id") %>' 
+                                CommandName="lnkView"  
+                                CssClass="fa fa-search w3-large"
+                                />
+                        </ItemTemplate>  
+                    </asp:TemplateField>                    
+                    <asp:TemplateField HeaderText="">
+                        <ItemTemplate>
+                            <asp:LinkButton
+                                ID="lnkEdit"
+                                runat="server" 
+                                CommandArgument='<%# Eval("msg_id") %>' 
+                                CommandName="lnkEdit"  
+                                CssClass="glyphicon glyphicon-edit w3-text-deep-orange w3-large"      
+                                Visible='<%# (Convert.ToString(Eval("msg_close_status")) == "รอปล่อยงาน" || Convert.ToString(Eval("msg_close_status")) == "ดำเนินการ") ? Convert.ToBoolean("true"):Convert.ToBoolean("false") %>'                      
+                                />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="" >  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkOutJob" 
@@ -97,20 +121,94 @@
                                 Visible='<%# DisplayListOfDevelopers() %>'/>
                         </ItemTemplate>  
                     </asp:TemplateField> 
-                    <asp:TemplateField HeaderText="" ItemStyle-Width="10px">
-                        <ItemTemplate>
-                            <asp:LinkButton
-                                ID="lnkEdit"
-                                runat="server" 
-                                CommandArgument='<%# Eval("msg_id") %>' 
-                                CommandName="lnkEdit"  
-                                CssClass="w3-button w3-yellow w3-padding-small"
-                                Text="แก้ไข"         
-                                Visible='<%# (Convert.ToString(Eval("msg_close_status")) == "รอปล่อยงาน" || Convert.ToString(Eval("msg_close_status")) == "ดำเนินการ") ? Convert.ToBoolean("true"):Convert.ToBoolean("false") %>'                      
-                                />
-                        </ItemTemplate>
-                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
     </div>
+
+    <div class="w3-container">
+      <div id="id01" runat="server" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+             <div class="w3-container">  
+          <span onclick="Closemodal()" class="w3-button w3-large w3-display-topright">&times;</span>
+                 </div>
+          <div class="w3-container w3-padding-32">        
+            <table class="w3-table-all">
+              <tr>
+              <td  runat="server">รหัส</td>
+              <td id="modaltd1" runat="server">รหัส</td>
+              </tr><tr>
+              <td  runat="server">วันที่ขอรับบริการ</td>
+              <td id="modaltd2" runat="server">วันที่ขอรับบริการ</td>
+              </tr><tr>
+              <td  runat="server">ผู้ขอรับบริการ</td>
+              <td id="modaltd3" runat="server">ผู้ขอรับบริการ</td>
+              </tr><tr>
+              <td  runat="server">แผนก</td>
+              <td id="modaltd4" runat="server">แผนก</td>
+              </tr><tr>
+              <td  runat="server">เบอร์โทร</td>
+              <td id="modaltd5" runat="server">เบอร์โทร</td>
+              </tr><tr>
+              <td  runat="server">เอกสาร</td>
+              <td id="modaltd6" runat="server">เอกสาร</td>
+              </tr><tr>
+              <td  runat="server">ประเภท</td>
+              <td id="modaltd7" runat="server">ประเภท</td>
+              </tr><tr>
+              <td  runat="server">ความสำคัญ</td>
+              <td id="modaltd8" runat="server">ความสำคัญ</td>
+              </tr><tr>
+              <td  runat="server">ชื่อผู้ติดต่อ</td>
+              <td id="modaltd9" runat="server">ชื่อผู้ติดต่อ</td>
+              </tr><tr>
+              <td  runat="server">ที่อยู่อผู้ติดต่อ</td>
+              <td id="modaltd10" runat="server">ที่อยู่อผู้ติดต่อ</td>
+              </tr><tr>
+              <td  runat="server">เบอร์ติดต่อ</td>
+              <td id="modaltd11" runat="server">เบอร์ติดต่อ</td>
+              </tr><tr>
+              <td  runat="server">แผนที่</td>
+              <td id="modaltd12" runat="server">แผนที่</td>
+              </tr><tr>
+              <td  runat="server">ส่งภายในวันที่</td>
+              <td id="modaltd13" runat="server">ส่งภายในวันที่</td>
+              </tr><tr>
+              <td  runat="server">Remark</td>
+              <td id="modaltd14" runat="server">Remark</td>
+              </tr><tr>
+              <td  runat="server">Messenger</td>
+              <td id="modaltd15" runat="server">Messenger</td>
+              </tr><tr>
+              <td  runat="server">สถานะ</td>
+              <td id="modaltd16" runat="server">สถานะ</td>
+              </tr><tr>
+              <td  runat="server">Admin</td>
+              <td id="modaltd17" runat="server">Admin</td>
+              </tr><tr>
+              <td  runat="server">วันที่ปล่อยงาน</td>
+              <td id="modaltd18" runat="server">วันที่ปล่อยงาน</td>
+              </tr><tr>
+              <td  runat="server">วันที่ปิดงาน</td>
+              <td id="modaltd19" runat="server">วันที่ปิดงาน</td>
+              </tr><tr>
+              <td  runat="server">วันที่แก้ไขล่าสุด</td>
+              <td id="modaltd20" runat="server">วันที่แก้ไขล่าสุด</td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" language="javascript">
+        function Closemodal() {
+              document.getElementById("<%=id01.ClientID %>").style.display = 'none'
+        }
+        function CallingServerSideFunction() {
+            PageMethods.GetData();
+        }
+   </script>
+
+
 </asp:Content>

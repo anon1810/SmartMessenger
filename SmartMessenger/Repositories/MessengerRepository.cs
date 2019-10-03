@@ -54,7 +54,15 @@ namespace SmartMessenger.Repositories
 
         }
 
-        public void UpdateMessager(int id, string mBy, string mSection, string mPhone, string mSend, string mRecieve, string mDocType, string isNormale, string isUrgent, string mContractName, string mAddress, string mTelephone, string mMAP, DateTime mOndate, string mMesName, string mRemark, string mStatus)
+        public void UpdateStatusMessenger(int id,string status) {
+            using (SFAEntities en = new SFAEntities()) {
+                msgctrlDev mes = en.msgctrlDevs.Single(c => c.msg_id == id);
+                mes.msg_close_status = status;
+                en.SaveChanges();
+            }
+        }
+
+        public void UpdateMessenger(int id, string mBy, string mSection, string mPhone, string mSend, string mRecieve, string mDocType, string isNormale, string isUrgent, string mContractName, string mAddress, string mTelephone, string mMAP, DateTime mOndate, string mMesName, string mRemark, string mStatus)
         {
             using (SFAEntities en = new SFAEntities())
             {

@@ -17,8 +17,11 @@ namespace SmartMessenger
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            CheckAccept();
-            CheckClose();
+            if (!IsPostBack)
+            {
+                CheckAccept();
+                CheckClose();
+            }
         }
 
         public void CheckAccept() {
@@ -29,7 +32,7 @@ namespace SmartMessenger
         public void CheckClose()
         {
             MessengerRepository mes = new MessengerRepository();
-            var result = mes.GetMessagerList().Where(a => a.msg_close_status == "ระหว่างดำเนินการ").ToList();
+            var result = mes.GetMessagerList().Where(a => a.msg_close_status == "ดำเนินการ").ToList();
             notiClose = result.Count.ToString();
         }
     }

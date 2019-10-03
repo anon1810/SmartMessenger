@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SFAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SFAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="msgctrlDev">
           <Key>
             <PropertyRef Name="msg_id" />
@@ -12,8 +12,8 @@
           <Property Name="msg_id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="msg_entry" Type="datetime" />
           <Property Name="msg_date" Type="datetime" />
-          <Property Name="msg_by" Type="varchar" MaxLength="10" />
-          <Property Name="msg_section" Type="varchar" MaxLength="20" />
+          <Property Name="msg_by" Type="varchar" MaxLength="200" />
+          <Property Name="msg_section" Type="varchar" MaxLength="200" />
           <Property Name="msg_phone" Type="varchar" MaxLength="50" />
           <Property Name="msg_contact_name" Type="varchar" MaxLength="200" />
           <Property Name="msg_company" Type="varchar" MaxLength="200" />
@@ -32,20 +32,26 @@
           <Property Name="msg_close_time" Type="datetime" />
           <Property Name="msg_remark" Type="varchar" MaxLength="255" />
           <Property Name="msg_print_label" Type="varchar" MaxLength="1" />
+          <Property Name="msg_accept_by" Type="varchar" MaxLength="200" />
+          <Property Name="msg_accept_date" Type="datetime" />
+          <Property Name="msg_edit_by" Type="varchar" MaxLength="200" />
+          <Property Name="msg_edit_date" Type="datetime" />
         </EntityType>
         <EntityContainer Name="SFAModelStoreContainer">
           <EntitySet Name="msgctrlDev" EntityType="Self.msgctrlDev" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SFAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SFAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="msgctrlDevs" EntityType="SFAModel.msgctrlDev" />
+        </EntityContainer>
         <EntityType Name="msgctrlDev">
           <Key>
             <PropertyRef Name="msg_id" />
           </Key>
-          <Property Name="msg_id" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="msg_id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="msg_entry" Type="DateTime" Precision="3" />
           <Property Name="msg_date" Type="DateTime" Precision="3" />
           <Property Name="msg_by" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -68,10 +74,11 @@
           <Property Name="msg_close_time" Type="DateTime" Precision="3" />
           <Property Name="msg_remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="msg_print_label" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="msg_accept_by" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="msg_accept_date" Type="DateTime" Precision="3" />
+          <Property Name="msg_edit_by" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="msg_edit_date" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityContainer Name="SFAEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="msgctrlDevs" EntityType="Self.msgctrlDev" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -81,29 +88,33 @@
           <EntitySetMapping Name="msgctrlDevs">
             <EntityTypeMapping TypeName="SFAModel.msgctrlDev">
               <MappingFragment StoreEntitySet="msgctrlDev">
-                <ScalarProperty Name="msg_id" ColumnName="msg_id" />
-                <ScalarProperty Name="msg_entry" ColumnName="msg_entry" />
-                <ScalarProperty Name="msg_date" ColumnName="msg_date" />
-                <ScalarProperty Name="msg_by" ColumnName="msg_by" />
-                <ScalarProperty Name="msg_section" ColumnName="msg_section" />
-                <ScalarProperty Name="msg_phone" ColumnName="msg_phone" />
-                <ScalarProperty Name="msg_contact_name" ColumnName="msg_contact_name" />
-                <ScalarProperty Name="msg_company" ColumnName="msg_company" />
-                <ScalarProperty Name="msg_address" ColumnName="msg_address" />
-                <ScalarProperty Name="msg_telephone" ColumnName="msg_telephone" />
-                <ScalarProperty Name="msg_map" ColumnName="msg_map" />
-                <ScalarProperty Name="msg_send" ColumnName="msg_send" />
-                <ScalarProperty Name="msg_receive" ColumnName="msg_receive" />
-                <ScalarProperty Name="msg_doctype" ColumnName="msg_doctype" />
-                <ScalarProperty Name="msg_priority_normal" ColumnName="msg_priority_normal" />
-                <ScalarProperty Name="msg_priority_urgent" ColumnName="msg_priority_urgent" />
-                <ScalarProperty Name="msg_on_date" ColumnName="msg_on_date" />
-                <ScalarProperty Name="msg_msg_name" ColumnName="msg_msg_name" />
-                <ScalarProperty Name="msg_close_status" ColumnName="msg_close_status" />
-                <ScalarProperty Name="msg_close_date" ColumnName="msg_close_date" />
-                <ScalarProperty Name="msg_close_time" ColumnName="msg_close_time" />
-                <ScalarProperty Name="msg_remark" ColumnName="msg_remark" />
+                <ScalarProperty Name="msg_edit_date" ColumnName="msg_edit_date" />
+                <ScalarProperty Name="msg_edit_by" ColumnName="msg_edit_by" />
+                <ScalarProperty Name="msg_accept_date" ColumnName="msg_accept_date" />
+                <ScalarProperty Name="msg_accept_by" ColumnName="msg_accept_by" />
                 <ScalarProperty Name="msg_print_label" ColumnName="msg_print_label" />
+                <ScalarProperty Name="msg_remark" ColumnName="msg_remark" />
+                <ScalarProperty Name="msg_close_time" ColumnName="msg_close_time" />
+                <ScalarProperty Name="msg_close_date" ColumnName="msg_close_date" />
+                <ScalarProperty Name="msg_close_status" ColumnName="msg_close_status" />
+                <ScalarProperty Name="msg_msg_name" ColumnName="msg_msg_name" />
+                <ScalarProperty Name="msg_on_date" ColumnName="msg_on_date" />
+                <ScalarProperty Name="msg_priority_urgent" ColumnName="msg_priority_urgent" />
+                <ScalarProperty Name="msg_priority_normal" ColumnName="msg_priority_normal" />
+                <ScalarProperty Name="msg_doctype" ColumnName="msg_doctype" />
+                <ScalarProperty Name="msg_receive" ColumnName="msg_receive" />
+                <ScalarProperty Name="msg_send" ColumnName="msg_send" />
+                <ScalarProperty Name="msg_map" ColumnName="msg_map" />
+                <ScalarProperty Name="msg_telephone" ColumnName="msg_telephone" />
+                <ScalarProperty Name="msg_address" ColumnName="msg_address" />
+                <ScalarProperty Name="msg_company" ColumnName="msg_company" />
+                <ScalarProperty Name="msg_contact_name" ColumnName="msg_contact_name" />
+                <ScalarProperty Name="msg_phone" ColumnName="msg_phone" />
+                <ScalarProperty Name="msg_section" ColumnName="msg_section" />
+                <ScalarProperty Name="msg_by" ColumnName="msg_by" />
+                <ScalarProperty Name="msg_date" ColumnName="msg_date" />
+                <ScalarProperty Name="msg_entry" ColumnName="msg_entry" />
+                <ScalarProperty Name="msg_id" ColumnName="msg_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

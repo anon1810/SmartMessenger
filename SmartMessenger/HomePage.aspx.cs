@@ -17,12 +17,16 @@ namespace SmartMessenger
         List<msgctrlDev> mesList = new List<msgctrlDev>();
         bool isNotiAccept = false;
         protected void Page_Load(object sender, EventArgs e)
-        {           
-            if (Request.QueryString["SendAcc"] != null) {
-                string txt = Request.QueryString["SendAcc"];
-                isNotiAccept = true;              
+        {          
+            if (!IsPostBack)
+            {
+                if (Request.QueryString["SendAcc"] != null) {
+                    string txt = Request.QueryString["SendAcc"];
+                    isNotiAccept = true;              
+                }
+                LoadGridData();
             }
-            LoadGridData();
+
         }
         protected bool DisplayListOfDevelopers()
         {         
@@ -32,10 +36,10 @@ namespace SmartMessenger
         public void LoadGridData() {
             MessengerRepository mesRes = new MessengerRepository();
             if (isNotiAccept) {
-                gvMessager.Columns[14].Visible = true;
+                //gvMessager.Columns[14].Visible = true;
                 mesList = mesRes.GetMessagerList().Where(a=>a.msg_close_status== "รอปล่อยงาน").OrderByDescending(a => a.msg_id).ToList();
             } else {
-                gvMessager.Columns[14].Visible = false;
+                gvMessager.Columns[15].Visible = false;
                 mesList = mesRes.GetMessagerList().OrderByDescending(a => a.msg_id).ToList();
             }
 
@@ -130,12 +134,44 @@ namespace SmartMessenger
                 Response.End();
             } else if (e.CommandName == "lnkOutJob") {
                 string id = e.CommandArgument.ToString();
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('lnkOutJob')", true);
-            } else if(e.CommandName == "lnkEdit") {
+                MessengerRepository mesRes = new MessengerRepository();
+                mesRes.UpdateStatusMessenger(int.Parse(id), "ดำเนินการ");
+                var master = Master as Site1;
+                if (master != null) {
+                    master.CheckAccept();
+                }
+                Page.Response.Redirect(Page.Request.Url.ToString(), true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('Success')", true);
+            } else if (e.CommandName == "lnkEdit") {
                 string id = e.CommandArgument.ToString();
                 Response.Redirect("~/EditPage.aspx?id=" + id);
+            } else if (e.CommandName == "lnkView") {
+                id01.Style["display"] = "block";
+                string id = e.CommandArgument.ToString();
+                MessengerRepository mes = new MessengerRepository();
+                var result = mes.GetMessagerByID(int.Parse(id));
+                modaltd1.InnerText = result.msg_id.ToString();
+                modaltd2.InnerText = result.msg_date.ToString();
+                modaltd3.InnerText = result.msg_by;
+                modaltd4.InnerText = result.msg_section;
+                modaltd5.InnerText = result.msg_phone;
+                modaltd6.InnerText = result.msg_doctype;
+                modaltd7.InnerText = result.msg_send + " รับ : " + result.msg_receive;
+                modaltd8.InnerText = result.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
+                modaltd9.InnerText = result.msg_contact_name;
+                modaltd10.InnerText = result.msg_address;
+                modaltd11.InnerText = result.msg_telephone;
+                modaltd12.InnerText = result.msg_map;
+                modaltd13.InnerText = result.msg_on_date.ToString();
+                modaltd14.InnerText = result.msg_remark;
+                modaltd15.InnerText = result.msg_msg_name;
+                modaltd16.InnerText = result.msg_close_status;
+                modaltd17.InnerText = result.msg_accept_by;
+                modaltd18.InnerText = result.msg_accept_date.ToString();
+                modaltd19.InnerText = result.msg_close_date.ToString();
+                modaltd20.InnerText = result.msg_edit_date.ToString();
+                modaltd20.InnerText = result.msg_edit_by;
             }
-
         }
 
         protected void btnEdit_Click(object sender, EventArgs e)
@@ -166,5 +202,6 @@ namespace SmartMessenger
                 //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertErr", "alert('" + ex.Message + "')", true);
             }
         }
+
     }
 }

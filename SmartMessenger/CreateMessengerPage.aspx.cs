@@ -46,8 +46,8 @@ namespace SmartMessenger
                 msg_doctype += "|||รับ|" + opReceiveCreateP.Value + "|" + txtReceiveCreateP.Value + "|";
             }
 
-            string msg_priority_normal="";
-            string msg_priority_urgent="";
+            string msg_priority_normal="-";
+            string msg_priority_urgent="-";
             if (nmCreateP.Checked) {
                 msg_priority_normal = "Yes";
             } else {

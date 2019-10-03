@@ -18,7 +18,7 @@
 <body>
     <div class="w3-bar w3-black w3-small">
       <a href="HomePage.aspx" class="w3-bar-item w3-button w3-amber">Messenger</a>
-      <a href="HomePage.aspx?SendAcc=testQ" class="w3-bar-item w3-button">Accept<span runat="server" id="notiAcceptPage" class="w3-tag w3-round w3-red w3-center"></span></a>
+      <a href="HomePage.aspx?SendAcc=testQ" class="w3-bar-item w3-button">Accept<span runat="server" id="notiAcceptPage" class="w3-tag w3-round w3-yellow w3-center"></span></a>
       <a href="ClosePage.aspx" class="w3-bar-item w3-button">Close<span runat="server" id="notiClosePage"  class="w3-tag w3-round w3-red w3-center"></span></a>
       <a href="ReportPage.aspx" class="w3-bar-item w3-button">Report</a>
     </div>
