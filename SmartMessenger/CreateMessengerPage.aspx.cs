@@ -13,7 +13,7 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         public void UploadFile(FileUpload file) {
@@ -33,13 +33,17 @@ namespace SmartMessenger
             string msg_send="No";
             string msg_receive="No";
             string msg_doctype="";
-            if (opSendCreateP.Value != "0") {
+            if (opSendCreateP.Value != "0" && opReceiveCreateP.Value != "0") {
                 msg_send = "Yes";
-                msg_doctype += "ส่ง:" + opSendCreateP.Value + txtSendCreateP.Value+" ";
-            }
-            if (opReceiveCreateP.Value != "0") {
+                msg_doctype += "ส่ง|" + opSendCreateP.Value + "|" + txtSendCreateP.Value + "|";
                 msg_receive = "Yes";
-                msg_doctype += "รับ:" + opReceiveCreateP.Value + txtReceiveCreateP.Value;
+                msg_doctype += "รับ|" + opReceiveCreateP.Value + "|" + txtReceiveCreateP.Value + "|";
+            } else if (opSendCreateP.Value != "0") {
+                msg_send = "Yes";
+                msg_doctype += "ส่ง|" + opSendCreateP.Value + "|" + txtSendCreateP.Value + "||||";
+            } else if (opReceiveCreateP.Value != "0") {
+                msg_receive = "Yes";
+                msg_doctype += "|||รับ|" + opReceiveCreateP.Value + "|" + txtReceiveCreateP.Value + "|";
             }
 
             string msg_priority_normal="";

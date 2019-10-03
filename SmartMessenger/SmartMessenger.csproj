@@ -114,6 +114,7 @@
       <DependentUpon>MessengerModel1.edmx</DependentUpon>
       <LastGenOutput>MessengerModel1.cs</LastGenOutput>
     </Content>
+    <Content Include="EditPage.aspx" />
     <Content Include="jquery-3.3.1.min.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -214,6 +215,13 @@
     </Compile>
     <Compile Include="Data\msgctrlDev.cs">
       <DependentUpon>MessengerModel1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EditPage.aspx.cs">
+      <DependentUpon>EditPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditPage.aspx.designer.cs">
+      <DependentUpon>EditPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="HomePage.aspx.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>

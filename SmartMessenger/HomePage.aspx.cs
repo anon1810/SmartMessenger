@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using SmartMessenger.Data;
 using System.Collections.Generic;
 using SmartMessenger.Repositories;
+using System.Data.SqlClient;
+using System.IO;
 
 namespace SmartMessenger
 {
@@ -30,10 +32,10 @@ namespace SmartMessenger
         public void LoadGridData() {
             MessengerRepository mesRes = new MessengerRepository();
             if (isNotiAccept) {
-                gvMessager.Columns[16].Visible = true;
+                gvMessager.Columns[14].Visible = true;
                 mesList = mesRes.GetMessagerList().Where(a=>a.msg_close_status== "รอปล่อยงาน").OrderByDescending(a => a.msg_id).ToList();
             } else {
-                gvMessager.Columns[16].Visible = false;
+                gvMessager.Columns[14].Visible = false;
                 mesList = mesRes.GetMessagerList().OrderByDescending(a => a.msg_id).ToList();
             }
 
@@ -87,6 +89,13 @@ namespace SmartMessenger
                     } else if(data.msg_close_status == null){
                         data.msg_close_status = "ดำเนินการ(เก่า)";
                     }
+
+                    if (data.msg_doctype != null) {
+                        data.msg_doctype=data.msg_doctype.Replace("ส่ง|"," ส่ง:");
+                        data.msg_doctype = data.msg_doctype.Replace("รับ|", " รับ:");
+                        data.msg_doctype = data.msg_doctype.Replace("|", "");
+                    }
+                    
                 }
                 gvMessager.DataSource = mesList;
                 gvMessager.DataBind();
@@ -113,17 +122,49 @@ namespace SmartMessenger
 
         protected void gvMessager_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName == "Download") {
+            if (e.CommandName == "lnkDownload") {
                 Response.Clear();
                 Response.ContentType = "application/octet-stream";
                 Response.AppendHeader("Content-Disposition", "filename=" + e.CommandArgument);
                 Response.TransmitFile(Server.MapPath("~/FileUpload/") + e.CommandArgument);
                 Response.End();
-            } else if (e.CommandName == "OutJob") {
+            } else if (e.CommandName == "lnkOutJob") {
                 string id = e.CommandArgument.ToString();
-                string x = "";
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('lnkOutJob')", true);
+            } else if(e.CommandName == "lnkEdit") {
+                string id = e.CommandArgument.ToString();
+                Response.Redirect("~/EditPage.aspx?id=" + id);
             }
 
+        }
+
+        protected void btnEdit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var btnDelete = (Button)sender;
+                var row = (GridViewRow)btnDelete.NamingContainer;
+                //var img = (Image)row.FindControl("img");
+                //string pathImg = Server.MapPath("~") + img.ImageUrl;
+                //if (File.Exists(pathImg))
+                //{
+                //    File.Delete(pathImg);
+                //}
+                int id = int.Parse(row.Cells[0].Text);
+                string x = "";
+                //movieRepo.deleteMovie(id);
+                //bindDataMovie();
+                //showAlertSuccess("alertDelSuccess", "Delete success");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('Success')", true);
+            }
+            catch (SqlException sqlEx) {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('Success')", true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSqlErr", "alert('"+ sqlEx.Message + "')", true);
+            }
+            catch (Exception ex) {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('Success')", true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertErr", "alert('" + ex.Message + "')", true);
+            }
         }
     }
 }

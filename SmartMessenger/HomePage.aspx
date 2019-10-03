@@ -58,7 +58,7 @@
                     <asp:BoundField DataField="msg_date" HeaderText="วันที่สร้าง" dataformatstring="{0:dd/MM/yyyy}" ItemStyle-Width="50px"/>
                     <asp:BoundField DataField="msg_by" HeaderText="ผู้ขอรับบริการ" ItemStyle-Width="100px"/>
                     <asp:BoundField DataField="msg_section" HeaderText="แผนก" ItemStyle-Width="100px"/>
-                    <asp:BoundField DataField="msg_phone" HeaderText="เบอร์โทร"  ItemStyle-Width="100px"/>
+<%--                    <asp:BoundField DataField="msg_phone" HeaderText="เบอร์โทร"  ItemStyle-Width="100px"/>--%>
                     <asp:BoundField DataField="msg_doctype" HeaderText="เอกสาร"  ItemStyle-Width="150px"/>
 
                     <asp:BoundField DataField="msg_send" HeaderText="ประเภท" ItemStyle-Width="50px"/>
@@ -74,7 +74,7 @@
                                 runat="server" 
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_map") %>'  
-                                CommandName="Download"  
+                                CommandName="lnkDownload"  
                                 CssClass="glyphicon glyphicon-file" 
                                 Visible='<%# (Convert.ToString(Eval("msg_map")) == "-" || Convert.ToString(Eval("msg_map")) == "แนบแผนทีี่"|| Convert.ToString(Eval("msg_map")) == "") ? Convert.ToBoolean("false"):Convert.ToBoolean("true") %>'/>
                         </ItemTemplate>  
@@ -83,20 +83,33 @@
                     <asp:BoundField DataField="msg_on_date" HeaderText="ส่งภายในวันที่"  dataformatstring="{0:dd/MM/yyyy}"  ItemStyle-Width="50px"/>
                     <asp:BoundField DataField="msg_msg_name" HeaderText="Messenger" ItemStyle-Width="50px"/>                   
                     <asp:BoundField DataField="msg_close_status" HeaderText="สถานะ" ItemStyle-Width="100px"/>
-                    <asp:BoundField DataField="msg_remark" HeaderText="หมายเหตุ" ItemStyle-Width="100px"/>
+<%--                    <asp:BoundField DataField="msg_remark" HeaderText="หมายเหตุ" ItemStyle-Width="100px"/>--%>
                     <asp:TemplateField HeaderText="" ItemStyle-Width="10px" >  
                         <ItemTemplate>  
                             <asp:LinkButton 
-                                ID="OutJob" 
+                                ID="lnkOutJob" 
                                 runat="server" 
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
-                                CommandName="OutJob"  
-                                CssClass="w3-button w3-round-large w3-border w3-yellow"
+                                CommandName="lnkOutJob"  
+                                CssClass="w3-button w3-green w3-padding-small"
                                 Text="ปล่อย"
                                 Visible='<%# DisplayListOfDevelopers() %>'/>
                         </ItemTemplate>  
                     </asp:TemplateField> 
+                    <asp:TemplateField HeaderText="" ItemStyle-Width="10px">
+                        <ItemTemplate>
+                            <asp:LinkButton
+                                ID="lnkEdit"
+                                runat="server" 
+                                CommandArgument='<%# Eval("msg_id") %>' 
+                                CommandName="lnkEdit"  
+                                CssClass="w3-button w3-yellow w3-padding-small"
+                                Text="แก้ไข"         
+                                Visible='<%# (Convert.ToString(Eval("msg_close_status")) == "รอปล่อยงาน" || Convert.ToString(Eval("msg_close_status")) == "ดำเนินการ") ? Convert.ToBoolean("true"):Convert.ToBoolean("false") %>'                      
+                                />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
     </div>

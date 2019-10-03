@@ -1,7 +1,7 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="CreateMessengerPage.aspx.cs" Inherits="SmartMessenger.CreateMessengerPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="EditPage.aspx.cs" Inherits="SmartMessenger.EditPage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">   
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="w3-row">
         <div class="w3-col" style="width:20%">
             &nbsp;
@@ -70,12 +70,12 @@
 
             <p></p>
             <div class="w3-cell">
-              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked/>
+              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked>
               <label>ปกติ</label>
             </div>
             <div class="w3-cell">&nbsp;&nbsp;</div>
             <div class="w3-cell">
-              <input class="w3-radio" type="radio" name="sendType" runat="server" id="urCreateP" value="2"/>
+              <input class="w3-radio" type="radio" name="sendType" runat="server" id="urCreateP" value="2">
               <label>ด่วน</label>
             </div>
             <p></p>
@@ -99,7 +99,8 @@
             </p>
             <p>
               <label>แนบไฟล์แผนที่</label><br>
-              <asp:FileUpload id="FileUploadMap" runat="server" CssClass = "w3-input w3-border" />             
+              <asp:FileUpload id="FileUploadMap" runat="server" CssClass = "w3-input w3-border" />
+              <p id="txtOldfile" runat="server">ไฟล์ปัจจุบัน :</p>
             </p>
             <p>
               <label>ส่งภายในวันที่</label>
@@ -113,7 +114,7 @@
               <label>หมายเหตุ</label>
               <textarea class = "w3-input  w3-border" runat="server" id="txtRemarkCreatPage"></textarea>
             </p>
-            <asp:Button Text="สร้างใบสั่งงาน" runat="server" class="w3-button w3-blue" ID="btnCreate" OnClick="btnCreate_Click" OnClientClick="return validate();" />
+            <asp:Button Text="อัพเดท" runat="server" class="w3-button w3-blue" ID="btnUpdate" OnClick="btnUpdate_Click" OnClientClick="return validate();" />
         </div>
         <div class="w3-col" style="width:20%">
             &nbsp;
@@ -143,7 +144,6 @@
               var Recieve = document.getElementById("<%=opReceiveCreateP.ClientID %>").value;
               if (Send == 0 && Recieve == 0) {
                   alert("กรุณาเลือกประเภทเอกสาร");
-<%--                  document.getElementById("<%=opSendCreateP.ClientID %>").focus();--%>
                   return false;
               }
 
