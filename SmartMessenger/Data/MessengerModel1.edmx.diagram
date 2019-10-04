@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7e84503aaabb4ce08e75d84cb290f02d" Name="Diagram1">
         <EntityTypeShape EntityType="SFAModel.msgctrlDev" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SFAModel.user" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

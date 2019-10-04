@@ -7,7 +7,7 @@
 
     <div class="w3-container w3-row w3-small">
       <div class="w3-container w3-col m9">
-            <button class="w3-button w3-blue" id="Create" runat="server" onserverclick="Create_ServerClick">Create</button> 
+            <button class="w3-button w3-blue" id="Create" runat="server" onserverclick="Create_ServerClick" type="button">Create</button> 
       </div>
       <div class="w3-container w3-col m3 w3-center">
          <div class="w3-cell-row">
@@ -108,7 +108,7 @@
                                 />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="" >  
+                    <asp:TemplateField HeaderText="Acc" >  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkOutJob" 
@@ -118,7 +118,20 @@
                                 CommandName="lnkOutJob"  
                                 CssClass="w3-button w3-green w3-padding-small"
                                 Text="ปล่อย"
-                                Visible='<%# DisplayListOfDevelopers() %>'/>
+                                Visible='<%# ChkShowAcceptBtn() %>'/>
+                        </ItemTemplate>  
+                    </asp:TemplateField> 
+                    <asp:TemplateField HeaderText="Close" >  
+                        <ItemTemplate>  
+                            <asp:LinkButton 
+                                ID="lnkCloseJob" 
+                                runat="server" 
+                                CausesValidation="False" 
+                                CommandArgument='<%# Eval("msg_id") %>' 
+                                CommandName="lnkCloseJob"  
+                                CssClass="w3-button w3-red w3-padding-small"
+                                Text="ปิดงาน"
+                                Visible='<%# ChkShowCloseBtn() %>'/>
                         </ItemTemplate>  
                     </asp:TemplateField> 
                 </Columns>

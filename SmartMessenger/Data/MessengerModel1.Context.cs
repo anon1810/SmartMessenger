@@ -26,5 +26,6 @@ namespace SmartMessenger.Data
         }
     
         public DbSet<msgctrlDev> msgctrlDevs { get; set; }
+        public DbSet<user> users { get; set; }
     }
 }

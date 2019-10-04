@@ -8,6 +8,12 @@ namespace SmartMessenger.Repositories
 {
     public class MessengerRepository
     {
+        public user Login(string username, string password) {
+            using (SFAEntities en = new SFAEntities()){
+                var result = en.users.SingleOrDefault(c=>c.username == username && c.password==password);
+                return result;
+            }
+        }
         public List<msgctrlDev> GetMessagerList()
         {
             using (SFAEntities en = new SFAEntities()) {

@@ -27,18 +27,38 @@
           <Property Name="msg_priority_urgent" Type="varchar" MaxLength="10" />
           <Property Name="msg_on_date" Type="datetime" />
           <Property Name="msg_msg_name" Type="varchar" MaxLength="50" />
-          <Property Name="msg_close_status" Type="varchar" MaxLength="50" />
+          <Property Name="msg_close_status" Type="nvarchar" MaxLength="50" />
           <Property Name="msg_close_date" Type="datetime" />
           <Property Name="msg_close_time" Type="datetime" />
           <Property Name="msg_remark" Type="varchar" MaxLength="255" />
           <Property Name="msg_print_label" Type="varchar" MaxLength="1" />
-          <Property Name="msg_accept_by" Type="varchar" MaxLength="200" />
+          <Property Name="msg_accept_by" Type="nvarchar" MaxLength="200" />
           <Property Name="msg_accept_date" Type="datetime" />
-          <Property Name="msg_edit_by" Type="varchar" MaxLength="200" />
+          <Property Name="msg_edit_by" Type="nvarchar" MaxLength="200" />
           <Property Name="msg_edit_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="levels" Type="varchar" MaxLength="30" />
+          <Property Name="owner" Type="varchar" MaxLength="10" />
+          <Property Name="xsales" Type="varchar" MaxLength="10" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="department" Type="varchar" MaxLength="50" />
+          <Property Name="section" Type="varchar" MaxLength="10" />
+          <Property Name="sc" Type="varchar" MaxLength="5" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="destination" Type="varchar" MaxLength="50" />
+          <Property Name="section_group" Type="varchar" MaxLength="50" />
+          <Property Name="team_group" Type="varchar" MaxLength="50" />
+          <Property Name="sales_code" Type="varchar" MaxLength="4" />
         </EntityType>
         <EntityContainer Name="SFAModelStoreContainer">
           <EntitySet Name="msgctrlDev" EntityType="Self.msgctrlDev" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -46,6 +66,7 @@
       <Schema Namespace="SFAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SFAEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="msgctrlDevs" EntityType="SFAModel.msgctrlDev" />
+          <EntitySet Name="users" EntityType="SFAModel.user" />
         </EntityContainer>
         <EntityType Name="msgctrlDev">
           <Key>
@@ -69,15 +90,34 @@
           <Property Name="msg_priority_urgent" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="msg_on_date" Type="DateTime" Precision="3" />
           <Property Name="msg_msg_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="msg_close_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="msg_close_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="msg_close_date" Type="DateTime" Precision="3" />
           <Property Name="msg_close_time" Type="DateTime" Precision="3" />
           <Property Name="msg_remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="msg_print_label" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="msg_accept_by" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="msg_accept_by" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="msg_accept_date" Type="DateTime" Precision="3" />
-          <Property Name="msg_edit_by" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="msg_edit_by" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="msg_edit_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="levels" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="owner" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="xsales" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="department" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="section" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="sc" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="destination" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="section_group" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="team_group" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sales_code" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -115,6 +155,26 @@
                 <ScalarProperty Name="msg_date" ColumnName="msg_date" />
                 <ScalarProperty Name="msg_entry" ColumnName="msg_entry" />
                 <ScalarProperty Name="msg_id" ColumnName="msg_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="SFAModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="sales_code" ColumnName="sales_code" />
+                <ScalarProperty Name="team_group" ColumnName="team_group" />
+                <ScalarProperty Name="section_group" ColumnName="section_group" />
+                <ScalarProperty Name="destination" ColumnName="destination" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="sc" ColumnName="sc" />
+                <ScalarProperty Name="section" ColumnName="section" />
+                <ScalarProperty Name="department" ColumnName="department" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="xsales" ColumnName="xsales" />
+                <ScalarProperty Name="owner" ColumnName="owner" />
+                <ScalarProperty Name="levels" ColumnName="levels" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

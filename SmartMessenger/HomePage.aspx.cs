@@ -16,30 +16,45 @@ namespace SmartMessenger
     {
         List<msgctrlDev> mesList = new List<msgctrlDev>();
         bool isNotiAccept = false;
+        bool isNotiClose = false;
         protected void Page_Load(object sender, EventArgs e)
         {          
+            if (Request.QueryString["LoadPage"] != null) {
+                string result = Request.QueryString["LoadPage"];
+                if (result == "Accept") {
+                    isNotiAccept = true;
+                } else if (result== "Close") {
+                    isNotiClose = true;
+                }            
+             }
+
             if (!IsPostBack)
             {
-                if (Request.QueryString["SendAcc"] != null) {
-                    string txt = Request.QueryString["SendAcc"];
-                    isNotiAccept = true;              
-                }
                 LoadGridData();
             }
 
         }
-        protected bool DisplayListOfDevelopers()
+        protected bool ChkShowAcceptBtn()
         {         
             return isNotiAccept;
+        }
+
+        protected bool ChkShowCloseBtn()
+        {
+            return isNotiClose;
         }
 
         public void LoadGridData() {
             MessengerRepository mesRes = new MessengerRepository();
             if (isNotiAccept) {
-                //gvMessager.Columns[14].Visible = true;
-                mesList = mesRes.GetMessagerList().Where(a=>a.msg_close_status== "รอปล่อยงาน").OrderByDescending(a => a.msg_id).ToList();
+                gvMessager.Columns[16].Visible = false;
+                mesList = mesRes.GetMessagerList().Where(a => a.msg_close_status == "รอปล่อยงาน").OrderByDescending(a => a.msg_id).ToList();
+            } else if (isNotiClose) {
+                gvMessager.Columns[15].Visible = false;
+                mesList = mesRes.GetMessagerList().Where(a => a.msg_close_status == "ดำเนินการ").OrderByDescending(a => a.msg_id).ToList();
             } else {
                 gvMessager.Columns[15].Visible = false;
+                gvMessager.Columns[16].Visible = false;
                 mesList = mesRes.GetMessagerList().OrderByDescending(a => a.msg_id).ToList();
             }
 
