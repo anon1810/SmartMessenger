@@ -23,8 +23,9 @@
           <label><b>Username</b></label>
           <input class="w3-input w3-border w3-margin-bottom w3-text-black" runat="server" id="txtUsername" type="text" placeholder="Enter Username" name="usrname" required>
           <label><b>Password</b></label>
-          <input class="w3-input w3-border w3-text-black" runat="server" id="txtPsw" type="password" placeholder="Enter Password" name="psw" required>
-           <asp:Button CssClass="w3-button w3-block w3-amber w3-section w3-padding" Text="Login" id="btnLogin" OnClick="btnLogin_Click" runat="server" />
+          <asp:TextBox CssClass="w3-input w3-border w3-text-black" ID="txtPsw" runat="server" placeholder="Enter Password" TextMode="Password" required/>
+          <asp:Button CssClass="w3-button w3-block w3-amber w3-section w3-padding" Text="Login" id="btnLogin" OnClick="btnLogin_Click" runat="server" />
+          <input class="w3-check w3-margin-top" type="checkbox" id="chkbRemem" runat="server" checked="checked"> Remember me
         </div>
       </form>
 

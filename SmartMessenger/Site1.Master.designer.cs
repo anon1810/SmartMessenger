@@ -40,6 +40,24 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl notiClosePage;
         
         /// <summary>
+        /// btnProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnProfile;
+        
+        /// <summary>
+        /// lblProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProfile;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>

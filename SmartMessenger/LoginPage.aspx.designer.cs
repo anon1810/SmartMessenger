@@ -37,7 +37,7 @@ namespace SmartMessenger {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txtPsw;
+        protected global::System.Web.UI.WebControls.TextBox txtPsw;
         
         /// <summary>
         /// btnLogin control.
@@ -47,5 +47,14 @@ namespace SmartMessenger {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnLogin;
+        
+        /// <summary>
+        /// chkbRemem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox chkbRemem;
     }
 }

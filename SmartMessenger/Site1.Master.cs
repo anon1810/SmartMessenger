@@ -15,8 +15,16 @@ namespace SmartMessenger
         public string notiAccept { get { return notiAcceptPage.InnerText; } set { notiAcceptPage.InnerText = value; } }
         public string notiClose { get { return notiClosePage.InnerText; } set { notiClosePage.InnerText = value; } }
 
+        public string txtProfile { get { return lblProfile.InnerText; } set { lblProfile.InnerText = value; } }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["Username"] == null) {
+                Response.Redirect("LoginPage.aspx");
+            } else {
+                txtProfile = "  " + Session["Name"].ToString() + " ";
+            }
+
             if (!IsPostBack)
             {
                 CheckAccept();

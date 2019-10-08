@@ -3,8 +3,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-
-
     <div class="w3-container w3-row w3-small">
       <div class="w3-container w3-col m9">
             <button class="w3-button w3-blue" id="Create" runat="server" onserverclick="Create_ServerClick" type="button">Create</button> 
@@ -108,7 +106,7 @@
                                 />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Acc" >  
+                    <asp:TemplateField HeaderText="" >  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkOutJob" 
@@ -121,7 +119,7 @@
                                 Visible='<%# ChkShowAcceptBtn() %>'/>
                         </ItemTemplate>  
                     </asp:TemplateField> 
-                    <asp:TemplateField HeaderText="Close" >  
+                    <asp:TemplateField HeaderText="" >  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkCloseJob" 

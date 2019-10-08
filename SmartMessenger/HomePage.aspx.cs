@@ -18,7 +18,7 @@ namespace SmartMessenger
         bool isNotiAccept = false;
         bool isNotiClose = false;
         protected void Page_Load(object sender, EventArgs e)
-        {          
+        {                     
             if (Request.QueryString["LoadPage"] != null) {
                 string result = Request.QueryString["LoadPage"];
                 if (result == "Accept") {

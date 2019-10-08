@@ -13,7 +13,11 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (Session["Username"] != null)
+            {
+                txtByCreateP.Value = Session["Name"].ToString();
+                txtSectionCreateP.Value = Session["Department"].ToString();
+            }
         }
 
         public void UploadFile(FileUpload file) {
