@@ -35,11 +35,13 @@ namespace SmartMessenger.Data
         public string msg_close_status { get; set; }
         public Nullable<System.DateTime> msg_close_date { get; set; }
         public Nullable<System.DateTime> msg_close_time { get; set; }
+        public string msg_close_by { get; set; }
         public string msg_remark { get; set; }
         public string msg_print_label { get; set; }
         public string msg_accept_by { get; set; }
         public Nullable<System.DateTime> msg_accept_date { get; set; }
         public string msg_edit_by { get; set; }
         public Nullable<System.DateTime> msg_edit_date { get; set; }
+        public string msg_cancel_remark { get; set; }
     }
 }

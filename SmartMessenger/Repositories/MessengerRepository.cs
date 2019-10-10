@@ -60,15 +60,38 @@ namespace SmartMessenger.Repositories
 
         }
 
-        public void UpdateStatusMessenger(int id,string status) {
+        public void UpdateAcceptStatusMessenger(int id,string status,string by) {
             using (SFAEntities en = new SFAEntities()) {
                 msgctrlDev mes = en.msgctrlDevs.Single(c => c.msg_id == id);
                 mes.msg_close_status = status;
+                mes.msg_accept_by = by;
+                mes.msg_accept_date = DateTime.Now;
                 en.SaveChanges();
             }
         }
 
-        public void UpdateMessenger(int id, string mBy, string mSection, string mPhone, string mSend, string mRecieve, string mDocType, string isNormale, string isUrgent, string mContractName, string mAddress, string mTelephone, string mMAP, DateTime mOndate, string mMesName, string mRemark, string mStatus)
+        public void UpdateCloseStatusMessenger(int id, string status, string by) {
+            using (SFAEntities en = new SFAEntities()) {
+                msgctrlDev mes = en.msgctrlDevs.Single(c => c.msg_id == id);
+                mes.msg_close_status = status;
+                mes.msg_close_by = by;
+                mes.msg_close_date = DateTime.Now;
+                en.SaveChanges();
+            }
+        }
+
+        public void UpdateCancelStatusMessenger(int id,string status,string by,string remark) {
+            using (SFAEntities en = new SFAEntities()) {
+                msgctrlDev mes = en.msgctrlDevs.Single(c => c.msg_id == id);
+                mes.msg_close_status = status;
+                mes.msg_edit_by = by;
+                mes.msg_edit_date = DateTime.Now;
+                mes.msg_cancel_remark = remark;
+                en.SaveChanges();
+            }
+        }
+
+        public void UpdateMessenger(int id, string mBy, string mSection, string mPhone, string mSend, string mRecieve, string mDocType, string isNormale, string isUrgent, string mContractName, string mAddress, string mTelephone, string mMAP, DateTime mOndate, string mMesName, string mRemark, string mStatus,string mEditby)
         {
             using (SFAEntities en = new SFAEntities())
             {
@@ -90,7 +113,10 @@ namespace SmartMessenger.Repositories
                     mes.msg_map = mMAP;
                 }
                 mes.msg_msg_name = mMesName;
-                mes.msg_remark = mRemark;             
+                mes.msg_remark = mRemark;
+
+                mes.msg_edit_by = mEditby;
+                mes.msg_edit_date = DateTime.Now;
 
                 en.SaveChanges();
             }

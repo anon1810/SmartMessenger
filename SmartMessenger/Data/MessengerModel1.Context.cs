@@ -25,7 +25,7 @@ namespace SmartMessenger.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<msgctrlDev> msgctrlDevs { get; set; }
         public DbSet<user> users { get; set; }
+        public DbSet<msgctrlDev> msgctrlDevs { get; set; }
     }
 }

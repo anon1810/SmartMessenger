@@ -18,7 +18,11 @@ namespace SmartMessenger
         bool isNotiAccept = false;
         bool isNotiClose = false;
         protected void Page_Load(object sender, EventArgs e)
-        {                     
+        {              
+            if (Session["Username"] == null) {
+                Response.Redirect("LoginPage.aspx");
+            }
+
             if (Request.QueryString["LoadPage"] != null) {
                 string result = Request.QueryString["LoadPage"];
                 if (result == "Accept") {
@@ -150,7 +154,7 @@ namespace SmartMessenger
             } else if (e.CommandName == "lnkOutJob") {
                 string id = e.CommandArgument.ToString();
                 MessengerRepository mesRes = new MessengerRepository();
-                mesRes.UpdateStatusMessenger(int.Parse(id), "ดำเนินการ");
+                mesRes.UpdateAcceptStatusMessenger(int.Parse(id), "ดำเนินการ", Session["Name"].ToString());
                 var master = Master as Site1;
                 if (master != null) {
                     master.CheckAccept();
@@ -160,6 +164,15 @@ namespace SmartMessenger
             } else if (e.CommandName == "lnkEdit") {
                 string id = e.CommandArgument.ToString();
                 Response.Redirect("~/EditPage.aspx?id=" + id);
+            } else if (e.CommandName == "lnkCloseJob") {
+                string id = e.CommandArgument.ToString();
+                MessengerRepository mesRes = new MessengerRepository();
+                mesRes.UpdateCloseStatusMessenger(int.Parse(id), "เสร็จสิ้น", Session["Name"].ToString());
+                var master = Master as Site1;
+                if (master != null) {
+                    master.CheckClose();
+                }
+                Page.Response.Redirect(Page.Request.Url.ToString(), true);
             } else if (e.CommandName == "lnkView") {
                 id01.Style["display"] = "block";
                 string id = e.CommandArgument.ToString();
@@ -170,8 +183,23 @@ namespace SmartMessenger
                 modaltd3.InnerText = result.msg_by;
                 modaltd4.InnerText = result.msg_section;
                 modaltd5.InnerText = result.msg_phone;
-                modaltd6.InnerText = result.msg_doctype;
-                modaltd7.InnerText = result.msg_send + " รับ : " + result.msg_receive;
+
+                string doctype = result.msg_doctype;
+                doctype = doctype.Replace("ส่ง|", " ส่ง:");
+                doctype = doctype.Replace("รับ|", " รับ:");
+                doctype = doctype.Replace("|", "");
+
+                modaltd6.InnerText = doctype;
+
+                string sendreceive = "";
+                if (result.msg_send == "Yes" && result.msg_receive == "Yes") {
+                    sendreceive = "ส่ง/รับ";
+                } else if (result.msg_send == "Yes") {
+                    sendreceive = "ส่ง";
+                } else if (result.msg_receive == "Yes") {
+                    sendreceive = "รับ";
+                }
+                modaltd7.InnerText = sendreceive;
                 modaltd8.InnerText = result.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
                 modaltd9.InnerText = result.msg_contact_name;
                 modaltd10.InnerText = result.msg_address;
@@ -184,8 +212,8 @@ namespace SmartMessenger
                 modaltd17.InnerText = result.msg_accept_by;
                 modaltd18.InnerText = result.msg_accept_date.ToString();
                 modaltd19.InnerText = result.msg_close_date.ToString();
-                modaltd20.InnerText = result.msg_edit_date.ToString();
                 modaltd20.InnerText = result.msg_edit_by;
+                modaltd21.InnerText = result.msg_edit_date.ToString();
             }
         }
 

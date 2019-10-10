@@ -114,10 +114,30 @@
               <label>หมายเหตุ</label>
               <textarea class = "w3-input  w3-border" runat="server" id="txtRemarkCreatPage"></textarea>
             </p>
-            <asp:Button Text="อัพเดท" runat="server" class="w3-button w3-blue" ID="btnUpdate" OnClick="btnUpdate_Click" OnClientClick="return validate();" />
+            <div class="w3-bar">
+                <asp:Button Text="อัพเดท" runat="server" class="w3-button w3-teal" ID="btnUpdate" OnClick="btnUpdate_Click" OnClientClick="return validate();" />
+                <asp:Button Text="ยกเลิกงานนี้" runat="server" class="w3-button w3-red" ID="btnCancel" OnClick="btnCancel_Click"/>
+            </div>
         </div>
         <div class="w3-col" style="width:20%">
             &nbsp;
+        </div>
+    </div>
+
+    <div id="id01" runat="server" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+            <div class="w3-container w3-padding w3-deep-orange">
+              <h4>กรุณาระบุสาเหตุที่ยกเลิก</h4>
+            </div>
+            <div class="w3-container w3-padding">
+                <textarea class = "w3-input  w3-border" runat="server" id="Textarea1"></textarea>
+                <p></p>
+                <div class="w3-bar">
+                    <asp:Button Text="ยืนยัน" runat="server" class="w3-button w3-blue" ID="btnCancelRemark" OnClick="btnCancelRemark_Click"/>
+                    <button onclick="Closemodal()" type="button" class="w3-button w3-red">กลับหน้าหลัก</button>
+                </div>
+            </div>
+            
         </div>
     </div>
 
@@ -146,8 +166,12 @@
                   alert("กรุณาเลือกประเภทเอกสาร");
                   return false;
               }
-
             return true;
-        }
+          }
+
+          function Closemodal() {
+              document.getElementById("<%=id01.ClientID %>").style.display = 'none'
+          }
+
       </script>
 </asp:Content>

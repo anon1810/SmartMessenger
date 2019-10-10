@@ -13,6 +13,10 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["Username"] == null) {
+                Response.Redirect("LoginPage.aspx");
+            }
+
             if (!IsPostBack) {
                 setData();
             }
@@ -115,8 +119,10 @@ namespace SmartMessenger
                 UploadFile(FileUploadMap);
             }
 
-            
-            mesRes.UpdateMessenger(idRequest, msg_by, msg_section, msg_phone, msg_send, msg_receive, msg_doctype, msg_priority_normal, msg_priority_urgent, msg_contact_name, msg_address, msg_telephone, msg_map, msg_on_date, msg_msg_name, msg_remark, msg_status);
+            string msg_edit_by = Session["Name"].ToString();
+
+
+            mesRes.UpdateMessenger(idRequest, msg_by, msg_section, msg_phone, msg_send, msg_receive, msg_doctype, msg_priority_normal, msg_priority_urgent, msg_contact_name, msg_address, msg_telephone, msg_map, msg_on_date, msg_msg_name, msg_remark, msg_status, msg_edit_by);
             Response.Redirect("HomePage.aspx");
         }
         public void UploadFile(FileUpload file)
@@ -127,5 +133,20 @@ namespace SmartMessenger
                 file.SaveAs(Server.MapPath("~/FileUpload/") + filename);
             }
         }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            id01.Style["display"] = "block";
+        }
+
+        protected void btnCancelRemark_Click(object sender, EventArgs e)
+        {
+            string remark = Textarea1.Value;
+            int idRequest = int.Parse(Request["id"]);
+            MessengerRepository mesRes = new MessengerRepository();
+            mesRes.UpdateCancelStatusMessenger(idRequest, "ยกเลิก", Session["Name"].ToString(), remark);
+            Response.Redirect("HomePage.aspx");
+        }
+
     }
 }

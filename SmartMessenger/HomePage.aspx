@@ -139,10 +139,11 @@
     <div class="w3-container">
       <div id="id01" runat="server" class="w3-modal">
         <div class="w3-modal-content w3-card-4 w3-animate-zoom">
-             <div class="w3-container">  
-          <span onclick="Closemodal()" class="w3-button w3-large w3-display-topright">&times;</span>
-                 </div>
-          <div class="w3-container w3-padding-32">        
+        <div class="w3-container w3-padding w3-amber">
+           <span  onclick="Closemodal()" class="w3-button w3-amber w3-right"><i class="fa fa-remove"></i></span>
+          <h4>รายละเอียดเพิ่มเติม</h4>
+        </div>
+          <div class="w3-container w3-padding-16">        
             <table class="w3-table-all">
               <tr>
               <td  runat="server">รหัส</td>
@@ -193,8 +194,8 @@
               <td  runat="server">สถานะ</td>
               <td id="modaltd16" runat="server">สถานะ</td>
               </tr><tr>
-              <td  runat="server">Admin</td>
-              <td id="modaltd17" runat="server">Admin</td>
+              <td  runat="server">ปล่อยงานโดย</td>
+              <td id="modaltd17" runat="server">ปล่อยงานโดย</td>
               </tr><tr>
               <td  runat="server">วันที่ปล่อยงาน</td>
               <td id="modaltd18" runat="server">วันที่ปล่อยงาน</td>
@@ -202,12 +203,14 @@
               <td  runat="server">วันที่ปิดงาน</td>
               <td id="modaltd19" runat="server">วันที่ปิดงาน</td>
               </tr><tr>
+              <td  runat="server">คนที่แก้ไขล่าสุด</td>
+              <td id="modaltd20" runat="server">คนที่แก้ไขล่าสุด</td>
+              </tr><tr>
               <td  runat="server">วันที่แก้ไขล่าสุด</td>
-              <td id="modaltd20" runat="server">วันที่แก้ไขล่าสุด</td>
+              <td id="modaltd21" runat="server">วันที่แก้ไขล่าสุด</td>
               </tr>
             </table>
           </div>
-
         </div>
       </div>
     </div>
