@@ -14,27 +14,6 @@
      </script>
 </head>
 <body>
-<asp:Literal ID="ltChart" runat="server"></asp:Literal>
-    <form id="form1" runat="server">   
-    <div class="w3-row">
-      <div class="w3-col w3-container" style="width:20%">
-          <p>20%</p>
-      </div>
-      <div class="w3-col w3-container" style="width:60%">
-          <canvas id="report1"></canvas>
-      </div>
-      <div class="w3-col  w3-container" style="width:20%">
-          <p>20%</p>
-      </div>
-    </div>
 
-    <div>
-        <canvas id="report2" width="600" height="300"></canvas>
-    </div>
-    <div>
-        <canvas id="report3" width="600" height="300"></canvas>
-    </div>
-
-    </form>
 </body>
 </html>

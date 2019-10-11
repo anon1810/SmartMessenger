@@ -12,7 +12,7 @@
                   <label>ประเภทรายงานที่ต้องการ</label>
                   <div class="w3-cell-row">
                     <div class="w3-cell">
-                      <select class="w3-select w3-border" name="option" runat="server" id="opSendCreateP" onchange="selectSend()">
+                      <select class="w3-select w3-border" name="option" runat="server" id="opSelect" onchange="selectSend()">
                         <option value="รายงานวันนี้">รายงานวันนี้</option>
                         <option value="รายงานเดือนนี้">รายงานเดือนนี้</option>
                         <option value="รายงานวันที่">รายงานวันที่ ระบุ..</option>
@@ -28,7 +28,7 @@
                     </div>
                   </div>
                   <p></p>
-                  <asp:Button CssClass="w3-button w3-red" runat="server" Text="สร้างรายงาน"/>
+                  <asp:Button CssClass="w3-button w3-red" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างรายงาน"/>
               </div>
               <p class="w3-border-bottom w3-padding-16"></p>
                 <div class="w3-cell-row">
@@ -69,13 +69,13 @@
 
     <script type="text/javascript" language="javascript">
           function selectSend() {
-              if (document.getElementById("<%=opSendCreateP.ClientID %>").value == "รายงานวันที่") {
+              if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานวันที่") {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
                   document.getElementById("<%=txtSendCreateP.ClientID %>").setAttribute('type', 'date');
-              } else if (document.getElementById("<%=opSendCreateP.ClientID %>").value == "รายงานสัปดาห์ที่") {
+              } else if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานสัปดาห์ที่") {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
                   document.getElementById("<%=txtSendCreateP.ClientID %>").setAttribute('type', 'week');
-              } else if (document.getElementById("<%=opSendCreateP.ClientID %>").value == "รายงานเดือนที่") {
+              } else if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานเดือนที่") {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
                   document.getElementById("<%=txtSendCreateP.ClientID %>").setAttribute('type', 'month');
               } else {

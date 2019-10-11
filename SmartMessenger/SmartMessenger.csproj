@@ -50,6 +50,10 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -109,7 +113,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ChartService.asmx" />
     <Content Include="Data\MessengerModel1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MessengerModel1.edmx</DependentUpon>
@@ -121,15 +124,17 @@
       <LastGenOutput>MessengerModel1.cs</LastGenOutput>
     </Content>
     <Content Include="EditPage.aspx" />
-    <Content Include="jquery-3.3.1.min.js" />
     <Content Include="LoginPage.aspx" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resource\footer-Logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resource\logo.jpg" />
     <Content Include="scripts\bootstrap-grid.css" />
     <Content Include="scripts\chart-helper.js" />
     <Content Include="scripts\chart.css" />
@@ -157,6 +162,10 @@
       <DependentUpon>MessengerModel1.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\SmartMessenger.pubxml" />
+    <Content Include="Resource\Fonts\THSarabunNew Bold.ttf" />
+    <Content Include="Resource\Fonts\THSarabunNew BoldItalic.ttf" />
+    <Content Include="Resource\Fonts\THSarabunNew Italic.ttf" />
+    <Content Include="Resource\Fonts\THSarabunNew.ttf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -191,9 +200,6 @@
     </Compile>
     <Compile Include="AcceptPage.aspx.designer.cs">
       <DependentUpon>AcceptPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ChartService.asmx.cs">
-      <DependentUpon>ChartService.asmx</DependentUpon>
     </Compile>
     <Compile Include="ClosePage.aspx.cs">
       <DependentUpon>ClosePage.aspx</DependentUpon>
