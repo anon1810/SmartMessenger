@@ -33,7 +33,8 @@ namespace SmartMessenger
             PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
             pdfDoc.Open();
 
-            pdfWriter.PageEvent = new PDFFooter();
+            //pdfWriter.PageEvent = new PDFFooter();
+            pdfWriter.PageEvent = new PDFBackgroundHelper();
 
             PdfPTable table = new PdfPTable(1);
             table.HorizontalAlignment = 0;
@@ -63,7 +64,7 @@ namespace SmartMessenger
             table.HorizontalAlignment = 0;
 
             string dateNow = DateTime.Now.ToShortDateString();
-            Phrase p = new Phrase("รายการรับส่งเอกสารโดย Messenger ประจำวันที่ "+ dateNow, fntHead);
+            Phrase p = new Phrase("รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dateNow, fntHead);
 
             PdfPCell cell = new PdfPCell(p);
             cell.Colspan = 14;
@@ -75,7 +76,8 @@ namespace SmartMessenger
 
             string[] arrHeadField = { "No.", "โดย", "แผนก", "เอกสาร", "ประเภท", "สำคัญ", "ชื่อผู้ติดต่อ", "ที่อยู่ผู้ติดต่อ", "เบอร์ติดต่อ", "แผนที่", "ภายในวันที่", "เซ็นปิดงาน", "วัน/เวลา", "หมายเหตุ" };
 
-            for (int i = 0; i < arrHeadField.Length; i++) {
+            for (int i = 0; i < arrHeadField.Length; i++)
+            {
                 cell = new PdfPCell(new Phrase(arrHeadField[i], fnt));
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 cell.BackgroundColor = BaseColor.LIGHT_GRAY;
@@ -88,34 +90,42 @@ namespace SmartMessenger
             int countSend = 0;
             int countReceive = 0;
             int countSendReceive = 0;
-            foreach (var m in result) {
+            foreach (var m in result)
+            {
 
                 string onDate = m.msg_on_date.ToString() == "" ? "" : m.msg_on_date.Value.ToShortDateString();
                 string docType = m.msg_doctype;
 
-                if (docType != null) {
+                if (docType != null)
+                {
                     docType = docType.Replace("ส่ง|", " ส่ง:");
                     docType = docType.Replace("รับ|", " รับ:");
                     docType = docType.Replace("|", "");
                 }
 
                 string sendreceive = "";
-                if (m.msg_send == "Yes" && m.msg_receive == "Yes") {
+                if (m.msg_send == "Yes" && m.msg_receive == "Yes")
+                {
                     sendreceive = "ส่ง/รับ";
                     countSendReceive++;
-                } else if (m.msg_send == "Yes") {
+                }
+                else if (m.msg_send == "Yes")
+                {
                     sendreceive = "ส่ง";
                     countSend++;
-                } else if (m.msg_receive == "Yes") {
+                }
+                else if (m.msg_receive == "Yes")
+                {
                     sendreceive = "รับ";
                     countReceive++;
                 }
 
                 string priority = m.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
 
-                string[] arrData = { count.ToString(),m.msg_by,m.msg_section, docType.Trim(), sendreceive, priority, m.msg_contact_name,m.msg_address,m.msg_telephone,m.msg_map, onDate,"","",""};
+                string[] arrData = { count.ToString(), m.msg_by, m.msg_section, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address, m.msg_telephone, m.msg_map, onDate, "", "", "" };
 
-                for (int i = 0; i < arrData.Length; i++) {
+                for (int i = 0; i < arrData.Length; i++)
+                {
                     cell = new PdfPCell(new Phrase(arrData[i], fnt));
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cell);
@@ -129,7 +139,7 @@ namespace SmartMessenger
             table.SpacingBefore = 10f;
             table.HorizontalAlignment = 2;
             table.TotalWidth = 500f;
-            float[] widths = new float[] { 420f, 40f, 40f};
+            float[] widths = new float[] { 420f, 40f, 40f };
             table.SetWidths(widths);
 
             p = new Phrase("ส่ง", fntBold);
@@ -236,52 +246,59 @@ namespace SmartMessenger
             Response.End();
         }
 
-        public void ShowData() {
+        public void ShowData()
+        {
             MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().Where(a => a.msg_section != null && a.msg_doctype!=null).ToList();
+            var result = mesRes.GetMessagerList().Where(a => a.msg_section != null && a.msg_doctype != null).ToList();
             var result2 = mesRes.GetMessagerList().Where(a => a.msg_section != null).GroupBy(c => c.msg_section).ToList();
-            var result3 = mesRes.GetMessagerList().Where(a => a.msg_section != null).OrderByDescending(a=>a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
+            var result3 = mesRes.GetMessagerList().Where(a => a.msg_section != null).OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
 
             string chart = "<script type=>$(function() { ";
-#region Bar
+            #region Bar
             chart += "var data1 = { labels: [";
-            foreach (var r in result3) {
+            foreach (var r in result3)
+            {
                 chart += "\"" + r.Key.ToShortDateString() + "\"" + ",";
             }
             chart = chart.Substring(0, chart.Length - 1);
             chart += "], datasets: [{ label: \"2557\",fillColor: \"#5B90BF\",data: [";
-            foreach (var r in result3) {
+            foreach (var r in result3)
+            {
                 chart += "\"" + r.Count() + "\"" + ",";
             }
             chart = chart.Substring(0, chart.Length - 1);
             chart += "]}]}; var ctx = $(\"#report1\").get(0).getContext(\"2d\");var chart = new Chart(ctx).Bar(data1, { bezierCurve: false });";
-#endregion
-#region Line
+            #endregion
+            #region Line
             chart += "var data2 = { labels: [";
-            foreach (var r in result2) {
+            foreach (var r in result2)
+            {
                 chart += "\"" + r.Key + "\"" + ",";
             }
             chart = chart.Substring(0, chart.Length - 1);
             chart += "], datasets: [{ label: \"2557\",fillColor: \"#5B90BF\",data: [";
-            foreach (var r in result2) {
+            foreach (var r in result2)
+            {
                 chart += "\"" + r.Count() + "\"" + ",";
             }
             chart = chart.Substring(0, chart.Length - 1);
             chart += "]}]}; var ctx = $(\"#report2\").get(0).getContext(\"2d\");var chart = new Chart(ctx).Line(data2, { bezierCurve: false });";
-#endregion
-#region Pie
+            #endregion
+            #region Pie
             chart += "var data3 = { labels: [";
-            foreach (var r in result2) {
+            foreach (var r in result2)
+            {
                 chart += "\"" + r.Key + "\"" + ",";
             }
             chart = chart.Substring(0, chart.Length - 1);
             chart += "], datasets: [{ label: \"2557\",fillColor: \"#5B90BF\",data: [";
-            foreach (var r in result2) {
+            foreach (var r in result2)
+            {
                 chart += "\"" + r.Count() + "\"" + ",";
             }
             chart = chart.Substring(0, chart.Length - 1);
             chart += "]}]}; var ctx = $(\"#report3\").get(0).getContext(\"2d\");var chart = new Chart(ctx).Pie(data3, { bezierCurve: false });";
-#endregion
+            #endregion
 
             chart += "});</script>";
             //ltChart.Text = chart;
@@ -302,19 +319,22 @@ namespace SmartMessenger
             chart += "var b = Math.floor(Math.random() * 255);";
             chart += "return \"rgb(\" + r + \",\" + g + \",\" + b + \")\";};";
 
-            foreach (var r in result3) {
+            foreach (var r in result3)
+            {
                 chart += "coloR.push(dynamicColors());";
                 //chart += "coloR.push(\"#5B90BF\");"; สีเดียว
             }
 
             chart += "var labelData = [];";
-            foreach (var r in result3) {
-                chart += "labelData.push(\""+ r.Key.ToShortDateString() + "\");";
+            foreach (var r in result3)
+            {
+                chart += "labelData.push(\"" + r.Key.ToShortDateString() + "\");";
             }
 
             chart += "var valueOfData = [];";
-            foreach (var r in result3) {
-                chart += "valueOfData.push(\""+ r.Count() + "\");";
+            foreach (var r in result3)
+            {
+                chart += "valueOfData.push(\"" + r.Count() + "\");";
             }
 
             chart += "var barLabel = \"Bar Label\";";

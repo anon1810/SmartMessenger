@@ -31,13 +31,13 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlSelect opSelect;
         
         /// <summary>
-        /// txtSendCreateP control.
+        /// dtSelect control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl txtSendCreateP;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dtSelect;
         
         /// <summary>
         /// genReport control.

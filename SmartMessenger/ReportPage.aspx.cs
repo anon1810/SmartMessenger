@@ -16,12 +16,19 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ShowData();
+            
+            if (Session["Username"] == null) {
+                Response.Redirect("LoginPage.aspx");
+            }
+
+            if (!IsPostBack) {
+                ShowData();
+            }
         }
 
         private string CreateBarChart(string chart) {
             MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null).OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
+            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null && a.msg_close_status != "ยกเลิก").OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
 
             chart += "var barcoloR = [];";
             chart += "var barlabelData = [];";
@@ -29,8 +36,8 @@ namespace SmartMessenger
 
             foreach (var r in result)
             {
-                //chart += "barcoloR.push(\"#5B90BF\");"; //สีเดียว
-                chart += "barcoloR.push(dynamicColors());";
+                chart += "barcoloR.push(\"#5B90BF\");"; //สีเดียว
+                //chart += "barcoloR.push(dynamicColors());";
             }
 
             foreach (var r in result)
@@ -60,7 +67,7 @@ namespace SmartMessenger
         private string CreateLineChart(string chart)
         {
             MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null).OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Month+"/"+c.msg_date.Value.Year).ToList().Take(20);
+            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null && a.msg_close_status != "ยกเลิก").OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Month+"/"+c.msg_date.Value.Year).ToList().Take(20);
             //var result = mesRes.GetMessagerList().Where(a => a.msg_section != null).GroupBy(c => c.msg_section).ToList();
 
             chart += "var linecoloR = [];";
@@ -137,13 +144,6 @@ namespace SmartMessenger
         }
 
         public void ShowData() {
-            MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().Where(a => a.msg_section != null && a.msg_doctype != null).ToList();
-            var result2 = mesRes.GetMessagerList().Where(a => a.msg_section != null).GroupBy(c => c.msg_section).ToList();
-            var result3 = mesRes.GetMessagerList().Where(a => a.msg_section != null).OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
-
-            //DateTime dt = DateTime.Parse("24/9/2562");
-            //var result4 = mesRes.GetMessagerList().Where(a => a.msg_date != null).Where(a => a.msg_date.Value.Date == dt).GroupBy(c => c.msg_date.Value.Date).ToList();
 
             string chart = "<script type=>$(function() { ";
             chart += "var dynamicColors = function() {";
@@ -174,7 +174,8 @@ namespace SmartMessenger
             PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
             pdfDoc.Open();
 
-            pdfWriter.PageEvent = new PDFFooter();
+            //pdfWriter.PageEvent = new PDFFooter();
+            pdfWriter.PageEvent = new PDFBackgroundHelper();
 
             PdfPTable table = new PdfPTable(1);
             table.HorizontalAlignment = 0;
@@ -203,8 +204,18 @@ namespace SmartMessenger
             table.WidthPercentage = 100;
             table.HorizontalAlignment = 0;
 
-            string dateNow = dateTime.ToShortDateString();
-            Phrase p = new Phrase("รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dateNow, fntBold);
+            MessengerRepository mesRes = new MessengerRepository();
+            string onDateReport = "";
+            List<msgctrlDev> result = null;
+            if (opSelect.Value == "รายงานเดือนนี้" || opSelect.Value == "รายงานเดือนที่") {
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + dateTime.Month + "/" + dateTime.Year;
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status != "ยกเลิก").Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dateTime.Month+"/"+dateTime.Year).ToList();
+            } else {
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dateTime.ToShortDateString();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status != "ยกเลิก").Where(a => a.msg_on_date.Value.Date == dateTime.Date).ToList();
+            }
+
+            Phrase p = new Phrase(onDateReport, fntBold);
 
             PdfPCell cell = new PdfPCell(p);
             cell.Colspan = 14;
@@ -224,15 +235,11 @@ namespace SmartMessenger
                 table.AddCell(cell);
             }
 
-            MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().OrderByDescending(a => a.msg_id).Take(30);
             int count = 1;
             int countSend = 0;
             int countReceive = 0;
             int countSendReceive = 0;
-            foreach (var m in result)
-            {
-
+            foreach (var m in result) {
                 string onDate = m.msg_on_date.ToString() == "" ? "" : m.msg_on_date.Value.ToShortDateString();
                 string docType = m.msg_doctype;
 
@@ -262,7 +269,7 @@ namespace SmartMessenger
 
                 string priority = m.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
 
-                string[] arrData = { count.ToString(), m.msg_by, m.msg_section, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address, m.msg_telephone, m.msg_map, onDate, "", "", "" };
+                string[] arrData = { count.ToString(), m.msg_by, m.msg_section, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address.Trim(), m.msg_telephone, m.msg_map, onDate, "", "", "" };
 
                 for (int i = 0; i < arrData.Length; i++)
                 {
@@ -391,7 +398,65 @@ namespace SmartMessenger
         {
             if (opSelect.Value == "รายงานวันนี้") {
                 GenPDF(DateTime.Now);
+            } else if (opSelect.Value == "รายงานเดือนนี้") {
+                GenPDF(DateTime.Now);
+            } else if (opSelect.Value == "รายงานวันที่") {
+                DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                GenPDF(msg_on_date);
+            } else if (opSelect.Value == "รายงานเดือนที่") {
+                DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture);
+                GenPDF(msg_on_date);
             }
+        }
+    }
+    class PDFBackgroundHelper : PdfPageEventHelper
+    {
+
+        private PdfContentByte cb;
+        private List<PdfTemplate> templates;
+        //constructor
+        public PDFBackgroundHelper()
+        {
+            this.templates = new List<PdfTemplate>();
+        }
+
+        public override void OnEndPage(PdfWriter writer, Document document)
+        {
+            base.OnEndPage(writer, document);
+
+            cb = writer.DirectContentUnder;
+            PdfTemplate templateM = cb.CreateTemplate(50, 50);
+            templates.Add(templateM);
+
+            int pageN = writer.CurrentPageNumber;
+            String pageText = "หน้าที่ " + pageN.ToString() + "/";
+
+            BaseFont bf = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            float len = bf.GetWidthPoint(pageText, 10);
+            cb.BeginText();
+            cb.SetFontAndSize(bf, 10);
+            //cb.SetTextMatrix(document.LeftMargin, document.PageSize.GetBottom(document.BottomMargin));
+            cb.SetTextMatrix(530, 10);
+            cb.ShowText(pageText);
+            cb.EndText();
+            cb.AddTemplate(templateM, 530 + len, 10);
+            //cb.AddTemplate(templateM, 555, 10);
+        }
+
+        public override void OnCloseDocument(PdfWriter writer, Document document)
+        {
+            base.OnCloseDocument(writer, document);
+            BaseFont bf = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            foreach (PdfTemplate item in templates)
+            {
+                item.BeginText();
+                item.SetFontAndSize(bf, 10);
+                item.SetTextMatrix(0, 0);
+                item.ShowText("" + (writer.PageNumber));
+                item.EndText();
+            }
+
         }
     }
 }

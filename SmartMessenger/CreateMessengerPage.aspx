@@ -121,7 +121,18 @@
     </div>
 
 
-      <script type="text/javascript" language="javascript">
+      <script type="text/javascript">
+
+          var date = new Date();
+          var day = date.getDate();
+          var month = date.getMonth() + 1;
+          var year = date.getFullYear();
+          if (month < 10) month = "0" + month;
+          if (day < 10) day = "0" + day;
+          var today = year + "-" + month + "-" + day;
+          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("min", today);
+          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("value", today);
+
           function selectSend() {
               if (document.getElementById("<%=opSendCreateP.ClientID %>").value == "อื่นๆ") {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;

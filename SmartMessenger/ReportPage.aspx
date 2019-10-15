@@ -16,7 +16,6 @@
                         <option value="รายงานวันนี้">รายงานวันนี้</option>
                         <option value="รายงานเดือนนี้">รายงานเดือนนี้</option>
                         <option value="รายงานวันที่">รายงานวันที่ ระบุ..</option>
-                        <option value="รายงานสัปดาห์ที่">รายงานสัปดาห์ที่ ระบุ..</option>
                         <option value="รายงานเดือนที่">รายงานเดือนที่ ระบุ..</option>
                       </select>
                     </div>
@@ -24,7 +23,7 @@
                       &nbsp;
                     </div>
                     <div class="w3-cell">
-                      <input class="w3-input w3-border" type="date"  placeholder="โปรดระบุ.." runat="server" id="txtSendCreateP" disabled/>
+                      <input class="w3-input w3-border" type="date"  placeholder="โปรดระบุ.." runat="server" id="dtSelect" disabled/>
                     </div>
                   </div>
                   <p></p>
@@ -67,19 +66,16 @@
         </div>       
     </div>
 
-    <script type="text/javascript" language="javascript">
+    <script type="text/javascript">
           function selectSend() {
               if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานวันที่") {
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").setAttribute('type', 'date');
-              } else if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานสัปดาห์ที่") {
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").setAttribute('type', 'week');
+                  document.getElementById("<%=dtSelect.ClientID %>").disabled = false;
+                  document.getElementById("<%=dtSelect.ClientID %>").setAttribute('type', 'date');
               } else if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานเดือนที่") {
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").setAttribute('type', 'month');
+                  document.getElementById("<%=dtSelect.ClientID %>").disabled = false;
+                  document.getElementById("<%=dtSelect.ClientID %>").setAttribute('type', 'month');
               } else {
-                  document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = true;
+                  document.getElementById("<%=dtSelect.ClientID %>").disabled = true;
               }
           }
     </script>

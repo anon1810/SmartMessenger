@@ -16,7 +16,7 @@
 
 
       <h1 class="w3-center wide">Smart Messenger</h1>
-      <p class="w3-opacity w3-center"><i>ระบบจัดการเรื่องส่งเอกสาร</i></p><br>
+      <p class="w3-opacity w3-center"><i>ระบบจัดการรับส่งเอกสาร</i></p><br>
 
       <form id="form2" runat="server" class="w3-container">
         <div class="w3-section">
