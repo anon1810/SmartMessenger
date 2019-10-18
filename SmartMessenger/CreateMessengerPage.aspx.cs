@@ -6,6 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SmartMessenger.Repositories;
 using System.IO;
+using System.Web.Services;
+using System.Web.Script.Services;
 
 namespace SmartMessenger
 {
@@ -15,9 +17,24 @@ namespace SmartMessenger
         {
             if (Session["Username"] != null)
             {
-                txtByCreateP.Value = Session["Name"].ToString();
-                txtSectionCreateP.Value = Session["Department"].ToString();
+                if (Session["Username"].ToString() == "ANO") {
+                    txtByCreateP.Enabled = true;
+                    //txtSectionCreateP.Disabled = true;
+                } else {
+                    txtByCreateP.Text = Session["Name"].ToString();
+                    txtSectionCreateP.Value = Session["Department"].ToString();
+                }
             }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static List<string> AutoComBy(string pre) {
+            List<string> allCompanyName = new List<string>();
+            MessengerRepository mesRes = new MessengerRepository();
+            //allCompanyName = mesRes.GetMessagerList().Where(a=>a.msg_by!=null&&a.msg_by!="").GroupBy(a => a.msg_by).Select(a => a.Key).Where(a => a.ToLower().Contains(pre.ToLower())).ToList();         
+            allCompanyName = mesRes.GetUserList().Select(a => a.name).Where(a => a.ToLower().Contains(pre.ToLower())).ToList();        
+            return allCompanyName;
         }
 
         public void UploadFile(FileUpload file) {
@@ -31,7 +48,7 @@ namespace SmartMessenger
         {
             MessengerRepository mesRes = new MessengerRepository();
             DateTime msg_date = DateTime.Now;
-            string msg_by = txtByCreateP.Value;
+            string msg_by = txtByCreateP.Text;
             string msg_section = txtSectionCreateP.Value;
             string msg_phone = txtByPhoneCreateP.Value;
             string msg_send="No";
@@ -70,6 +87,16 @@ namespace SmartMessenger
             UploadFile(FileUploadMap);
             mesRes.InsertMessager(msg_date, msg_by, msg_section, msg_phone, msg_send, msg_receive,msg_doctype,msg_priority_normal,msg_priority_urgent,msg_contact_name,msg_address,msg_telephone,msg_map,msg_on_date,msg_msg_name,msg_remark, msg_status);
             Response.Redirect("HomePage.aspx");
+        }
+
+        protected void txtByCreateP_TextChanged(object sender, EventArgs e) {      
+            MessengerRepository mesRes = new MessengerRepository();
+            var dept = mesRes.GetUserList().SingleOrDefault(c => c.name == txtByCreateP.Text);        
+            if (dept!=null) {
+                txtSectionCreateP.Value = dept.department;
+            } else {
+                txtSectionCreateP.Value = "-";
+            }
         }
     }
 }

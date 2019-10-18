@@ -62,68 +62,69 @@ namespace SmartMessenger
                 mesList = mesRes.GetMessagerList().OrderByDescending(a => a.msg_id).ToList();
             }
 
+            foreach (var data in mesList) {
+                if (data.msg_send == "Yes" && data.msg_receive == "Yes") {
+                    data.msg_send = "ส่ง/รับ";
+                } else if (data.msg_send == "Yes") {
+                    data.msg_send = "ส่ง";
+                } else if (data.msg_receive == "Yes") {
+                    data.msg_send = "รับ";
+                }
+
+
+                if (data.msg_priority_normal == "Yes") {
+                    data.msg_priority_normal = "ปกติ";
+                } else {
+                    data.msg_priority_normal = "ด่วน";
+                }
+
+                if (data.msg_close_status == "Yes") {
+                    data.msg_close_status = "เสร็จสิ้น";
+                } else if (data.msg_close_status == null) {
+                    data.msg_close_status = "ดำเนินการ(เก่า)";
+                }
+
+                if (data.msg_doctype != null) {
+                    data.msg_doctype = data.msg_doctype.Replace("ส่ง|", " ส่ง:");
+                    data.msg_doctype = data.msg_doctype.Replace("รับ|", " รับ:");
+                    data.msg_doctype = data.msg_doctype.Replace("|", "");
+                }
+            }
+
             if (txtSearch.Value != "") {
-                string data = txtSearch.Value;
+                string data = txtSearch.Value.ToLower();
                 List<msgctrlDev> result = null;
                 if (opSelectSearch.Value == "ID") {
-                    result = mesList.Where(a => a.msg_id.ToString().Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_id.ToString().ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "Date") {
                     result = mesList.Where(a => a.msg_date != null).Where(a => a.msg_date.Value.Date.ToString("dd/MM/yyyy").Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "By") {
-                    result = mesList.Where(a => a.msg_by != null).Where(a => a.msg_by.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_by != null).Where(a => a.msg_by.ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "Section") {
-                    result = mesList.Where(a => a.msg_section != null).Where(a => a.msg_section.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_section != null).Where(a => a.msg_section.ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "ContractName") {
-                    result = mesList.Where(a => a.msg_contact_name != null).Where(a => a.msg_contact_name.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_contact_name != null).Where(a => a.msg_contact_name.ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "Address") {
-                    result = mesList.Where(a => a.msg_address != null).Where(a => a.msg_address.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_address != null).Where(a => a.msg_address.ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "Telephone") {
-                    result = mesList.Where(a => a.msg_telephone != null).Where(a => a.msg_telephone.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_telephone != null).Where(a => a.msg_telephone.ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "OnDate") {
                     result = mesList.Where(a => a.msg_on_date != null).Where(a => a.msg_on_date.Value.Date.ToString("dd/MM/yyyy").Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "MessengerName") {
-                    result = mesList.Where(a => a.msg_msg_name != null).Where(a => a.msg_msg_name.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_msg_name != null).Where(a => a.msg_msg_name.ToLower().Contains(data)).ToList();
                 } else if (opSelectSearch.Value == "Status") {
-                    result = mesList.Where(a => a.msg_close_status != null).Where(a => a.msg_close_status.Contains(data)).ToList();
+                    result = mesList.Where(a => a.msg_close_status != null).Where(a => a.msg_close_status.ToLower().Contains(data)).ToList();
                 }
                                          
                 gvMessager.DataSource = result;
                 gvMessager.DataBind();
 
-            } else {
-                foreach (var data in mesList) { 
-                    if (data.msg_send == "Yes" && data.msg_receive == "Yes") {
-                        data.msg_send = "ส่ง/รับ";
-                    } else if (data.msg_send == "Yes") {
-                        data.msg_send = "ส่ง";
-                    } else if (data.msg_receive == "Yes") {
-                        data.msg_send = "รับ";
-                    }
-                    
-
-                    if (data.msg_priority_normal == "Yes"){
-                        data.msg_priority_normal = "ปกติ";
-                    } else {
-                        data.msg_priority_normal = "ด่วน";
-                    }
-
-                    if (data.msg_close_status == "Yes"){
-                        data.msg_close_status = "เสร็จสิ้น";
-                    } else if(data.msg_close_status == null){
-                        data.msg_close_status = "ดำเนินการ(เก่า)";
-                    }
-
-                    if (data.msg_doctype != null) {
-                        data.msg_doctype=data.msg_doctype.Replace("ส่ง|"," ส่ง:");
-                        data.msg_doctype = data.msg_doctype.Replace("รับ|", " รับ:");
-                        data.msg_doctype = data.msg_doctype.Replace("|", "");
-                    }
-                    
-                }
+            } else {              
                 gvMessager.DataSource = mesList;
                 gvMessager.DataBind();
             }
         }
+
 
         protected void gvMessager_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -151,7 +152,7 @@ namespace SmartMessenger
                 Response.AppendHeader("Content-Disposition", "filename=" + e.CommandArgument);
                 Response.TransmitFile(Server.MapPath("~/FileUpload/") + e.CommandArgument);
                 Response.End();
-            } else if (e.CommandName == "lnkOutJob") {
+            } else if (e.CommandName == "lnkOutJob") { //อาจจะมีเช็คสิทธ์การกดปุ่มปล่อยงาน
                 string id = e.CommandArgument.ToString();
                 MessengerRepository mesRes = new MessengerRepository();
                 mesRes.UpdateAcceptStatusMessenger(int.Parse(id), "ดำเนินการ", Session["Name"].ToString());
@@ -164,7 +165,7 @@ namespace SmartMessenger
             } else if (e.CommandName == "lnkEdit") {
                 string id = e.CommandArgument.ToString();
                 Response.Redirect("~/EditPage.aspx?id=" + id);
-            } else if (e.CommandName == "lnkCloseJob") {
+            } else if (e.CommandName == "lnkCloseJob") { //อาจจะมีเช็คสิทธ์ปิด Job งาน
                 string id = e.CommandArgument.ToString();
                 MessengerRepository mesRes = new MessengerRepository();
                 mesRes.UpdateCloseStatusMessenger(int.Parse(id), "เสร็จสิ้น", Session["Name"].ToString());

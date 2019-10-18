@@ -10,21 +10,21 @@
             <div class="w3-cell-row">
               <div class="w3-cell">
                 <label>ผู้ขอรับบริการ</label>
-                <input class="w3-input w3-border" disabled type="text" value="ดึงจาก Database" runat="server" id="txtByCreateP">
+                <asp:TextBox CssClass="w3-input w3-border" Enabled="false" runat="server" id="txtByCreateP" OnTextChanged="txtByCreateP_TextChanged" AutoPostBack="true"/>
               </div>
               <div class="w3-cell">
                 &nbsp;
               </div>
               <div class="w3-cell">
                 <label>แผนก</label>
-                <input class="w3-input w3-border" disabled type="text" value="ดึงจาก Database" runat="server" id="txtSectionCreateP">
+                <input class="w3-input w3-border" disabled="disabled" type="text" value="-" runat="server" id="txtSectionCreateP"/>
               </div>
               <div class="w3-cell">
                 &nbsp;
               </div>
               <div class="w3-cell">
                 <label>เบอร์ติดต่อ</label>
-                <input class="w3-input w3-border" type="text" runat="server" id="txtByPhoneCreateP">
+                <input class="w3-input w3-border" type="text" runat="server" id="txtByPhoneCreateP"/>
               </div>
             </div>
             <p></p>
@@ -32,7 +32,7 @@
             <div class="w3-cell-row">
               <div class="w3-cell">
                 <select class="w3-select w3-border" name="option" runat="server" id="opSendCreateP" onchange="selectSend()">
-                  <option value="0" selected>&nbsp;-</option>
+                  <option value="0" selected="selected">&nbsp;-</option>
                   <option value="สัญญา">สัญญา</option>
                   <option value="ใบเสนอราคา">ใบเสนอราคา</option>
                   <option value="เช็ค">เช็ค</option>
@@ -44,7 +44,7 @@
                 &nbsp;
               </div>
               <div class="w3-cell">
-                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtSendCreateP" disabled>
+                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtSendCreateP" disabled="disabled"/>
               </div>
             </div>
             <p></p>
@@ -52,7 +52,7 @@
             <div class="w3-cell-row">
               <div class="w3-cell">
                 <select class="w3-select w3-border" name="option" runat="server" id="opReceiveCreateP" onchange="selectRecieve()">
-                  <option value="0" selected>&nbsp;-</option>
+                  <option value="0" selected="selected">&nbsp;-</option>
                   <option value="สัญญา">สัญญา</option>
                   <option value="ใบเสนอราคา">ใบเสนอราคา</option>
                   <option value="เช็ค">เช็ค</option>
@@ -64,13 +64,13 @@
                 &nbsp;
               </div>
               <div class="w3-cell">
-                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtReceiveCreateP" disabled>
+                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtReceiveCreateP" disabled="disabled"/>
               </div>
             </div>
 
             <p></p>
             <div class="w3-cell">
-              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked/>
+              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked="checked"/>
               <label>ปกติ</label>
             </div>
             <div class="w3-cell">&nbsp;&nbsp;</div>
@@ -83,27 +83,27 @@
             <div class="w3-cell-row">
               <div class="w3-cell">
                   <label>ชื่อผู้ติดต่อ</label>
-                  <input class="w3-input w3-border"  type="text" runat="server" id="txtContratNameCreateP" required>
+                  <input class="w3-input w3-border"  type="text" runat="server" id="txtContratNameCreateP" required="required"/>
               </div>
               <div class="w3-cell">
                  &nbsp;
               </div>
               <div class="w3-cell">
                 <label>เบอร์ติดต่อ</label>
-                <input class="w3-input w3-border" type="text" runat="server" id="txtContratPhoneCreateP" required>
+                <input class="w3-input w3-border" type="text" runat="server" id="txtContratPhoneCreateP" required="required"/>
               </div>
             </div>
             <p>
               <label>ที่อยู่ผู้ติดต่อ</label>
-              <textarea class = "w3-input  w3-border"  runat="server" id="txtContratAddrCreateP" required></textarea>
+              <textarea class = "w3-input  w3-border"  runat="server" id="txtContratAddrCreateP" required="required"></textarea>
             </p>
             <p>
-              <label>แนบไฟล์แผนที่</label><br>
+              <label>แนบไฟล์แผนที่</label><br/>
               <asp:FileUpload id="FileUploadMap" runat="server" CssClass = "w3-input w3-border" />             
             </p>
             <p>
               <label>ส่งภายในวันที่</label>
-              <input class="w3-input w3-border" type="date" runat="server" id="dateContratCreatePage" required/>
+              <input class="w3-input w3-border" type="date" runat="server" id="dateContratCreatePage" required="required"/>
             </p>
             <p>
               <label>ชื่อพนักงานส่งเอกสาร</label>
@@ -113,17 +113,50 @@
               <label>หมายเหตุ</label>
               <textarea class = "w3-input  w3-border" runat="server" id="txtRemarkCreatPage"></textarea>
             </p>
-            <asp:Button Text="สร้างใบสั่งงาน" runat="server" class="w3-button w3-blue" ID="btnCreate" OnClick="btnCreate_Click" OnClientClick="return validate();" />
+            <asp:Button Text="สร้างใบสั่งงาน" runat="server" CssClass="w3-button w3-blue" ID="btnCreate" OnClick="btnCreate_Click" OnClientClick="return validate();" />
         </div>
         <div class="w3-col" style="width:20%">
             &nbsp;
         </div>
     </div>
 
-
       <script type="text/javascript">
 
+            $(function () {
+              $('#<%=txtByCreateP.ClientID%>').autocomplete({
+                  minLength: 1,
+                  source: function (request, response) {
+                      $.ajax({
+                          url: "CreateMessengerPage.aspx/AutoComBy",
+                          data: "{ 'pre':'" + request.term + "'}",
+                          dataType: "json",
+                          type: "POST",
+                          contentType: "application/json; charset=utf-8",
+                          success: function (data) {
+                              response($.map(data.d,function(item)
+                              {
+                                  return {value : item}
+                              }))
+                          },
+                          error: function (XMLHttpRequest, textStatus, errorThrown) {
+                              alert("error");
+                          }
+                      });
+                  }
+              });
+          });
+
+          
+          var userName = '<%= Session["Username"].ToString() %>';
+ 
           var date = new Date();
+          var Hours = date.getHours();
+
+          if (Hours > 8 && Hours <= 23) {
+              date.setDate(date.getDate() + 1);
+          }
+
+
           var day = date.getDate();
           var month = date.getMonth() + 1;
           var year = date.getFullYear();

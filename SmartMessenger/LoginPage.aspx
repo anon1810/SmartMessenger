@@ -10,12 +10,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
-<body class="w3-black">
+<body class="w3-light-grey">
   <div class="w3-container w3-padding-64" id="tour">
     <div class="w3-container w3-content w3-padding-64" style="max-width:700px">
 
 
-      <h1 class="w3-center wide">Smart Messenger</h1>
+      <h1 class="w3-center wide w3-jumbo">Smart Messenger</h1>
       <p class="w3-opacity w3-center"><i>ระบบจัดการรับส่งเอกสาร</i></p><br>
 
       <form id="form2" runat="server" class="w3-container">
@@ -33,8 +33,7 @@
         <span class="w3-right w3-padding w3-hide-small">Forgot <a id="Forgot" href="#" onclick="myFunction();">password?</a></span>
       </div>    
     </div>
-
-      <img src="Resource/footer-Logo.jpg" class="w3-display-bottommiddle" style="width:10%">
+<%--      <img src="Resource/footer-Logo.jpg" class="w3-display-bottommiddle" style="width:10%">--%>
   </div>
 
     <script>

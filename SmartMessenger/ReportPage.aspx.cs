@@ -225,7 +225,7 @@ namespace SmartMessenger
             table.AddCell(cell);
 
 
-            string[] arrHeadField = { "No.", "โดย", "แผนก", "เอกสาร", "ประเภท", "สำคัญ", "ชื่อผู้ติดต่อ", "ที่อยู่ผู้ติดต่อ", "เบอร์ติดต่อ", "แผนที่", "ภายในวันที่", "เซ็นปิดงาน", "วัน/เวลา", "หมายเหตุ" };
+            string[] arrHeadField = { "No.", "รหัสอ้างอิง", "โดย", "เอกสาร", "ประเภท", "สำคัญ", "ชื่อผู้ติดต่อ", "ที่อยู่ผู้ติดต่อ", "เบอร์ติดต่อ", "แผนที่", "ภายในวันที่", "Messenger", "วัน/เวลา", "หมายเหตุ" };
 
             for (int i = 0; i < arrHeadField.Length; i++)
             {
@@ -269,7 +269,7 @@ namespace SmartMessenger
 
                 string priority = m.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
 
-                string[] arrData = { count.ToString(), m.msg_by, m.msg_section, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address.Trim(), m.msg_telephone, m.msg_map, onDate, "", "", "" };
+                string[] arrData = { count.ToString(), m.msg_id.ToString(), m.msg_by, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address.Trim(), m.msg_telephone, m.msg_map, onDate, "", "", m.msg_remark};
 
                 for (int i = 0; i < arrData.Length; i++)
                 {
@@ -393,6 +393,289 @@ namespace SmartMessenger
             Response.End();
         }
 
+        public void GenPDFIndividual(DateTime dateTime) {
+            BaseFont bf = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bfBold = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew Bold.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font fntSmall = new Font(bf, 11, Font.NORMAL, BaseColor.BLACK);
+            Font fntNormal = new Font(bf, 14, Font.NORMAL, BaseColor.BLACK);
+            Font fntBold = new Font(bfBold, 14, Font.NORMAL, BaseColor.BLACK);
+            Font fntBoldBig = new Font(bfBold, 18, Font.NORMAL, BaseColor.BLACK);
+
+            Font fntHead = new Font(bf, 14, Font.NORMAL, BaseColor.BLACK);
+
+            Document pdfDoc = new Document(PageSize.A4, 30, 30, 20, 20);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+
+            pdfWriter.PageEvent = new PDFHalfLine();
+
+
+            iTextSharp.text.Image png = iTextSharp.text.Image.GetInstance(Server.MapPath("~/Resource/logo.jpg"));
+            png.ScaleAbsolute(90, 40);
+
+            //Table
+            PdfPTable table = new PdfPTable(4);
+            table.WidthPercentage = 100;
+            table.HorizontalAlignment = 0;
+            table.TotalWidth = 500f;
+            float[] widthsT = new float[] { 80f, 150f, 50f, 220f };
+            table.SetWidths(widthsT);
+
+            string dateNow = DateTime.Now.ToShortDateString();
+            PdfPCell cell = new PdfPCell();
+            Phrase p = new Phrase();
+
+            MessengerRepository mesRes = new MessengerRepository();
+            List<msgctrlDev> result = null;
+            result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status != "ยกเลิก").Where(a => a.msg_on_date.Value.Date == dateTime.Date).ToList();
+
+            int count = 1;
+            foreach (var m in result) {
+
+                string onDate = m.msg_on_date.ToString() == "" ? "" : m.msg_on_date.Value.ToShortDateString();
+                string docType = m.msg_doctype;
+
+                if (docType != null) {
+                    docType = docType.Replace("ส่ง|", " ส่ง:");
+                    docType = docType.Replace("รับ|", " รับ:");
+                    docType = docType.Replace("|", "");
+                }
+
+                string sendreceive = "";
+                if (m.msg_send == "Yes" && m.msg_receive == "Yes") {
+                    sendreceive = "ส่ง/รับ";
+                } else if (m.msg_send == "Yes") {
+                    sendreceive = "ส่ง";
+
+                } else if (m.msg_receive == "Yes") {
+                    sendreceive = "รับ";
+                }
+
+                string priority = m.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
+
+
+                cell = new PdfPCell(png);
+                cell.Colspan = 2;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.PaddingBottom = 5;
+                cell.PaddingTop = 5;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("บริษัท มิตซูบิชิ เอลเวเตอร์ (ประเทศไทย) จำกัด \nMITSUBISHI ELEVATOR (THAILAND) CO.LTD.\n2/3 หมู่ 14 อาคารบางนาทาวเวอร์ เอ ชั้น 9-10,12 ถนนเทพรัตน ตำบลบางแก้ว อำเภอบางพลี จังหวัดสมุทรปราการ 10540 Tel: 02-3120808,02-3120707, Fax: 02-3120800", fntSmall));
+                cell.Colspan = 2;
+                cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.PaddingBottom = 5;
+                cell.PaddingTop = 5;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("ใบงาน", fntBoldBig));
+                cell.Colspan = 4;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("วันที่ " + DateTime.Now.ToShortDateString(), fntNormal));
+                cell.Colspan = 4;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                cell.PaddingBottom = 5;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("รหัสอ้างอิง : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(m.msg_id.ToString(), fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.Colspan = 3;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("ระดับความสำคัญ : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(priority, fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.Colspan = 3;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("ประเภท : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(sendreceive, fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.Colspan = 3;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("รายละเอียด : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(docType.Trim().Replace(" รับ:", "\r\n" + "รับ:"), fntNormal));
+                cell.Colspan = 3;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("หมายเหตุ : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(m.msg_remark == "" ? "-" : m.msg_remark, fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.Colspan = 3;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Colspan = 2;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Colspan = 2;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("ชื่อผู้ติดต่อ : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(m.msg_contact_name, fntNormal));
+                cell.Colspan = 3;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("ที่อยู่ผู้ติดต่อ : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.FixedHeight = 35f;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(m.msg_address, fntNormal));
+                cell.Colspan = 3;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.FixedHeight = 35f;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("เบอร์ติดต่อ : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(m.msg_telephone, fntNormal));
+                cell.Colspan = 3;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Colspan = 2;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Colspan = 2;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+
+                cell = new PdfPCell(new Phrase("ผู้ฝากงาน :", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase((m.msg_by + "    โทร. ") + (m.msg_phone == "" ? "-" : m.msg_phone), fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+
+                cell = new PdfPCell(new Phrase("พนักงานรับส่ง : ......................................................................", fntBold));
+                cell.Colspan = 2;
+                cell.PaddingTop = 5;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("ผู้รับ : .................................................................................", fntBold));
+                cell.Colspan = 2;
+                cell.PaddingTop = 5;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("วันที่ : ......................................................................................", fntBold));
+                cell.Colspan = 2;
+                cell.PaddingTop = 5;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("วันที่ : .................................................................................", fntBold));
+                cell.Colspan = 2;
+                cell.PaddingTop = 5;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                if (count % 2 == 0) {
+                    cell = new PdfPCell(new Phrase(" ", fntBold));
+                    cell.Border = Rectangle.NO_BORDER;
+                    cell.Colspan = 4;
+                    cell.PaddingBottom = 10;
+                    table.AddCell(cell);
+                } else {
+                    cell = new PdfPCell(new Phrase(" ", fntBold));
+                    cell.Border = Rectangle.NO_BORDER;
+                    cell.Colspan = 4;
+                    cell.PaddingBottom = 50;
+                    table.AddCell(cell);
+                }
+
+                count++;
+            }
+
+
+            pdfDoc.Add(table);
+
+            pdfWriter.CloseStream = false;
+            pdfDoc.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            //Response.AddHeader("content-disposition", "attachment;filename=Credit-Card-Report.pdf"); //ถ้าต้องการให้ dowload ไฟล์
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Write(pdfDoc);
+            Response.End();
+        }
 
         protected void genReport_Click(object sender, EventArgs e)
         {
@@ -408,8 +691,17 @@ namespace SmartMessenger
                 GenPDF(msg_on_date);
             }
         }
+
+        protected void genReportIndivi_Click(object sender, EventArgs e) {
+            if (opSelect.Value == "รายงานวันนี้") {
+                GenPDFIndividual(DateTime.Now);
+            } else if (opSelect.Value == "รายงานวันที่") {
+                DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                GenPDFIndividual(msg_on_date);
+            }
+        }
     }
-    class PDFBackgroundHelper : PdfPageEventHelper
+    public class PDFBackgroundHelper : PdfPageEventHelper
     {
 
         private PdfContentByte cb;
@@ -457,6 +749,33 @@ namespace SmartMessenger
                 item.EndText();
             }
 
+        }
+    }
+
+    public class PDFHalfLine : PdfPageEventHelper {
+
+        // หัวข้อเฉพาะหน้าแรก
+        public override void OnOpenDocument(PdfWriter writer, Document document) {
+            base.OnOpenDocument(writer, document);
+        }
+
+        // write on start of each page
+        public override void OnStartPage(PdfWriter writer, Document document) {
+            base.OnStartPage(writer, document);
+        }
+
+        // write on end of each page
+        public override void OnEndPage(PdfWriter writer, Document document) {
+            PdfContentByte contentByte = writer.DirectContent;
+            contentByte.SetLineWidth(1);
+            contentByte.MoveTo(0, document.PageSize.Height / 2);
+            contentByte.LineTo(document.PageSize.Width, document.PageSize.Height / 2);
+            contentByte.Stroke();
+        }
+
+        //write on close of document
+        public override void OnCloseDocument(PdfWriter writer, Document document) {
+            base.OnCloseDocument(writer, document);
         }
     }
 }

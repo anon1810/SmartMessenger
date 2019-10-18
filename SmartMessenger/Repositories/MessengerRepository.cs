@@ -14,6 +14,14 @@ namespace SmartMessenger.Repositories
                 return result;
             }
         }
+
+        public List<user> GetUserList() {
+            using (SFAEntities en = new SFAEntities()) {
+                var result = en.users.ToList();
+                return result;
+            }
+        }
+
         public List<msgctrlDev> GetMessagerList()
         {
             using (SFAEntities en = new SFAEntities()) {
