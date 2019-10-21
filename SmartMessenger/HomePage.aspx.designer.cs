@@ -175,6 +175,15 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlTableCell modaltd12;
         
         /// <summary>
+        /// lnkBtnloadMap control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkBtnloadMap;
+        
+        /// <summary>
         /// modaltd13 control.
         /// </summary>
         /// <remarks>
@@ -220,15 +229,6 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlTableCell modaltd17;
         
         /// <summary>
-        /// modaltd18 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell modaltd18;
-        
-        /// <summary>
         /// modaltd19 control.
         /// </summary>
         /// <remarks>
@@ -254,5 +254,59 @@ namespace SmartMessenger {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableCell modaltd21;
+        
+        /// <summary>
+        /// lnkBtnloadReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkBtnloadReport;
+        
+        /// <summary>
+        /// modelUplodeReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl modelUplodeReport;
+        
+        /// <summary>
+        /// lblRefnumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblRefnumber;
+        
+        /// <summary>
+        /// FileUploadReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload FileUploadReport;
+        
+        /// <summary>
+        /// chkBoxClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox chkBoxClose;
+        
+        /// <summary>
+        /// btnSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
     }
 }

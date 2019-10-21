@@ -17,7 +17,7 @@ namespace SmartMessenger
         {
             if (Session["Username"] != null)
             {
-                if (Session["Username"].ToString() == "ANO") {
+                if (Session["Username"].ToString() == "SPP" || Session["Username"].ToString() == "SDR" || Session["Username"].ToString() == "TYK" || Session["Username"].ToString() == "ANO") {
                     txtByCreateP.Enabled = true;
                     //txtSectionCreateP.Disabled = true;
                 } else {
@@ -37,9 +37,9 @@ namespace SmartMessenger
             return allCompanyName;
         }
 
-        public void UploadFile(FileUpload file) {
+        public void UploadFile(FileUpload file,string filename) {
             if (file.HasFile) {
-                string filename = Path.GetFileName(file.FileName);
+                //string filename = Path.GetFileName(file.FileName);
                 file.SaveAs(Server.MapPath("~/FileUpload/") + filename);
             }
         }
@@ -79,12 +79,19 @@ namespace SmartMessenger
             string msg_telephone = txtContratPhoneCreateP.Value;
             string msg_address = txtContratAddrCreateP.Value;
             DateTime msg_on_date = DateTime.ParseExact(dateContratCreatePage.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-            string msg_map = FileUploadMap.PostedFile.FileName;        
+
+            string newFileName = Path.Combine(Path.GetDirectoryName(FileUploadMap.PostedFile.FileName) 
+                               , string.Concat(Path.GetFileNameWithoutExtension(FileUploadMap.PostedFile.FileName)
+                               , DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")
+                               , Path.GetExtension(FileUploadMap.PostedFile.FileName)));
+
+            string msg_map = newFileName;
+
             string msg_msg_name = txtMesNameCreatePage.Value;
             string msg_remark = txtRemarkCreatPage.Value;
             string msg_status = "รอปล่อยงาน";
 
-            UploadFile(FileUploadMap);
+            UploadFile(FileUploadMap, msg_map);
             mesRes.InsertMessager(msg_date, msg_by, msg_section, msg_phone, msg_send, msg_receive,msg_doctype,msg_priority_normal,msg_priority_urgent,msg_contact_name,msg_address,msg_telephone,msg_map,msg_on_date,msg_msg_name,msg_remark, msg_status);
             Response.Redirect("HomePage.aspx");
         }

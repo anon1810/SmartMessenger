@@ -28,31 +28,30 @@
                   </div>
                   <p></p>
                   <div class="w3-bar">
-                    <asp:Button CssClass="w3-button w3-red" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างใบรับส่งรวม"/>
-                    <asp:Button CssClass="w3-button w3-red" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน"/>
+                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างใบรับส่งรวม"/>
+                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน"/>
                   </div>
               </div>
               <p class="w3-border-bottom w3-padding-16"></p>
                 <div class="w3-cell-row">
                     <div class="w3-cell">
                         <label>ข้อมูลสรุปประจำวัน</label>
-                        <p>จำนวนงาน x งาน</p>
-                        <p>รายการที่สำเร็จ x งาน</p>
-                        <p>รายการที่ไม่สำเร็จ x งาน</p>
+                        <p id="dayReportAll" runat="server">จำนวนงาน x งาน</p>
+                        <p id="dayReportSuc" runat="server">รายการที่สำเร็จ x งาน</p>
+                        <p id="dayReportErr" runat="server">รายการที่ไม่สำเร็จ x งาน</p>
                     </div>
                     <div class="w3-cell">
                         <label>ข้อมูลสรุปประจำเดือน</label>
-                        <p>จำนวนงาน x งาน</p>
-                        <p>รายการที่สำเร็จ x งาน</p>
-                        <p>รายการที่ไม่สำเร็จ x งาน</p>
+                        <p id="mounthReportAll" runat="server">จำนวนงาน x งาน</p>
+                        <p id="mounthReportSuc" runat="server">รายการที่สำเร็จ x งาน</p>
+                        <p id="mounthReportErr" runat="server">รายการที่ไม่สำเร็จ x งาน</p>
                     </div>
                 </div>
-                <br>
-                
+                <br>               
                 <label>ข้อมูลสรุปประจำปี</label>
-                <p>จำนวนงาน x งาน</p>
-                <p>รายการที่สำเร็จ x งาน</p>
-                <p>รายการที่ไม่สำเร็จ x งาน</p>
+                <p id="yearReportAll" runat="server">จำนวนงาน x งาน</p>
+                <p id="yearReportSuc" runat="server">รายการที่สำเร็จ x งาน</p>
+                <p id="yearReportErr" runat="server">รายการที่ไม่สำเร็จ x งาน</p>
           </div>
           <div class="w3-col w3-container" style="width:50%">
             <canvas id="report3"></canvas>

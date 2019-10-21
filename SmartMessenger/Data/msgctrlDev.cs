@@ -43,5 +43,6 @@ namespace SmartMessenger.Data
         public string msg_edit_by { get; set; }
         public Nullable<System.DateTime> msg_edit_date { get; set; }
         public string msg_cancel_remark { get; set; }
+        public string msg_report { get; set; }
     }
 }

@@ -78,12 +78,13 @@ namespace SmartMessenger.Repositories
             }
         }
 
-        public void UpdateCloseStatusMessenger(int id, string status, string by) {
+        public void UpdateCloseStatusMessenger(int id, string status, string by,string report) {
             using (SFAEntities en = new SFAEntities()) {
                 msgctrlDev mes = en.msgctrlDevs.Single(c => c.msg_id == id);
                 mes.msg_close_status = status;
                 mes.msg_close_by = by;
                 mes.msg_close_date = DateTime.Now;
+                mes.msg_report = report;
                 en.SaveChanges();
             }
         }

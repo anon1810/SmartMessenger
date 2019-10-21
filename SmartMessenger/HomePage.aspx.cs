@@ -146,6 +146,9 @@ namespace SmartMessenger
 
         protected void gvMessager_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            id01.Style["display"] = "none";
+            modelUplodeReport.Style["display"] = "none";
+
             if (e.CommandName == "lnkDownload") {
                 Response.Clear();
                 Response.ContentType = "application/octet-stream";
@@ -167,13 +170,15 @@ namespace SmartMessenger
                 Response.Redirect("~/EditPage.aspx?id=" + id);
             } else if (e.CommandName == "lnkCloseJob") { //อาจจะมีเช็คสิทธ์ปิด Job งาน
                 string id = e.CommandArgument.ToString();
-                MessengerRepository mesRes = new MessengerRepository();
-                mesRes.UpdateCloseStatusMessenger(int.Parse(id), "เสร็จสิ้น", Session["Name"].ToString());
-                var master = Master as Site1;
-                if (master != null) {
-                    master.CheckClose();
-                }
-                Page.Response.Redirect(Page.Request.Url.ToString(), true);
+                modelUplodeReport.Style["display"] = "block";
+                lblRefnumber.InnerText = id;
+                //MessengerRepository mesRes = new MessengerRepository();
+                //mesRes.UpdateCloseStatusMessenger(int.Parse(id), "เสร็จสิ้น", Session["Name"].ToString());
+                //var master = Master as Site1;
+                //if (master != null) {
+                //    master.CheckClose();
+                //}
+                //Page.Response.Redirect(Page.Request.Url.ToString(), true);
             } else if (e.CommandName == "lnkView") {
                 id01.Style["display"] = "block";
                 string id = e.CommandArgument.ToString();
@@ -205,16 +210,17 @@ namespace SmartMessenger
                 modaltd9.InnerText = result.msg_contact_name;
                 modaltd10.InnerText = result.msg_address;
                 modaltd11.InnerText = result.msg_telephone;
-                modaltd12.InnerText = result.msg_map;
+                //modaltd12.InnerText = result.msg_map;
+                lnkBtnloadMap.Text = result.msg_map;
                 modaltd13.InnerText = result.msg_on_date.ToString();
                 modaltd14.InnerText = result.msg_remark;
                 modaltd15.InnerText = result.msg_msg_name;
                 modaltd16.InnerText = result.msg_close_status;
                 modaltd17.InnerText = result.msg_accept_by;
-                modaltd18.InnerText = result.msg_accept_date.ToString();
-                modaltd19.InnerText = result.msg_close_date.ToString();
+                modaltd19.InnerText = result.msg_close_by;
                 modaltd20.InnerText = result.msg_edit_by;
-                modaltd21.InnerText = result.msg_edit_date.ToString();
+                //modaltd21.InnerText = result.msg_edit_date.ToString();
+                lnkBtnloadReport.Text = result.msg_report;
             }
         }
 
@@ -247,5 +253,43 @@ namespace SmartMessenger
             }
         }
 
+        protected void lnkBtnloadMap_Click(object sender, EventArgs e) {
+            Response.Clear();
+            Response.ContentType = "application/octet-stream";
+            Response.AppendHeader("Content-Disposition", "filename=" + lnkBtnloadMap.Text);
+            Response.TransmitFile(Server.MapPath("~/FileUpload/") + lnkBtnloadMap.Text);
+            Response.End();
+        }
+
+        public void UploadFile(FileUpload file, string filename) {
+            if (file.HasFile) {
+                file.SaveAs(Server.MapPath("~/FileUpload/") + filename);
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e) {
+            string id = lblRefnumber.InnerText;
+            MessengerRepository mesRes = new MessengerRepository();
+            string newFileName = Path.Combine(Path.GetDirectoryName(FileUploadReport.PostedFile.FileName)
+                   , string.Concat(Path.GetFileNameWithoutExtension(FileUploadReport.PostedFile.FileName)
+                   , DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")
+                   , Path.GetExtension(FileUploadReport.PostedFile.FileName)));
+            string msg_report = newFileName;
+            UploadFile(FileUploadReport, msg_report);
+            mesRes.UpdateCloseStatusMessenger(int.Parse(id), "เสร็จสิ้น", Session["Name"].ToString(), msg_report);
+            var master = Master as Site1;
+            if (master != null) {
+                master.CheckClose();
+            }
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
+        }
+
+        protected void lnkBtnloadReport_Click(object sender, EventArgs e) {
+            Response.Clear();
+            Response.ContentType = "application/octet-stream";
+            Response.AppendHeader("Content-Disposition", "filename=" + lnkBtnloadReport.Text);
+            Response.TransmitFile(Server.MapPath("~/FileUpload/") + lnkBtnloadReport.Text);
+            Response.End();
+        }
     }
 }

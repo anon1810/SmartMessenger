@@ -70,7 +70,7 @@
 
             <p></p>
             <div class="w3-cell">
-              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked="checked"/>
+              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked/>
               <label>ปกติ</label>
             </div>
             <div class="w3-cell">&nbsp;&nbsp;</div>

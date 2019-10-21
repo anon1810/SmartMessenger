@@ -28,7 +28,7 @@ namespace SmartMessenger
 
         private string CreateBarChart(string chart) {
             MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null && a.msg_close_status != "ยกเลิก").OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
+            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null).OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Date).ToList().Take(20);
 
             chart += "var barcoloR = [];";
             chart += "var barlabelData = [];";
@@ -67,7 +67,7 @@ namespace SmartMessenger
         private string CreateLineChart(string chart)
         {
             MessengerRepository mesRes = new MessengerRepository();
-            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null && a.msg_close_status != "ยกเลิก").OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Month+"/"+c.msg_date.Value.Year).ToList().Take(20);
+            var result = mesRes.GetMessagerList().Where(a => a.msg_date != null).OrderByDescending(a => a.msg_date).GroupBy(c => c.msg_date.Value.Month+"/"+c.msg_date.Value.Year).ToList().Take(20);
             //var result = mesRes.GetMessagerList().Where(a => a.msg_section != null).GroupBy(c => c.msg_section).ToList();
 
             chart += "var linecoloR = [];";
@@ -160,9 +160,41 @@ namespace SmartMessenger
             chart += "</script>";
 
             ltChart.Text = chart;
+
+            ShowSummaryReport();
         }
 
-        public void GenPDF(DateTime dateTime)
+        public void ShowSummaryReport() {
+            MessengerRepository mesRes = new MessengerRepository();
+            var result = mesRes.GetMessagerList();
+            DateTime dt = DateTime.Now;
+
+            var dAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+            var dSuc = result.Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+            var dErr = result.Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+
+            dayReportAll.InnerText = "จำนวนงาน "+ dAll.Count + " งาน";
+            dayReportSuc.InnerText = "รายการที่รอปล่อย "+ dSuc.Count + " งาน";
+            dayReportErr.InnerText = "รายการที่ปล่อยงานแล้ว "+ dErr.Count + " งาน";
+
+            var mAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
+            var mSuc = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
+            var mErr = result.Where(a => a.msg_on_date != null && (a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
+
+            mounthReportAll.InnerText = "จำนวนงาน "+ mAll.Count + " งาน";
+            mounthReportSuc.InnerText = "รายการที่สำเร็จ "+ mSuc.Count + " งาน";
+            mounthReportErr.InnerText = "รายการที่ไม่สำเร็จ "+ mErr.Count + " งาน";
+
+            var yAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
+            var ySuc = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
+            var yErr = result.Where(a => a.msg_on_date != null && (a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes")).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
+
+            yearReportAll.InnerText = "จำนวนงาน " + yAll.Count + " งาน";
+            yearReportSuc.InnerText = "รายการที่สำเร็จ " + ySuc.Count + " งาน";
+            yearReportErr.InnerText = "รายการที่ไม่สำเร็จ " + yErr.Count + " งาน";
+        }
+
+        public void GenPDF(List<msgctrlDev> result,string onDateReport)
         {
             BaseFont bf = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             BaseFont bfBold = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew Bold.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -203,17 +235,6 @@ namespace SmartMessenger
             table = new PdfPTable(14);
             table.WidthPercentage = 100;
             table.HorizontalAlignment = 0;
-
-            MessengerRepository mesRes = new MessengerRepository();
-            string onDateReport = "";
-            List<msgctrlDev> result = null;
-            if (opSelect.Value == "รายงานเดือนนี้" || opSelect.Value == "รายงานเดือนที่") {
-                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + dateTime.Month + "/" + dateTime.Year;
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status != "ยกเลิก").Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dateTime.Month+"/"+dateTime.Year).ToList();
-            } else {
-                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dateTime.ToShortDateString();
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status != "ยกเลิก").Where(a => a.msg_on_date.Value.Date == dateTime.Date).ToList();
-            }
 
             Phrase p = new Phrase(onDateReport, fntBold);
 
@@ -388,12 +409,17 @@ namespace SmartMessenger
             Response.Buffer = true;
             Response.ContentType = "application/pdf";
             //Response.AddHeader("content-disposition", "attachment;filename=Credit-Card-Report.pdf"); //ถ้าต้องการให้ dowload ไฟล์
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.AppendHeader("Content-Disposition", "inline; filename="+ onDateReport.Replace("/","-") + ".pdf");
             Response.Write(pdfDoc);
             Response.End();
+
+            //แทนที่ Response.End(); เพราะมัน debug ต่อไม่ได้
+            //HttpContext.Current.Response.Flush();
+            //HttpContext.Current.Response.SuppressContent = true;
+            //HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
-        public void GenPDFIndividual(DateTime dateTime) {
+        public void GenPDFIndividual(List<msgctrlDev> result,string onDateReport,DateTime dt) {
             BaseFont bf = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             BaseFont bfBold = BaseFont.CreateFont(HttpContext.Current.Server.MapPath("~/Resource/Fonts/THSarabunNew Bold.ttf"), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font fntSmall = new Font(bf, 11, Font.NORMAL, BaseColor.BLACK);
@@ -421,13 +447,9 @@ namespace SmartMessenger
             float[] widthsT = new float[] { 80f, 150f, 50f, 220f };
             table.SetWidths(widthsT);
 
-            string dateNow = DateTime.Now.ToShortDateString();
+            string dateNow = dt.ToShortDateString();
             PdfPCell cell = new PdfPCell();
             Phrase p = new Phrase();
-
-            MessengerRepository mesRes = new MessengerRepository();
-            List<msgctrlDev> result = null;
-            result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status != "ยกเลิก").Where(a => a.msg_on_date.Value.Date == dateTime.Date).ToList();
 
             int count = 1;
             foreach (var m in result) {
@@ -476,7 +498,7 @@ namespace SmartMessenger
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("วันที่ " + DateTime.Now.ToShortDateString(), fntNormal));
+                cell = new PdfPCell(new Phrase("วันที่ " + dateNow, fntNormal));
                 cell.Colspan = 4;
                 cell.Border = Rectangle.NO_BORDER;
                 cell.HorizontalAlignment = Element.ALIGN_RIGHT;
@@ -672,33 +694,66 @@ namespace SmartMessenger
             Response.Buffer = true;
             Response.ContentType = "application/pdf";
             //Response.AddHeader("content-disposition", "attachment;filename=Credit-Card-Report.pdf"); //ถ้าต้องการให้ dowload ไฟล์
+            Response.AppendHeader("Content-Disposition", "inline; filename=" + onDateReport.Replace("/", "-") + ".pdf");
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Write(pdfDoc);
             Response.End();
         }
 
-        protected void genReport_Click(object sender, EventArgs e)
-        {
+        protected void genReport_Click(object sender, EventArgs e) {
+            MessengerRepository mesRes = new MessengerRepository();
+            string onDateReport = "";
+            List<msgctrlDev> result = null;
+
             if (opSelect.Value == "รายงานวันนี้") {
-                GenPDF(DateTime.Now);
+                DateTime dt = DateTime.Now;
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dt.ToShortDateString();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
             } else if (opSelect.Value == "รายงานเดือนนี้") {
-                GenPDF(DateTime.Now);
+                DateTime dt = DateTime.Now;
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + dt.Month + "/" + dt.Year;
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
             } else if (opSelect.Value == "รายงานวันที่") {
                 DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                GenPDF(msg_on_date);
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + msg_on_date.ToShortDateString();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_on_date.Value.Date == msg_on_date.Date).ToList();
             } else if (opSelect.Value == "รายงานเดือนที่") {
                 DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture);
-                GenPDF(msg_on_date);
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + msg_on_date.Month + "/" + msg_on_date.Year;
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == msg_on_date.Month + "/" + msg_on_date.Year).ToList();
+            }
+
+            if (result.Count > 0) {
+                GenPDF(result, onDateReport);
+                GenPDF(result, onDateReport);
+            } else {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertErr", "alert('ไม่มีรายการที่เลือก')", true);
             }
         }
 
         protected void genReportIndivi_Click(object sender, EventArgs e) {
+
+            MessengerRepository mesRes = new MessengerRepository();
+            string onDateReport = "";
+            List<msgctrlDev> result = null;
+            DateTime dt = new DateTime();
+
             if (opSelect.Value == "รายงานวันนี้") {
-                GenPDFIndividual(DateTime.Now);
+                dt = DateTime.Now;
+                onDateReport = "ใบงาน ประจำวันที่ " + dt.ToShortDateString();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
             } else if (opSelect.Value == "รายงานวันที่") {
-                DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                GenPDFIndividual(msg_on_date);
+                dt = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                onDateReport = "ใบงาน ประจำวันที่ " + dt.ToShortDateString();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
             }
+
+            if (result.Count > 0) {
+                GenPDFIndividual(result, onDateReport, dt);
+            } else {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertErr", "alert('ไม่มีรายการที่เลือก')", true);
+            }
+
         }
     }
     public class PDFBackgroundHelper : PdfPageEventHelper

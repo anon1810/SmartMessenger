@@ -19,7 +19,7 @@
           <Property Name="msg_company" Type="varchar" MaxLength="200" />
           <Property Name="msg_address" Type="varchar" MaxLength="200" />
           <Property Name="msg_telephone" Type="varchar" MaxLength="50" />
-          <Property Name="msg_map" Type="varchar" MaxLength="50" />
+          <Property Name="msg_map" Type="nvarchar" MaxLength="200" />
           <Property Name="msg_send" Type="varchar" MaxLength="3" />
           <Property Name="msg_receive" Type="varchar" MaxLength="3" />
           <Property Name="msg_doctype" Type="varchar" MaxLength="200" />
@@ -38,6 +38,7 @@
           <Property Name="msg_edit_by" Type="nvarchar" MaxLength="200" />
           <Property Name="msg_edit_date" Type="datetime" />
           <Property Name="msg_cancel_remark" Type="nvarchar(max)" />
+          <Property Name="msg_report" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -103,7 +104,7 @@
           <Property Name="msg_company" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="msg_address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="msg_telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="msg_map" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="msg_map" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="msg_send" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="msg_receive" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="msg_doctype" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -122,6 +123,7 @@
           <Property Name="msg_edit_by" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="msg_edit_date" Type="DateTime" Precision="3" />
           <Property Name="msg_cancel_remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="msg_report" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -152,6 +154,7 @@
           <EntitySetMapping Name="msgctrlDevs">
             <EntityTypeMapping TypeName="SFAModel.msgctrlDev">
               <MappingFragment StoreEntitySet="msgctrlDev">
+                <ScalarProperty Name="msg_report" ColumnName="msg_report" />
                 <ScalarProperty Name="msg_cancel_remark" ColumnName="msg_cancel_remark" />
                 <ScalarProperty Name="msg_edit_date" ColumnName="msg_edit_date" />
                 <ScalarProperty Name="msg_edit_by" ColumnName="msg_edit_by" />

@@ -105,6 +105,7 @@
                                 Visible='<%# (Convert.ToString(Eval("msg_close_status")) == "รอปล่อยงาน" || Convert.ToString(Eval("msg_close_status")) == "ดำเนินการ") ? Convert.ToBoolean("true"):Convert.ToBoolean("false") %>'                      
                                 />
                         </ItemTemplate>
+
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="" >  
                         <ItemTemplate>  
@@ -114,7 +115,8 @@
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
                                 CommandName="lnkOutJob"  
-                                CssClass="w3-button w3-green w3-padding-small"
+                                style="text-decoration:none"
+                                CssClass="w3-button w3-yellow w3-round-xlarge w3-padding-small"
                                 Text="ปล่อย"
                                 Visible='<%# ChkShowAcceptBtn() %>'/>
                         </ItemTemplate>  
@@ -127,7 +129,7 @@
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
                                 CommandName="lnkCloseJob"  
-                                CssClass="w3-button w3-red w3-padding-small"
+                                CssClass="w3-button w3-red w3-round-xlarge w3-padding-small"
                                 Text="ปิดงาน"
                                 Visible='<%# ChkShowCloseBtn() %>'/>
                         </ItemTemplate>  
@@ -180,7 +182,9 @@
               <td id="modaltd11" runat="server">เบอร์ติดต่อ</td>
               </tr><tr>
               <td  runat="server">แผนที่</td>
-              <td id="modaltd12" runat="server">แผนที่</td>
+              <td id="modaltd12" runat="server">
+                   <asp:LinkButton ID="lnkBtnloadMap" runat="server" OnClick="lnkBtnloadMap_Click"></asp:LinkButton>
+              </td>
               </tr><tr>
               <td  runat="server">ส่งภายในวันที่</td>
               <td id="modaltd13" runat="server">ส่งภายในวันที่</td>
@@ -197,19 +201,40 @@
               <td  runat="server">ปล่อยงานโดย</td>
               <td id="modaltd17" runat="server">ปล่อยงานโดย</td>
               </tr><tr>
-              <td  runat="server">วันที่ปล่อยงาน</td>
-              <td id="modaltd18" runat="server">วันที่ปล่อยงาน</td>
+              <td  runat="server">ปิดงานโดย</td>
+              <td id="modaltd19" runat="server">ปิดงานโดย</td>
               </tr><tr>
-              <td  runat="server">วันที่ปิดงาน</td>
-              <td id="modaltd19" runat="server">วันที่ปิดงาน</td>
+              <td  runat="server">แก้ไขล่าสุดโดย</td>
+              <td id="modaltd20" runat="server">แก้ไขล่าสุดโดย</td>
               </tr><tr>
-              <td  runat="server">คนที่แก้ไขล่าสุด</td>
-              <td id="modaltd20" runat="server">คนที่แก้ไขล่าสุด</td>
-              </tr><tr>
-              <td  runat="server">วันที่แก้ไขล่าสุด</td>
-              <td id="modaltd21" runat="server">วันที่แก้ไขล่าสุด</td>
+              <td  runat="server">หลักฐานใบงาน</td>
+              <td id="modaltd21" runat="server">
+                  <asp:LinkButton ID="lnkBtnloadReport" runat="server" OnClick="lnkBtnloadReport_Click"></asp:LinkButton>
+              </td>
               </tr>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-container">
+      <div id="modelUplodeReport" runat="server" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+        <div class="w3-container w3-padding w3-amber">
+           <span  onclick="ClosemodelUplodeReport()" class="w3-button w3-amber w3-right"><i class="fa fa-remove"></i></span>
+          <h4>เอกสารหลักฐาน</h4>
+        </div>
+          <div class="w3-container w3-padding-16">        
+              <label>กรุณาแนบใบงานเพื่อปิดงาน</label>
+              <label>เลขที่อ้างอิง</label>
+              <label id="lblRefnumber" runat="server">xxx</label>
+              <br/>
+              <asp:FileUpload id="FileUploadReport" runat="server" CssClass = "w3-input w3-border" />  
+              <p>
+              <input id="chkBoxClose" runat="server" class="w3-check" type="checkbox"/>
+              <label>ปิดงานโดยไม่แนบใบงาน</label></p>
+              <asp:Button Text="ตกลง" runat="server" CssClass="w3-button w3-blue" ID="btnSubmit"  OnClick="btnSubmit_Click" OnClientClick="return validate();" />
           </div>
         </div>
       </div>
@@ -219,8 +244,20 @@
         function Closemodal() {
               document.getElementById("<%=id01.ClientID %>").style.display = 'none'
         }
+        function ClosemodelUplodeReport() {
+              document.getElementById("<%=modelUplodeReport.ClientID %>").style.display = 'none'
+        }
         function CallingServerSideFunction() {
             PageMethods.GetData();
+        }
+        function validate() {
+            var chkFileUploadReport = document.getElementById("<%=FileUploadReport.ClientID %>").value;
+            var chkClose = document.getElementById("<%=chkBoxClose.ClientID %>").checked;;
+            if (chkFileUploadReport == "" && chkClose == false) {
+                  alert("กรุณาทำรายการ");
+                  return false;
+              }
+            return true;
         }
    </script>
 
