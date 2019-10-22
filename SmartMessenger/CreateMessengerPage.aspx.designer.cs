@@ -121,6 +121,15 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txtContratAddrCreateP;
         
         /// <summary>
+        /// opMapSelect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect opMapSelect;
+        
+        /// <summary>
         /// FileUploadMap control.
         /// </summary>
         /// <remarks>
@@ -139,13 +148,13 @@ namespace SmartMessenger {
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateContratCreatePage;
         
         /// <summary>
-        /// txtMesNameCreatePage control.
+        /// sleMes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtMesNameCreatePage;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect sleMes;
         
         /// <summary>
         /// txtRemarkCreatPage control.

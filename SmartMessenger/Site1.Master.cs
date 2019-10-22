@@ -43,5 +43,22 @@ namespace SmartMessenger
             var result = mes.GetMessagerList().Where(a => a.msg_close_status == "ดำเนินการ").ToList();
             notiClose = result.Count.ToString();
         }
+
+
+        protected void aAcc_ServerClick(object sender, EventArgs e) {
+            if (Session["Username"].ToString() == "SPP" || Session["Username"].ToString() == "SDR" || Session["Username"].ToString() == "TYK") {//Session["Username"].ToString() == "ANO"
+                Response.Redirect("HomePage.aspx?LoadPage=Accept");
+            } else {
+                waringModel.Style["display"] = "block";
+            }
+        }
+
+        protected void aClose_ServerClick(object sender, EventArgs e) {
+            if (Session["Username"].ToString() == "SPP" || Session["Username"].ToString() == "SDR" || Session["Username"].ToString() == "TYK") {//Session["Username"].ToString() == "ANO"
+                Response.Redirect("HomePage.aspx? LoadPage = Close");
+            } else {
+                waringModel.Style["display"] = "block";
+            }
+        }
     }
 }

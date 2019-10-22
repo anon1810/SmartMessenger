@@ -182,16 +182,16 @@ namespace SmartMessenger
             var mErr = result.Where(a => a.msg_on_date != null && (a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
 
             mounthReportAll.InnerText = "จำนวนงาน "+ mAll.Count + " งาน";
-            mounthReportSuc.InnerText = "รายการที่สำเร็จ "+ mSuc.Count + " งาน";
-            mounthReportErr.InnerText = "รายการที่ไม่สำเร็จ "+ mErr.Count + " งาน";
+            mounthReportSuc.InnerText = "รายการที่เสร็จสิ้น "+ mSuc.Count + " งาน";
+            mounthReportErr.InnerText = "รายการที่ยังไม่เสร็จสิ้น "+ mErr.Count + " งาน";
 
             var yAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
             var ySuc = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
             var yErr = result.Where(a => a.msg_on_date != null && (a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes")).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
 
             yearReportAll.InnerText = "จำนวนงาน " + yAll.Count + " งาน";
-            yearReportSuc.InnerText = "รายการที่สำเร็จ " + ySuc.Count + " งาน";
-            yearReportErr.InnerText = "รายการที่ไม่สำเร็จ " + yErr.Count + " งาน";
+            yearReportSuc.InnerText = "รายการที่เสร็จสิ้น " + ySuc.Count + " งาน";
+            yearReportErr.InnerText = "รายการที่ยังไม่เสร็จสิ้น " + yErr.Count + " งาน";
         }
 
         public void GenPDF(List<msgctrlDev> result,string onDateReport)
@@ -263,6 +263,11 @@ namespace SmartMessenger
             foreach (var m in result) {
                 string onDate = m.msg_on_date.ToString() == "" ? "" : m.msg_on_date.Value.ToShortDateString();
                 string docType = m.msg_doctype;
+                string isMap = m.msg_map;
+
+                if (m.msg_map!="" && m.msg_map != "-") {
+                    isMap = "มีแนบ";
+                }
 
                 if (docType != null)
                 {
@@ -712,15 +717,15 @@ namespace SmartMessenger
             } else if (opSelect.Value == "รายงานเดือนนี้") {
                 DateTime dt = DateTime.Now;
                 onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + dt.Month + "/" + dt.Year;
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
             } else if (opSelect.Value == "รายงานวันที่") {
                 DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + msg_on_date.ToShortDateString();
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_on_date.Value.Date == msg_on_date.Date).ToList();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_on_date.Value.Date == msg_on_date.Date).ToList();
             } else if (opSelect.Value == "รายงานเดือนที่") {
                 DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture);
                 onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + msg_on_date.Month + "/" + msg_on_date.Year;
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == msg_on_date.Month + "/" + msg_on_date.Year).ToList();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == msg_on_date.Month + "/" + msg_on_date.Year).ToList();
             }
 
             if (result.Count > 0) {

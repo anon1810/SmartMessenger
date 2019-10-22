@@ -22,6 +22,7 @@ namespace SmartMessenger
             }
         }
         void setData() {
+            id01.Style["display"] = "none";
             string idRequest = Request["id"];
             MessengerRepository mes = new MessengerRepository();
             var result = mes.GetMessagerByID(int.Parse(idRequest));
@@ -60,7 +61,15 @@ namespace SmartMessenger
                 txtOldfile.InnerText = "ไฟล์ปัจจุบัน : "+ result.msg_map;
             }
 
-            txtMesNameCreatePage.Value = result.msg_msg_name;
+            if (result.msg_map == "แนบแผนที่") {
+                opMapSelect.Value = "แนบไปพร้อมกับเอกสารแล้ว";
+            } else if (result.msg_map != "") {
+                opMapSelect.Value = "อัปโหลดไฟล์แผนที่";
+            } else {
+                opMapSelect.Value = "";
+            }
+
+            sleMes.Value = result.msg_msg_name;
             txtRemarkCreatPage.Value = result.msg_remark;
 
         }
@@ -109,12 +118,13 @@ namespace SmartMessenger
             string msg_telephone = txtContratPhoneCreateP.Value;
             string msg_address = txtContratAddrCreateP.Value;
             DateTime msg_on_date = DateTime.ParseExact(dateContratCreatePage.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-            string msg_map = "";
-            string msg_msg_name = txtMesNameCreatePage.Value;
+            string msg_map = opMapSelect.Value == "แนบไปพร้อมกับเอกสารแล้ว" ? "แนบแผนที่" : "";
+            string msg_msg_name = sleMes.Value;
+            //string msg_msg_name = txtMesNameCreatePage.Value;
             string msg_remark = txtRemarkCreatPage.Value;
             string msg_status = "";
 
-            if (FileUploadMap.PostedFile.FileName != "") {
+            if (FileUploadMap.HasFile) {
                 string newFileName = Path.Combine(Path.GetDirectoryName(FileUploadMap.PostedFile.FileName)
                                , string.Concat(Path.GetFileNameWithoutExtension(FileUploadMap.PostedFile.FileName)
                                , DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")

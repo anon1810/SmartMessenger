@@ -74,7 +74,12 @@
                                 CommandArgument='<%# Eval("msg_map") %>'  
                                 CommandName="lnkDownload"  
                                 CssClass="glyphicon glyphicon-file w3-large" 
-                                Visible='<%# (Convert.ToString(Eval("msg_map")) == "-" || Convert.ToString(Eval("msg_map")) == "แนบแผนทีี่"|| Convert.ToString(Eval("msg_map")) == "") ? Convert.ToBoolean("false"):Convert.ToBoolean("true") %>'/>
+                                Visible='<%# (Convert.ToString(Eval("msg_map")) == "-" || Convert.ToString(Eval("msg_map")) == "แนบแผนทีี่" || Convert.ToString(Eval("msg_map")) == "แนบแผนที่" || Convert.ToString(Eval("msg_map")) == "No" || Convert.ToString(Eval("msg_map")) == "") ? Convert.ToBoolean("false"):Convert.ToBoolean("true") %>'/>
+                            <asp:Label 
+                                ID="LinkButton1" 
+                                runat="server" 
+                                Text="แนบแผนที่"
+                                Visible='<%# (Convert.ToString(Eval("msg_map")) == "แนบแผนที่"||Convert.ToString(Eval("msg_map")) == "แนบแผนทีี่") ? Convert.ToBoolean("true"):Convert.ToBoolean("false") %>'/>
                         </ItemTemplate>  
                     </asp:TemplateField> 
                                                         
@@ -143,71 +148,72 @@
         <div class="w3-modal-content w3-card-4 w3-animate-zoom">
         <div class="w3-container w3-padding w3-amber">
            <span  onclick="Closemodal()" class="w3-button w3-amber w3-right"><i class="fa fa-remove"></i></span>
-          <h4>รายละเอียดเพิ่มเติม</h4>
+          <h5>รายละเอียดเพิ่มเติม</h5>
         </div>
-          <div class="w3-container w3-padding-16">        
+          <div class="w3-container w3-padding-16 w3-small">        
             <table class="w3-table-all">
               <tr>
-              <td  runat="server">รหัส</td>
-              <td id="modaltd1" runat="server">รหัส</td>
+              <td><label>รหัส :</label></td>
+              <td id="modaltd1" runat="server"></td>
               </tr><tr>
-              <td  runat="server">วันที่ขอรับบริการ</td>
-              <td id="modaltd2" runat="server">วันที่ขอรับบริการ</td>
+              <td><label>วันที่ขอรับบริการ :</label></td>
+              <td id="modaltd2" runat="server"></td>
+              </tr><tr>                  
+              <td><label>ผู้ขอรับบริการ :</label></td>
+              <td id="modaltd3" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ผู้ขอรับบริการ</td>
-              <td id="modaltd3" runat="server">ผู้ขอรับบริการ</td>
+              <td><label>แผนก :</label></td>
+              <td id="modaltd4" runat="server"></td>
               </tr><tr>
-              <td  runat="server">แผนก</td>
-              <td id="modaltd4" runat="server">แผนก</td>
+              <td><label>เบอร์โทร :</label></td>
+              <td id="modaltd5" runat="server"></td>
               </tr><tr>
-              <td  runat="server">เบอร์โทร</td>
-              <td id="modaltd5" runat="server">เบอร์โทร</td>
+              <td><label>เอกสาร :</label></td>
+              <td id="modaltd6" runat="server"></td>
               </tr><tr>
-              <td  runat="server">เอกสาร</td>
-              <td id="modaltd6" runat="server">เอกสาร</td>
+              <td><label>ประเภท :</label></td>
+              <td id="modaltd7" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ประเภท</td>
-              <td id="modaltd7" runat="server">ประเภท</td>
+              <td><label>ความสำคัญ :</label></td>
+              <td id="modaltd8" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ความสำคัญ</td>
-              <td id="modaltd8" runat="server">ความสำคัญ</td>
+              <td><label>ชื่อผู้ติดต่อ :</label></td>
+              <td id="modaltd9" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ชื่อผู้ติดต่อ</td>
-              <td id="modaltd9" runat="server">ชื่อผู้ติดต่อ</td>
+              <td><label>ที่อยู่อผู้ติดต่อ :</label></td>
+              <td id="modaltd10" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ที่อยู่อผู้ติดต่อ</td>
-              <td id="modaltd10" runat="server">ที่อยู่อผู้ติดต่อ</td>
+              <td><label>เบอร์ติดต่อ :</label></td>
+              <td id="modaltd11" runat="server"></td>
               </tr><tr>
-              <td  runat="server">เบอร์ติดต่อ</td>
-              <td id="modaltd11" runat="server">เบอร์ติดต่อ</td>
-              </tr><tr>
-              <td  runat="server">แผนที่</td>
+              <td><label>แผนที่ :</label></td>
               <td id="modaltd12" runat="server">
-                   <asp:LinkButton ID="lnkBtnloadMap" runat="server" OnClick="lnkBtnloadMap_Click"></asp:LinkButton>
+                  <asp:LinkButton ID="lnkBtnloadMap" runat="server" OnClick="lnkBtnloadMap_Click"></asp:LinkButton>
+                  <asp:Label ID="lblMapText" runat="server"></asp:Label>
               </td>
               </tr><tr>
-              <td  runat="server">ส่งภายในวันที่</td>
-              <td id="modaltd13" runat="server">ส่งภายในวันที่</td>
+              <td><label>ส่งภายในวันที่ :</label></td>
+              <td id="modaltd13" runat="server"></td>
               </tr><tr>
-              <td  runat="server">Remark</td>
-              <td id="modaltd14" runat="server">Remark</td>
+              <td><label>หมายเหตุ :</label></td>
+              <td id="modaltd14" runat="server"></td>
               </tr><tr>
-              <td  runat="server">Messenger</td>
-              <td id="modaltd15" runat="server">Messenger</td>
+              <td><label>พนักงานรับส่งเอกสาร :</label></td>
+              <td id="modaltd15" runat="server"></td>
               </tr><tr>
-              <td  runat="server">สถานะ</td>
-              <td id="modaltd16" runat="server">สถานะ</td>
+              <td> <label>สถานะ :</label></td>
+              <td id="modaltd16" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ปล่อยงานโดย</td>
-              <td id="modaltd17" runat="server">ปล่อยงานโดย</td>
+              <td><label>ปล่อยงานโดย :</label></td>
+              <td id="modaltd17" runat="server"></td>
               </tr><tr>
-              <td  runat="server">ปิดงานโดย</td>
-              <td id="modaltd19" runat="server">ปิดงานโดย</td>
+              <td><label>ปิดงานโดย :</label></td>
+              <td id="modaltd19" runat="server"></td>
               </tr><tr>
-              <td  runat="server">แก้ไขล่าสุดโดย</td>
-              <td id="modaltd20" runat="server">แก้ไขล่าสุดโดย</td>
+              <td><label>แก้ไขล่าสุดโดย :</label></td>
+              <td id="modaltd20" runat="server"></td>
               </tr><tr>
-              <td  runat="server">หลักฐานใบงาน</td>
+              <td><label>หลักฐานใบงาน :</label></td>
               <td id="modaltd21" runat="server">
                   <asp:LinkButton ID="lnkBtnloadReport" runat="server" OnClick="lnkBtnloadReport_Click"></asp:LinkButton>
               </td>

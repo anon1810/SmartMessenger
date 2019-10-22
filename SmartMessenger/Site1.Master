@@ -23,11 +23,16 @@
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server"> </asp:ContentPlaceHolder>
 </head>
+<script type="text/javascript" language="javascript">
+    function CloswaringModel() {
+           document.getElementById("<%=waringModel.ClientID %>").style.display = 'none'
+     }
+</script>
 <body>
     <div class="w3-bar w3-black w3-small">
       <a href="HomePage.aspx" style="text-decoration:none" class="w3-bar-item w3-button w3-amber"><i class="fa fa-home"></i> Messenger</a>
-      <a href="HomePage.aspx?LoadPage=Accept" style="text-decoration:none" class="w3-bar-item w3-button">Accept<span runat="server" id="notiAcceptPage" class="w3-tag w3-round w3-yellow w3-center"></span></a>
-      <a href="HomePage.aspx?LoadPage=Close" style="text-decoration:none" class="w3-bar-item w3-button">Close<span runat="server" id="notiClosePage"  class="w3-tag w3-round w3-red w3-center"></span></a>
+      <a href="#"  style="text-decoration:none" class="w3-bar-item w3-button" runat="server" id="aAcc" onserverclick="aAcc_ServerClick">Accept<span runat="server" id="notiAcceptPage" class="w3-tag w3-round w3-yellow w3-center"></span></a>
+      <a href="#" style="text-decoration:none" class="w3-bar-item w3-button" runat="server" id="aClose" onserverclick="aClose_ServerClick">Close<span runat="server" id="notiClosePage"  class="w3-tag w3-round w3-red w3-center"></span></a>
       <a href="ReportPage.aspx" style="text-decoration:none" class="w3-bar-item w3-button">Report</a>
 
       <div class="w3-dropdown-hover w3-right">
@@ -39,6 +44,20 @@
     </div>
 
     <form id="form1" runat="server" class="w3-padding-16">
+    <div class="w3-container">
+      <div id="waringModel" runat="server" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+        <div class="w3-container w3-padding w3-red">
+           <span  onclick="CloswaringModel()" class="w3-button w3-red w3-right"><i class="fa fa-remove"></i></span>
+          <h4>คำเตือน</h4>
+        </div>
+          <div class="w3-container w3-padding-16">        
+              <label>ไม่มีสิทธ์เข้าถึงหน้านี้</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div>
      <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         

@@ -93,22 +93,42 @@
                 <input class="w3-input w3-border" type="text" runat="server" id="txtContratPhoneCreateP" required>
               </div>
             </div>
-            <p>
+            <p></p>
               <label>ที่อยู่ผู้ติดต่อ</label>
               <textarea class = "w3-input  w3-border"  runat="server" id="txtContratAddrCreateP" required></textarea>
-            </p>
-            <p>
-              <label>แนบไฟล์แผนที่</label><br>
-              <asp:FileUpload id="FileUploadMap" runat="server" CssClass = "w3-input w3-border" />
-              <p id="txtOldfile" runat="server">ไฟล์ปัจจุบัน :</p>
-            </p>
+            <p></p>
+            <p></p>
+              <label>แผนที่</label>
+              <div class="w3-cell-row">
+                <div class="w3-cell">
+                  <select class="w3-select w3-border" name="option" runat="server" id="opMapSelect" onchange="selectMap()">
+                    <option value="" selected="selected">ไม่มี</option>
+                    <option value="แนบไปพร้อมกับเอกสารแล้ว"></option>
+                    <option value="อัปโหลดไฟล์แผนที่">อัปโหลดไฟล์แผนที่</option>
+                  </select>
+                </div>
+                <div class="w3-cell">
+                  &nbsp;
+                </div>
+                <div class="w3-cell">
+                  <asp:FileUpload id="FileUploadMap" runat="server" CssClass = "w3-input w3-border" disabled="disabled"/>
+                </div>
+              </div>
+              <p id="txtOldfile" runat="server" class="w3-small">ไฟล์ปัจจุบัน :</p>
+            <p></p>
             <p>
               <label>ส่งภายในวันที่</label>
               <input class="w3-input w3-border" type="date" runat="server" id="dateContratCreatePage" required/>
             </p>
             <p>
               <label>ชื่อพนักงานส่งเอกสาร</label>
-              <input class="w3-input w3-border" type="text" runat="server" id="txtMesNameCreatePage"/>
+              <select class="w3-select w3-border" name="option" runat="server" id="sleMes">
+                <option value="-" selected="selected">-</option>
+                <option value="อุทัย">อุทัย</option>
+                <option value="อิทธิพล">อิทธิพล</option>
+                <option value="พนักงานทดแทน">พนักงานทดแทน</option>
+              </select>
+<%--          <input class="w3-input w3-border" type="text" runat="server" id="txtMesNameCreatePage"/> --%>
             </p>
             <p>
               <label>หมายเหตุ</label>
@@ -143,6 +163,10 @@
 
 
       <script type="text/javascript" language="javascript">
+          if (document.getElementById("<%=opMapSelect.ClientID %>").value == "อัปโหลดไฟล์แผนที่") {
+              document.getElementById("<%=FileUploadMap.ClientID %>").disabled = false;
+          }
+
           function selectSend() {
               if (document.getElementById("<%=opSendCreateP.ClientID %>").value == "อื่นๆ") {
                   document.getElementById("<%=txtSendCreateP.ClientID %>").disabled = false;
@@ -156,6 +180,14 @@
                   document.getElementById("<%=txtReceiveCreateP.ClientID %>").disabled = false;
               } else {
                   document.getElementById("<%=txtReceiveCreateP.ClientID %>").disabled = true;
+              }
+          }
+
+          function selectMap() {
+              if (document.getElementById("<%=opMapSelect.ClientID %>").value == "อัปโหลดไฟล์แผนที่") {
+                  document.getElementById("<%=FileUploadMap.ClientID %>").disabled = false;
+              } else {
+                  document.getElementById("<%=FileUploadMap.ClientID %>").disabled = true;
               }
           }
 

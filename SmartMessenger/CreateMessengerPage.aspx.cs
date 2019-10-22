@@ -79,15 +79,18 @@ namespace SmartMessenger
             string msg_telephone = txtContratPhoneCreateP.Value;
             string msg_address = txtContratAddrCreateP.Value;
             DateTime msg_on_date = DateTime.ParseExact(dateContratCreatePage.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-
-            string newFileName = Path.Combine(Path.GetDirectoryName(FileUploadMap.PostedFile.FileName) 
-                               , string.Concat(Path.GetFileNameWithoutExtension(FileUploadMap.PostedFile.FileName)
-                               , DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")
-                               , Path.GetExtension(FileUploadMap.PostedFile.FileName)));
+            string newFileName = opMapSelect.Value == "แนบไปพร้อมกับเอกสารแล้ว"?"แนบแผนที่":"";
+            if (FileUploadMap.HasFile) {
+               newFileName = Path.Combine(Path.GetDirectoryName(FileUploadMap.PostedFile.FileName)
+                           , string.Concat(Path.GetFileNameWithoutExtension(FileUploadMap.PostedFile.FileName)
+                           , DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss")
+                           , Path.GetExtension(FileUploadMap.PostedFile.FileName)));
+            }
 
             string msg_map = newFileName;
 
-            string msg_msg_name = txtMesNameCreatePage.Value;
+            //string msg_msg_name = txtMesNameCreatePage.Value;
+            string msg_msg_name = sleMes.Value;
             string msg_remark = txtRemarkCreatPage.Value;
             string msg_status = "รอปล่อยงาน";
 
@@ -102,7 +105,7 @@ namespace SmartMessenger
             if (dept!=null) {
                 txtSectionCreateP.Value = dept.department;
             } else {
-                txtSectionCreateP.Value = "-";
+                txtSectionCreateP.Value = "";
             }
         }
     }
