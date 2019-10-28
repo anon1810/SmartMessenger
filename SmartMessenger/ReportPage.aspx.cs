@@ -16,7 +16,8 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            waringModel.Style["display"] = "none";
+
             if (Session["Username"] == null) {
                 Response.Redirect("LoginPage.aspx");
             }
@@ -729,10 +730,11 @@ namespace SmartMessenger
             }
 
             if (result.Count > 0) {
+                Context.Response.Write("<script language='javascript'>window.open('ReportPage.aspx','_blank');</script>");
                 GenPDF(result, onDateReport);
                 GenPDF(result, onDateReport);
             } else {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertErr", "alert('ไม่มีรายการที่เลือก')", true);
+                waringModel.Style["display"] = "block";
             }
         }
 

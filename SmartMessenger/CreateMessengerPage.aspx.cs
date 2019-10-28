@@ -15,9 +15,9 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["Username"] != null)
-            {
-                if (Session["Username"].ToString() == "SPP" || Session["Username"].ToString() == "SDR" || Session["Username"].ToString() == "TYK" || Session["Username"].ToString() == "ANO") {
+            if (Session["Username"] != null){
+                MessengerRepository mes = new MessengerRepository();
+                if (mes.isAdmin(Session["Username"].ToString())) {
                     txtByCreateP.Enabled = true;
                     //txtSectionCreateP.Disabled = true;
                 } else {

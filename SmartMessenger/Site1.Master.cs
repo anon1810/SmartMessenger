@@ -19,6 +19,8 @@ namespace SmartMessenger
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            waringModel.Style["display"] = "none";
+
             if (Session["Username"] == null) {
                 Response.Redirect("LoginPage.aspx");
             } else {
@@ -46,7 +48,8 @@ namespace SmartMessenger
 
 
         protected void aAcc_ServerClick(object sender, EventArgs e) {
-            if (Session["Username"].ToString() == "SPP" || Session["Username"].ToString() == "SDR" || Session["Username"].ToString() == "TYK") {//Session["Username"].ToString() == "ANO"
+            MessengerRepository mes = new MessengerRepository();
+            if (mes.isAdmin(Session["Username"].ToString())) {
                 Response.Redirect("HomePage.aspx?LoadPage=Accept");
             } else {
                 waringModel.Style["display"] = "block";
@@ -54,8 +57,9 @@ namespace SmartMessenger
         }
 
         protected void aClose_ServerClick(object sender, EventArgs e) {
-            if (Session["Username"].ToString() == "SPP" || Session["Username"].ToString() == "SDR" || Session["Username"].ToString() == "TYK") {//Session["Username"].ToString() == "ANO"
-                Response.Redirect("HomePage.aspx? LoadPage = Close");
+            MessengerRepository mes = new MessengerRepository();
+            if (mes.isAdmin(Session["Username"].ToString())) {
+                Response.Redirect("HomePage.aspx?LoadPage=Close");
             } else {
                 waringModel.Style["display"] = "block";
             }

@@ -18,7 +18,10 @@ namespace SmartMessenger
         bool isNotiAccept = false;
         bool isNotiClose = false;
         protected void Page_Load(object sender, EventArgs e)
-        {              
+        {
+            id01.Style["display"] = "none";
+            modelUplodeReport.Style["display"] = "none";
+
             if (Session["Username"] == null) {
                 Response.Redirect("LoginPage.aspx");
             }
@@ -49,10 +52,6 @@ namespace SmartMessenger
         }
 
         public void LoadGridData() {
-
-            id01.Style["display"] = "none";
-            modelUplodeReport.Style["display"] = "none";
-
             MessengerRepository mesRes = new MessengerRepository();
             if (isNotiAccept) {
                 gvMessager.Columns[16].Visible = false;
@@ -217,9 +216,13 @@ namespace SmartMessenger
                 modaltd9.InnerText = result.msg_contact_name;
                 modaltd10.InnerText = result.msg_address;
                 modaltd11.InnerText = result.msg_telephone;
-                //modaltd12.InnerText = result.msg_map;
-                lnkBtnloadMap.Text = result.msg_map;    
-                lblMapText.Text = result.msg_map;
+                lblMapText.Text = "";
+                lnkBtnloadMap.Text = "";
+                if (result.msg_map == "แนบแผนที่" || result.msg_map == "แนบแผนทีี่") {
+                    lblMapText.Text = result.msg_map;
+                } else {
+                    lnkBtnloadMap.Text = result.msg_map;
+                }
                 modaltd13.InnerText = result.msg_on_date.Value.ToShortDateString();
                 modaltd14.InnerText = result.msg_remark;
                 modaltd15.InnerText = result.msg_msg_name;

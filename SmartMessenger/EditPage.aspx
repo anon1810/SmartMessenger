@@ -163,6 +163,23 @@
 
 
       <script type="text/javascript" language="javascript">
+          var date = new Date();
+          var Hours = date.getHours();
+
+          if (Hours > 8 && Hours <= 23) {
+              date.setDate(date.getDate() + 1);
+          }
+
+
+          var day = date.getDate();
+          var month = date.getMonth() + 1;
+          var year = date.getFullYear();
+          if (month < 10) month = "0" + month;
+          if (day < 10) day = "0" + day;
+          var today = year + "-" + month + "-" + day;
+          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("min", today);
+          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("value", today);
+
           if (document.getElementById("<%=opMapSelect.ClientID %>").value == "อัปโหลดไฟล์แผนที่") {
               document.getElementById("<%=FileUploadMap.ClientID %>").disabled = false;
           }

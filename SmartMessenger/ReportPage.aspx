@@ -23,13 +23,13 @@
                       &nbsp;
                     </div>
                     <div class="w3-cell">
-                      <input class="w3-input w3-border" type="date"  placeholder="โปรดระบุ.." runat="server" id="dtSelect" disabled/>
+                      <input class="w3-input w3-border" type="date"  placeholder="โปรดระบุ.." runat="server" id="dtSelect" disabled="disabled"/>
                     </div>
                   </div>
                   <p></p>
                   <div class="w3-bar">
                     <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างใบรับส่งรวม"/>
-                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน"/>
+                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน" disabled/>
                   </div>
               </div>
               <p class="w3-border-bottom w3-padding-16"></p>
@@ -68,6 +68,18 @@
         </div>       
     </div>
 
+    <div id="waringModel" runat="server" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+        <div class="w3-container w3-padding w3-red">
+           <span  onclick="CloswaringModel()" class="w3-button w3-red w3-right"><i class="fa fa-remove"></i></span>
+          <h4>คำเตือน</h4>
+        </div>
+          <div class="w3-container w3-padding-16">        
+              <label>ไม่มีรายการที่เลือก</label>
+          </div>
+        </div>
+      </div>
+
     <script type="text/javascript">
           function selectSend() {
               if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานวันที่") {
@@ -80,6 +92,11 @@
                   document.getElementById("<%=dtSelect.ClientID %>").disabled = true;
               }
           }
+
+        function CloswaringModel() {
+           document.getElementById("<%=waringModel.ClientID %>").style.display = 'none';
+        }
+
     </script>
 
 </asp:Content>
