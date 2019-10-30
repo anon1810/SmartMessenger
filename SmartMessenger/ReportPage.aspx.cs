@@ -16,7 +16,7 @@ namespace SmartMessenger
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            waringModel.Style["display"] = "none";
+            waringModelReport.Style["display"] = "none";
 
             if (Session["Username"] == null) {
                 Response.Redirect("LoginPage.aspx");
@@ -43,7 +43,7 @@ namespace SmartMessenger
 
             foreach (var r in result)
             {
-                chart += "barlabelData.push(\"" + r.Key.ToShortDateString() + "\");";
+                chart += "barlabelData.push(\"" + r.Key.ToString("dd/MM/yyyy") + "\");";
             }
 
             foreach (var r in result)
@@ -109,7 +109,7 @@ namespace SmartMessenger
             MessengerRepository mesRes = new MessengerRepository();
 
             //DateTime dt = DateTime.ParseExact("24/9/2019", "dd/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            var result = mesRes.GetMessagerList().Where(a => a.msg_section != null && a.msg_section !="").Where(a => a.msg_date.Value.Month == DateTime.Now.Month).GroupBy(c => c.msg_section).ToList();
+            var result = mesRes.GetMessagerList().Where(a => a.msg_section != null && a.msg_section !="").Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == DateTime.Now.Month+"/"+ DateTime.Now.Year).GroupBy(c => c.msg_section).ToList();
 
             chart += "var piecoloR = [];";
             chart += "var pielabelData = [];";
@@ -167,6 +167,13 @@ namespace SmartMessenger
 
         public void ShowSummaryReport() {
             MessengerRepository mesRes = new MessengerRepository();
+            if (!mesRes.isAdmin(Session["Username"].ToString())) {
+                opSelect.Items[1].Attributes.Add("disabled", "disabled");
+                opSelect.Items[2].Attributes.Add("disabled", "disabled");
+                opSelect.Items[3].Attributes.Add("disabled", "disabled");
+                genReport.Enabled = false;
+                genReportIndivi.Enabled = false;
+            }
             var result = mesRes.GetMessagerList();
             DateTime dt = DateTime.Now;
 
@@ -732,9 +739,8 @@ namespace SmartMessenger
             if (result.Count > 0) {
                 Context.Response.Write("<script language='javascript'>window.open('ReportPage.aspx','_blank');</script>");
                 GenPDF(result, onDateReport);
-                GenPDF(result, onDateReport);
             } else {
-                waringModel.Style["display"] = "block";
+                waringModelReport.Style["display"] = "block";
             }
         }
 
@@ -749,16 +755,18 @@ namespace SmartMessenger
                 dt = DateTime.Now;
                 onDateReport = "ใบงาน ประจำวันที่ " + dt.ToShortDateString();
                 result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
-            } else if (opSelect.Value == "รายงานวันที่") {
-                dt = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                onDateReport = "ใบงาน ประจำวันที่ " + dt.ToShortDateString();
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
             }
+            //else if (opSelect.Value == "รายงานวันที่") {
+            //    dt = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            //    onDateReport = "ใบงาน ประจำวันที่ " + dt.ToShortDateString();
+            //    result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+            //}
 
             if (result.Count > 0) {
+                Context.Response.Write("<script language='javascript'>window.open('ReportPage.aspx','_blank');</script>");
                 GenPDFIndividual(result, onDateReport, dt);
             } else {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertErr", "alert('ไม่มีรายการที่เลือก')", true);
+                waringModelReport.Style["display"] = "block";
             }
 
         }

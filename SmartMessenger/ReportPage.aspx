@@ -13,23 +13,23 @@
                   <div class="w3-cell-row">
                     <div class="w3-cell">
                       <select class="w3-select w3-border" name="option" runat="server" id="opSelect" onchange="selectSend()">
-                        <option value="รายงานวันนี้">รายงานวันนี้</option>
-                        <option value="รายงานเดือนนี้">รายงานเดือนนี้</option>
-                        <option value="รายงานวันที่">รายงานวันที่ ระบุ..</option>
-                        <option value="รายงานเดือนที่">รายงานเดือนที่ ระบุ..</option>
+                        <option value="รายงานวันนี้">รายงานวันนี้ (สถานะ : ดำเนินการ)</option>
+                        <option value="รายงานเดือนนี้">รายงานเดือนนี้ (สถานะ : ทั้งหมดยกเว้นยกเลิก)</option>
+                        <option value="รายงานวันที่">รายงานวันที่ ระบุ.. (สถานะ : ทั้งหมดยกเว้นยกเลิก)</option>
+                        <option value="รายงานเดือนที่">รายงานเดือนที่ ระบุ.. (สถานะ : ทั้งหมดยกเว้นยกเลิก)</option>
                       </select>
                     </div>
                     <div class="w3-cell">
                       &nbsp;
                     </div>
                     <div class="w3-cell">
-                      <input class="w3-input w3-border" type="date"  placeholder="โปรดระบุ.." runat="server" id="dtSelect" disabled="disabled"/>
+                      <input class="w3-input w3-border" type="date"  placeholder="โปรดระบุ.." runat="server" id="dtSelect" disabled="disabled" required />
                     </div>
                   </div>
                   <p></p>
                   <div class="w3-bar">
                     <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างใบรับส่งรวม"/>
-                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน" disabled/>
+                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน"/>
                   </div>
               </div>
               <p class="w3-border-bottom w3-padding-16"></p>
@@ -68,34 +68,43 @@
         </div>       
     </div>
 
-    <div id="waringModel" runat="server" class="w3-modal">
+    <div id="waringModelReport" runat="server" class="w3-modal">
         <div class="w3-modal-content w3-card-4 w3-animate-zoom">
         <div class="w3-container w3-padding w3-red">
-           <span  onclick="CloswaringModel()" class="w3-button w3-red w3-right"><i class="fa fa-remove"></i></span>
+           <span  onclick="CloswaringModelReport()" class="w3-button w3-red w3-right"><i class="fa fa-remove"></i></span>
           <h4>คำเตือน</h4>
         </div>
           <div class="w3-container w3-padding-16">        
-              <label>ไม่มีรายการที่เลือก</label>
+              <p>ไม่มีรายการที่เลือก</p>
           </div>
         </div>
       </div>
 
     <script type="text/javascript">
-          function selectSend() {
-              if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานวันที่") {
-                  document.getElementById("<%=dtSelect.ClientID %>").disabled = false;
-                  document.getElementById("<%=dtSelect.ClientID %>").setAttribute('type', 'date');
-              } else if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานเดือนที่") {
-                  document.getElementById("<%=dtSelect.ClientID %>").disabled = false;
-                  document.getElementById("<%=dtSelect.ClientID %>").setAttribute('type', 'month');
-              } else {
-                  document.getElementById("<%=dtSelect.ClientID %>").disabled = true;
-              }
-          }
+        function selectSend() {
+            if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานวันที่") {
+                document.getElementById("<%=dtSelect.ClientID %>").disabled = false;
+                document.getElementById("<%=dtSelect.ClientID %>").setAttribute('type', 'date');
+            } else if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานเดือนที่") {
+                document.getElementById("<%=dtSelect.ClientID %>").disabled = false;
+                document.getElementById("<%=dtSelect.ClientID %>").setAttribute('type', 'month');
+            } else {
+                document.getElementById("<%=dtSelect.ClientID %>").disabled = true;
+            }
 
-        function CloswaringModel() {
-           document.getElementById("<%=waringModel.ClientID %>").style.display = 'none';
+            if (document.getElementById("<%=opSelect.ClientID %>").value == "รายงานวันนี้") {
+                document.getElementById("<%=genReportIndivi.ClientID %>").disabled = false;
+            } else {
+                document.getElementById("<%=genReportIndivi.ClientID %>").disabled = true;
+            }
+
         }
+
+        function CloswaringModelReport() {
+           document.getElementById("<%=waringModelReport.ClientID %>").style.display = 'none';
+        }
+
+
 
     </script>
 

@@ -21,6 +21,7 @@ namespace SmartMessenger
         {
             id01.Style["display"] = "none";
             modelUplodeReport.Style["display"] = "none";
+            waringModeEdit.Style["display"] = "none";
 
             if (Session["Username"] == null) {
                 Response.Redirect("LoginPage.aspx");
@@ -173,7 +174,14 @@ namespace SmartMessenger
                 //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('Success')", true);
             } else if (e.CommandName == "lnkEdit") {
                 string id = e.CommandArgument.ToString();
-                Response.Redirect("~/EditPage.aspx?id=" + id);
+                MessengerRepository mesRes = new MessengerRepository();
+                var result = mesRes.GetMessagerByID(int.Parse(id));
+                if (result.msg_accept_by != "" && !mesRes.isAdmin(Session["Username"].ToString())) {
+                    waringModeEdit.Style["display"] = "block";
+                    //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('กรุณาติดต่อผู้ดูแลระบบ')", true);
+                } else {
+                    Response.Redirect("~/EditPage.aspx?id=" + id);
+                }
             } else if (e.CommandName == "lnkCloseJob") { //อาจจะมีเช็คสิทธ์ปิด Job งาน
                 string id = e.CommandArgument.ToString();
                 modelUplodeReport.Style["display"] = "block";

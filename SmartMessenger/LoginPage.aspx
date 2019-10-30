@@ -12,7 +12,7 @@
     <style>
 
     .bgimg { 
-      background: url('/Resource/BG.jpg') no-repeat center center fixed; 
+      background: url('Resource/BG-Delivery2.jpg') no-repeat center center fixed; 
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;

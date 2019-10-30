@@ -52,7 +52,7 @@
           <h4>คำเตือน</h4>
         </div>
           <div class="w3-container w3-padding-16">        
-              <label>ไม่มีสิทธ์เข้าถึงหน้านี้</label>
+              <p>ไม่มีสิทธ์เข้าถึงหน้านี้</p>
           </div>
         </div>
       </div>

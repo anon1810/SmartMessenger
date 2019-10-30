@@ -177,8 +177,8 @@
           if (month < 10) month = "0" + month;
           if (day < 10) day = "0" + day;
           var today = year + "-" + month + "-" + day;
-          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("min", today);
-          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("value", today);
+<%--          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("min", today);
+          document.getElementById("<%=dateContratCreatePage.ClientID %>").setAttribute("value", today);--%>
 
           if (document.getElementById("<%=opMapSelect.ClientID %>").value == "อัปโหลดไฟล์แผนที่") {
               document.getElementById("<%=FileUploadMap.ClientID %>").disabled = false;

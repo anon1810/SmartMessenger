@@ -246,9 +246,24 @@
       </div>
     </div>
 
+    <div id="waringModeEdit" runat="server" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+        <div class="w3-container w3-padding w3-red">
+           <span  onclick="CloswaringModelEdit()" class="w3-button w3-red w3-right"><i class="fa fa-remove"></i></span>
+          <h4>คำเตือน</h4>
+        </div>
+          <div class="w3-container w3-padding-16">        
+              <p>ไม่สามารถแก้ไขได้เนื่องจากอยู่ในระหว่างดำเนินการ กรุณาติดต่อ Admin</p>
+          </div>
+        </div>
+      </div>
+
     <script type="text/javascript" language="javascript">
         function Closemodal() {
               document.getElementById("<%=id01.ClientID %>").style.display = 'none'
+        }
+        function CloswaringModelEdit() {
+              document.getElementById("<%=waringModeEdit.ClientID %>").style.display = 'none'
         }
         function ClosemodelUplodeReport() {
               document.getElementById("<%=modelUplodeReport.ClientID %>").style.display = 'none'
