@@ -4,15 +4,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="w3-container w3-row w3-small">
-      <div class="w3-container w3-col m9">
-            <button class="w3-button w3-blue" id="Create" runat="server" onserverclick="Create_ServerClick" type="button">Create</button> 
+      <div class="w3-container w3-col m8">
+            <button class="w3-button w3-blue w3-round-xlarge" id="Create" runat="server" onserverclick="Create_ServerClick" type="button">สร้างใบสั่งงาน</button> 
       </div>
-      <div class="w3-container w3-col m3 w3-center">
+      <div class="w3-container w3-col m4 w3-right">
          <div class="w3-cell-row">
               <div class="w3-cell">
                   <div class="w3-cell-row">
                       <div class="w3-container w3-cell">
-                          <select class="w3-select" name="option" runat="server" id="opSelectSearch">
+                          <select class="w3-select w3-border" name="option" runat="server" id="opSelectSearch">
                             <option value="ID">ค้นหา รหัส</option>
                             <option value="Date">ค้นหา วันที่สร้าง</option>
                             <option value="By">ค้นหา ผู้ขอรับบริการ</option>
@@ -50,22 +50,22 @@
 
 
     <div class="w3-container w3-padding-16">
-            <asp:GridView ID="gvMessager" HeaderStyle-BackColor="#566573" HeaderStyle-ForeColor="White" BorderWidth="0" GridLines="None" runat="server" AutoGenerateColumns="false" CssClass="w3-table-all w3-small" PageSize="14" AllowPaging="true" OnPageIndexChanging="gvMessager_PageIndexChanging" OnRowCommand="gvMessager_RowCommand">
+            <asp:GridView ID="gvMessager" HeaderStyle-BackColor="#566573" HeaderStyle-ForeColor="White" BorderWidth="0" GridLines="None" runat="server" AutoGenerateColumns="false" CssClass="w3-table-all w3-small" PageSize="19" AllowPaging="true" OnPageIndexChanging="gvMessager_PageIndexChanging" OnRowCommand="gvMessager_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="msg_id" HeaderText="รหัส"/>
-                    <asp:BoundField DataField="msg_date" HeaderText="วันที่สร้าง" dataformatstring="{0:dd/MM/yyyy}" />
+<%--                    <asp:BoundField DataField="msg_date" HeaderText="วันที่สร้าง" dataformatstring="{0:dd/MM/yyyy}" />--%>
                     <asp:BoundField DataField="msg_by" HeaderText="ผู้ขอรับบริการ"/>
                     <asp:BoundField DataField="msg_section" HeaderText="แผนก"/>
 <%--                    <asp:BoundField DataField="msg_phone" HeaderText="เบอร์โทร"  ItemStyle-Width="100px"/>--%>
                     <asp:BoundField DataField="msg_doctype" HeaderText="เอกสาร" />
 
-                    <asp:BoundField DataField="msg_send" HeaderText="ประเภท" />
+<%--                    <asp:BoundField DataField="msg_send" HeaderText="ประเภท" />--%>
 <%--                    <asp:BoundField DataField="msg_priority_normal" HeaderText="ความสำคัญ" />--%>
 
                     <asp:BoundField DataField="msg_contact_name" HeaderText="ชื่อผู้ติดต่อ" />
                     <asp:BoundField DataField="msg_address" HeaderText="ที่อยู่ผู้ติดต่อ" />
                     <asp:BoundField DataField="msg_telephone" HeaderText="เบอร์ติดต่อ" />
-                    <asp:TemplateField HeaderText="แผนที่">  
+                    <%--<asp:TemplateField HeaderText="แผนที่">  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkDownload" 
@@ -81,16 +81,17 @@
                                 Text="แนบแผนที่"
                                 Visible='<%# (Convert.ToString(Eval("msg_map")) == "แนบแผนที่"||Convert.ToString(Eval("msg_map")) == "แนบแผนทีี่") ? Convert.ToBoolean("true"):Convert.ToBoolean("false") %>'/>
                         </ItemTemplate>  
-                    </asp:TemplateField> 
+                    </asp:TemplateField> --%>
                                                         
                     <asp:BoundField DataField="msg_on_date" HeaderText="ส่งภายในวันที่"  dataformatstring="{0:dd/MM/yyyy}"  />
-                    <asp:BoundField DataField="msg_msg_name" HeaderText="Messenger" />                   
+                    <%--<asp:BoundField DataField="msg_msg_name" HeaderText="Messenger" />   --%>                
                     <asp:BoundField DataField="msg_close_status" HeaderText="สถานะ" />
 <%--                    <asp:BoundField DataField="msg_remark" HeaderText="หมายเหตุ" ItemStyle-Width="100px"/>--%>
                     <asp:TemplateField HeaderText="" >  
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkView" 
+                                style="text-decoration:none"
                                 runat="server" 
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
@@ -103,7 +104,9 @@
                         <ItemTemplate>
                             <asp:LinkButton
                                 ID="lnkEdit"
+                                style="text-decoration:none"
                                 runat="server" 
+                                CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
                                 CommandName="lnkEdit"  
                                 CssClass="glyphicon glyphicon-edit w3-text-deep-orange w3-large"      
@@ -116,11 +119,11 @@
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkOutJob" 
+                                style="text-decoration:none"
                                 runat="server" 
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
                                 CommandName="lnkOutJob"  
-                                style="text-decoration:none"
                                 CssClass="w3-button w3-yellow w3-round-xlarge w3-padding-small"
                                 Text="ปล่อย"
                                 Visible='<%# ChkShowAcceptBtn() %>'/>
@@ -130,6 +133,7 @@
                         <ItemTemplate>  
                             <asp:LinkButton 
                                 ID="lnkCloseJob" 
+                                style="text-decoration:none"
                                 runat="server" 
                                 CausesValidation="False" 
                                 CommandArgument='<%# Eval("msg_id") %>' 
@@ -240,7 +244,7 @@
               <p>
               <input id="chkBoxClose" runat="server" class="w3-check" type="checkbox"/>
               <label>ปิดงานโดยไม่แนบใบงาน</label></p>
-              <asp:Button Text="ตกลง" runat="server" CssClass="w3-button w3-blue" ID="btnSubmit"  OnClick="btnSubmit_Click" OnClientClick="return validate();" />
+              <asp:Button Text="ตกลง" runat="server" CssClass="w3-button w3-blue w3-round-xlarge" ID="btnSubmit"  OnClick="btnSubmit_Click" OnClientClick="return validate();" />
           </div>
         </div>
       </div>

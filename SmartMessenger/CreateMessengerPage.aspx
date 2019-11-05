@@ -44,7 +44,7 @@
                 &nbsp;
               </div>
               <div class="w3-cell">
-                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtSendCreateP" disabled="disabled"/>
+                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtSendCreateP" disabled="disabled" required="required"/>
               </div>
             </div>
             <p></p>
@@ -64,7 +64,7 @@
                 &nbsp;
               </div>
               <div class="w3-cell">
-                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtReceiveCreateP" disabled="disabled"/>
+                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtReceiveCreateP" disabled="disabled" required="required"/>
               </div>
             </div>
 

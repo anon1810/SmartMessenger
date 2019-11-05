@@ -28,8 +28,8 @@
                   </div>
                   <p></p>
                   <div class="w3-bar">
-                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างใบรับส่งรวม"/>
-                    <asp:Button CssClass="w3-button w3-dark-grey" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน"/>
+                    <asp:Button CssClass="w3-button w3-indigo w3-round-xlarge" runat="server" id="genReport" formtarget="_blank" OnClick="genReport_Click" Text="สร้างใบรับส่งรวม"/>
+                    <asp:Button CssClass="w3-button w3-indigo w3-round-xlarge" runat="server" id="genReportIndivi" formtarget="_blank" OnClick="genReportIndivi_Click" Text="สร้างใบงาน"/>
                   </div>
               </div>
               <p class="w3-border-bottom w3-padding-16"></p>
@@ -97,7 +97,6 @@
             } else {
                 document.getElementById("<%=genReportIndivi.ClientID %>").disabled = true;
             }
-
         }
 
         function CloswaringModelReport() {

@@ -167,35 +167,44 @@ namespace SmartMessenger
 
         public void ShowSummaryReport() {
             MessengerRepository mesRes = new MessengerRepository();
+
+            //opSelect.Disabled = true;
+
             if (!mesRes.isAdmin(Session["Username"].ToString())) {
-                opSelect.Items[1].Attributes.Add("disabled", "disabled");
-                opSelect.Items[2].Attributes.Add("disabled", "disabled");
-                opSelect.Items[3].Attributes.Add("disabled", "disabled");
+                //opSelect.Items[1].Attributes.Add("disabled", "disabled");
+                //opSelect.Items[2].Attributes.Add("disabled", "disabled");
+                //opSelect.Items[3].Attributes.Add("disabled", "disabled");
+                opSelect.Disabled = true;
                 genReport.Enabled = false;
                 genReportIndivi.Enabled = false;
+                opSelect.Attributes.Add("class", "w3-select w3-border w3-light-grey");
             }
+
             var result = mesRes.GetMessagerList();
             DateTime dt = DateTime.Now;
 
-            var dAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
-            var dSuc = result.Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
-            var dErr = result.Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+            var dAll = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "ดำเนินการ" || a.msg_close_status == "เสร็จสิ้น")).Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();  
+            var dSlow = dAll.Where(a => a.msg_priority_normal == "Yes").ToList();
+            var dFast = dAll.Where(a => a.msg_priority_normal != "Yes").ToList();
 
-            dayReportAll.InnerText = "จำนวนงาน "+ dAll.Count + " งาน";
-            dayReportSuc.InnerText = "รายการที่รอปล่อย "+ dSuc.Count + " งาน";
-            dayReportErr.InnerText = "รายการที่ปล่อยงานแล้ว "+ dErr.Count + " งาน";
+            //var dSuc = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "ดำเนินการ" || a.msg_close_status == "เสร็จสิ้น")).Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+            //var dErr = result.Where(a => a.msg_on_date != null && a.msg_close_status == "เสร็จสิ้น").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
+
+            dayReportAll.InnerText = "จำนวนงานด่วน "+ dFast.Count + " งาน";
+            dayReportSuc.InnerText = "จำนวนงานปกติ " + dSlow.Count + " งาน";
+            dayReportErr.InnerText = "จำนวนงานทั้งหมด "+ dAll.Count + " งาน";
 
             var mAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
-            var mSuc = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
-            var mErr = result.Where(a => a.msg_on_date != null && (a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
+            var mSuc = mAll.Where(a => a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes").ToList();
+            var mErr = mAll.Where(a => a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes").ToList();
 
             mounthReportAll.InnerText = "จำนวนงาน "+ mAll.Count + " งาน";
             mounthReportSuc.InnerText = "รายการที่เสร็จสิ้น "+ mSuc.Count + " งาน";
             mounthReportErr.InnerText = "รายการที่ยังไม่เสร็จสิ้น "+ mErr.Count + " งาน";
 
             var yAll = result.Where(a => a.msg_on_date != null).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
-            var ySuc = result.Where(a => a.msg_on_date != null && (a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes")).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
-            var yErr = result.Where(a => a.msg_on_date != null && (a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes")).Where(a => a.msg_date.Value.Year == dt.Year).ToList();
+            var ySuc = yAll.Where(a => a.msg_close_status == "เสร็จสิ้น" || a.msg_close_status == "Yes").ToList();
+            var yErr = yAll.Where(a => a.msg_close_status != "เสร็จสิ้น" && a.msg_close_status != "Yes").ToList();
 
             yearReportAll.InnerText = "จำนวนงาน " + yAll.Count + " งาน";
             yearReportSuc.InnerText = "รายการที่เสร็จสิ้น " + ySuc.Count + " งาน";
@@ -210,6 +219,9 @@ namespace SmartMessenger
             Font fntNormal = new Font(bf, 14, Font.NORMAL, BaseColor.BLACK);
             Font fntBold = new Font(bfBold, 14, Font.NORMAL, BaseColor.BLACK);
 
+            Font fntNormal2 = new Font(bf, 12, Font.NORMAL, BaseColor.BLACK);
+            Font fntBold2 = new Font(bfBold, 12, Font.NORMAL, BaseColor.BLACK);
+
             Document pdfDoc = new Document(PageSize.A4, 30, 30, 20, 20);
             PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
             pdfDoc.Open();
@@ -221,7 +233,7 @@ namespace SmartMessenger
             table.HorizontalAlignment = 0;
 
             iTextSharp.text.Image png = iTextSharp.text.Image.GetInstance(Server.MapPath("~/Resource/logo.jpg"));
-            png.ScaleAbsolute(80, 30);
+            png.ScaleAbsolute(70, 30);
 
             PdfPCell headerTableCell_0 = new PdfPCell(png);
             headerTableCell_0.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -243,6 +255,7 @@ namespace SmartMessenger
             table = new PdfPTable(14);
             table.WidthPercentage = 100;
             table.HorizontalAlignment = 0;
+            table.HeaderRows = 2;
 
             Phrase p = new Phrase(onDateReport, fntBold);
 
@@ -268,6 +281,8 @@ namespace SmartMessenger
             int countSend = 0;
             int countReceive = 0;
             int countSendReceive = 0;
+            int countSlow = 0;
+            int countFast = 0;
             foreach (var m in result) {
                 string onDate = m.msg_on_date.ToString() == "" ? "" : m.msg_on_date.Value.ToShortDateString();
                 string docType = m.msg_doctype;
@@ -303,7 +318,15 @@ namespace SmartMessenger
 
                 string priority = m.msg_priority_normal == "Yes" ? "ปกติ" : "ด่วน";
 
-                string[] arrData = { count.ToString(), m.msg_id.ToString(), m.msg_by, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address.Trim(), m.msg_telephone, m.msg_map, onDate, "", "", m.msg_remark};
+                if (priority == "ปกติ") {
+                    countSlow++;
+                } else {
+                    countFast++;
+                }
+
+                string messengerName = m.msg_msg_name == "-" ? "" : m.msg_msg_name;
+
+                string[] arrData = { count.ToString(), m.msg_id.ToString(), m.msg_by, docType.Trim(), sendreceive, priority, m.msg_contact_name, m.msg_address.Trim(), m.msg_telephone, m.msg_map, onDate, messengerName, "", m.msg_remark};
 
                 for (int i = 0; i < arrData.Length; i++)
                 {
@@ -316,73 +339,116 @@ namespace SmartMessenger
 
             pdfDoc.Add(table);
 
-            table = new PdfPTable(3);
-            table.SpacingBefore = 10f;
+            table = new PdfPTable(6);
+            //table.WidthPercentage = 100;
+            table.SpacingBefore = 8f;
             table.HorizontalAlignment = 2;
             table.TotalWidth = 500f;
-            float[] widths = new float[] { 420f, 40f, 40f };
+            float[] widths = new float[] { 300f, 40f, 40f, 60f, 40f, 40f };
             table.SetWidths(widths);
 
-            p = new Phrase("ส่ง", fntBold);
+            p = new Phrase("งานด่วน", fntBold2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
-            p = new Phrase(countSend.ToString(), fntNormal);
+            p = new Phrase(countFast.ToString(), fntNormal2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
-            p = new Phrase("รายการ", fntNormal);
+            p = new Phrase("รายการ", fntBold2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
 
-            p = new Phrase("รับ", fntBold);
+            p = new Phrase("งานปกติ", fntBold2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
-            p = new Phrase(countReceive.ToString(), fntNormal);
+            p = new Phrase(countSlow.ToString(), fntNormal2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
-            p = new Phrase("รายการ", fntNormal);
+            p = new Phrase("รายการ", fntBold2);
+            cell = new PdfPCell(p);
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            table.AddCell(cell);
+
+            Font fntSpace = new Font(bf, 5, Font.NORMAL, BaseColor.BLACK);
+
+            p = new Phrase(" ", fntSpace);
+            cell = new PdfPCell(p);
+            cell.Colspan = 6;
+            cell.Border = Rectangle.NO_BORDER;
+            table.AddCell(cell);
+
+            p = new Phrase("ส่ง", fntBold2);
+            cell = new PdfPCell(p);
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            table.AddCell(cell);
+            p = new Phrase(countSend.ToString(), fntNormal2);
+            cell = new PdfPCell(p);
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+            p = new Phrase("รายการ", fntBold2);
+            cell = new PdfPCell(p);
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            table.AddCell(cell);
+
+            p = new Phrase("รับ", fntBold2);
+            cell = new PdfPCell(p);
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            table.AddCell(cell);
+            p = new Phrase(countReceive.ToString(), fntNormal2);
+            cell = new PdfPCell(p);
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+            p = new Phrase("รายการ", fntBold2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
 
 
-            p = new Phrase("ส่งและรับ", fntBold);
+            p = new Phrase("ส่งและรับ", fntBold2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
-            p = new Phrase(countSendReceive.ToString(), fntNormal);
+            p = new Phrase(countSendReceive.ToString(), fntNormal2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
-            p = new Phrase("รายการ", fntNormal);
+            p = new Phrase("รายการ", fntBold2);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
 
-            p = new Phrase("รวมทั้งหมด", fntBold);
+            Font fntBoldUnder = new Font(bfBold, 12, Font.NORMAL | Font.UNDERLINE, BaseColor.BLACK);
+
+            p = new Phrase("รวมทั้งหมด", fntBoldUnder);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             table.AddCell(cell);
-            p = new Phrase(result.Count().ToString(), fntNormal);
+            p = new Phrase(result.Count().ToString(), fntBoldUnder);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
-            p = new Phrase("รายการ", fntNormal);
+            p = new Phrase("รายการ", fntBoldUnder);
             cell = new PdfPCell(p);
             cell.Border = Rectangle.NO_BORDER;
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
@@ -391,8 +457,8 @@ namespace SmartMessenger
             pdfDoc.Add(table);
 
             //Horizontal Line
-            Paragraph line = new Paragraph(new Chunk(new LineSeparator(0.0F, 30.0F, BaseColor.BLACK, Element.ALIGN_RIGHT, 1)));
-            pdfDoc.Add(line);
+            //Paragraph line = new Paragraph(new Chunk(new LineSeparator(0.0F, 30.0F, BaseColor.BLACK, Element.ALIGN_RIGHT, 1)));
+            //pdfDoc.Add(line);
 
             //Paragraph para = new Paragraph();
             //para.Font = fnt;
@@ -460,7 +526,7 @@ namespace SmartMessenger
             float[] widthsT = new float[] { 80f, 150f, 50f, 220f };
             table.SetWidths(widthsT);
 
-            string dateNow = dt.ToShortDateString();
+            string dateNow = dt.ToString("dd/MM/yyyy");
             PdfPCell cell = new PdfPCell();
             Phrase p = new Phrase();
 
@@ -518,12 +584,14 @@ namespace SmartMessenger
                 cell.PaddingBottom = 5;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("รหัสอ้างอิง : ", fntBold));
+                cell = new PdfPCell(new Phrase("ผู้ฝากงาน : ", fntBold));
                 cell.Border = Rectangle.NO_BORDER;
                 cell.HorizontalAlignment = Element.ALIGN_LEFT;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase(m.msg_id.ToString(), fntNormal));
+
+                cell = new PdfPCell(new Phrase((m.msg_by + "    โทร. ") + (m.msg_phone == "" ? "-" : m.msg_phone) + " (Ref. : " + m.msg_id.ToString()+")", fntNormal));
+                //cell = new PdfPCell(new Phrase(m.msg_id.ToString(), fntNormal));
                 cell.Border = Rectangle.NO_BORDER;
                 cell.Colspan = 3;
                 cell.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -551,17 +619,6 @@ namespace SmartMessenger
                 cell.HorizontalAlignment = Element.ALIGN_LEFT;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("รายละเอียด : ", fntBold));
-                cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                table.AddCell(cell);
-
-                cell = new PdfPCell(new Phrase(docType.Trim().Replace(" รับ:", "\r\n" + "รับ:"), fntNormal));
-                cell.Colspan = 3;
-                cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                table.AddCell(cell);
-
                 cell = new PdfPCell(new Phrase("หมายเหตุ : ", fntBold));
                 cell.Border = Rectangle.NO_BORDER;
                 cell.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -570,6 +627,19 @@ namespace SmartMessenger
                 cell = new PdfPCell(new Phrase(m.msg_remark == "" ? "-" : m.msg_remark, fntNormal));
                 cell.Border = Rectangle.NO_BORDER;
                 cell.Colspan = 3;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("รายละเอียด : ", fntBold));
+                cell.Border = Rectangle.NO_BORDER;
+                cell.FixedHeight = 35f;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(docType.Trim().Replace(" รับ:", "\r\n" + "รับ:"), fntNormal));
+                cell.Colspan = 3;
+                cell.Border = Rectangle.NO_BORDER;
+                cell.FixedHeight = 35f;
                 cell.HorizontalAlignment = Element.ALIGN_LEFT;
                 table.AddCell(cell);
 
@@ -633,66 +703,65 @@ namespace SmartMessenger
                 table.AddCell(cell);
 
 
-                cell = new PdfPCell(new Phrase("ผู้ฝากงาน :", fntBold));
-                cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                table.AddCell(cell);
+                //cell = new PdfPCell(new Phrase("ผู้ฝากงาน :", fntBold));
+                //cell.Border = Rectangle.NO_BORDER;
+                //cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                //table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase((m.msg_by + "    โทร. ") + (m.msg_phone == "" ? "-" : m.msg_phone), fntNormal));
-                cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                table.AddCell(cell);
-
-                cell = new PdfPCell(new Phrase(" ", fntNormal));
-                cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                table.AddCell(cell);
+                //cell = new PdfPCell(new Phrase((m.msg_by + "    โทร. ") + (m.msg_phone == "" ? "-" : m.msg_phone), fntNormal));
+                //cell.Colspan = 3;
+                //cell.Border = Rectangle.NO_BORDER;
+                //cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                //table.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase(" ", fntNormal));
+                cell.Colspan = 4;
                 cell.Border = Rectangle.NO_BORDER;
                 cell.HorizontalAlignment = Element.ALIGN_LEFT;
                 table.AddCell(cell);
 
 
                 cell = new PdfPCell(new Phrase("พนักงานรับส่ง : ......................................................................", fntBold));
+                //cell = new PdfPCell(new Phrase("พนักงานรับส่ง : ..............................................("+m.msg_msg_name+")", fntBold));
                 cell.Colspan = 2;
                 cell.PaddingTop = 5;
                 cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 table.AddCell(cell);
 
                 cell = new PdfPCell(new Phrase("ผู้รับ : .................................................................................", fntBold));
                 cell.Colspan = 2;
                 cell.PaddingTop = 5;
                 cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("วันที่ : ......................................................................................", fntBold));
+                //cell = new PdfPCell(new Phrase("วันที่ : ......................................................................................", fntBold));
+                cell = new PdfPCell(new Phrase("( " + m.msg_msg_name + " )", fntBold));
                 cell.Colspan = 2;
                 cell.PaddingTop = 5;
                 cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 table.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("วันที่ : .................................................................................", fntBold));
+                //cell = new PdfPCell(new Phrase("วันที่ : .................................................................................", fntBold));
+                cell = new PdfPCell(new Phrase("( " + m.msg_contact_name + " )", fntBold));
                 cell.Colspan = 2;
                 cell.PaddingTop = 5;
                 cell.Border = Rectangle.NO_BORDER;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 table.AddCell(cell);
 
                 if (count % 2 == 0) {
                     cell = new PdfPCell(new Phrase(" ", fntBold));
                     cell.Border = Rectangle.NO_BORDER;
                     cell.Colspan = 4;
-                    cell.PaddingBottom = 10;
                     table.AddCell(cell);
                 } else {
                     cell = new PdfPCell(new Phrase(" ", fntBold));
                     cell.Border = Rectangle.NO_BORDER;
                     cell.Colspan = 4;
-                    cell.PaddingBottom = 50;
+                    cell.PaddingBottom = 25;
                     table.AddCell(cell);
                 }
 
@@ -720,20 +789,20 @@ namespace SmartMessenger
 
             if (opSelect.Value == "รายงานวันนี้") {
                 DateTime dt = DateTime.Now;
-                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dt.ToShortDateString();
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + dt.ToString("dd/MM/yyyy");
                 result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
             } else if (opSelect.Value == "รายงานเดือนนี้") {
                 DateTime dt = DateTime.Now;
                 onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + dt.Month + "/" + dt.Year;
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_on_date.Value.Month + "/" + a.msg_on_date.Value.Year == dt.Month + "/" + dt.Year).ToList();
             } else if (opSelect.Value == "รายงานวันที่") {
                 DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + msg_on_date.ToShortDateString();
+                onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำวันที่ " + msg_on_date.ToString("dd/MM/yyyy");
                 result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_on_date.Value.Date == msg_on_date.Date).ToList();
             } else if (opSelect.Value == "รายงานเดือนที่") {
                 DateTime msg_on_date = DateTime.ParseExact(dtSelect.Value, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture);
                 onDateReport = "รายการรับส่งเอกสารโดย Messenger ประจำเดือนที่ " + msg_on_date.Month + "/" + msg_on_date.Year;
-                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_date.Value.Month + "/" + a.msg_date.Value.Year == msg_on_date.Month + "/" + msg_on_date.Year).ToList();
+                result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && (a.msg_close_status != "ยกเลิก" && a.msg_close_status != "รอปล่อยงาน")).Where(a => a.msg_on_date.Value.Month + "/" + a.msg_on_date.Value.Year == msg_on_date.Month + "/" + msg_on_date.Year).ToList();
             }
 
             if (result.Count > 0) {
@@ -753,7 +822,8 @@ namespace SmartMessenger
 
             if (opSelect.Value == "รายงานวันนี้") {
                 dt = DateTime.Now;
-                onDateReport = "ใบงาน ประจำวันที่ " + dt.ToShortDateString();
+                onDateReport = "ใบงาน ประจำวันที่ " + dt.ToString("dd/MM/yyyy");
+                //result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
                 result = mesRes.GetMessagerList().Where(a => a.msg_on_date != null && a.msg_close_status == "ดำเนินการ").Where(a => a.msg_on_date.Value.Date == dt.Date).ToList();
             }
             //else if (opSelect.Value == "รายงานวันที่") {

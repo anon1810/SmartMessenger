@@ -10,21 +10,21 @@
             <div class="w3-cell-row">
               <div class="w3-cell">
                 <label>ผู้ขอรับบริการ</label>
-                <input class="w3-input w3-border" disabled type="text" value="ดึงจาก Database" runat="server" id="txtByCreateP">
+                <input class="w3-input w3-border" disabled type="text" value="ดึงจาก Database" runat="server" id="txtByCreateP"/>
               </div>
               <div class="w3-cell">
                 &nbsp;
               </div>
               <div class="w3-cell">
                 <label>แผนก</label>
-                <input class="w3-input w3-border" disabled type="text" value="ดึงจาก Database" runat="server" id="txtSectionCreateP">
+                <input class="w3-input w3-border" disabled type="text" value="ดึงจาก Database" runat="server" id="txtSectionCreateP"/>
               </div>
               <div class="w3-cell">
                 &nbsp;
               </div>
               <div class="w3-cell">
                 <label>เบอร์ติดต่อ</label>
-                <input class="w3-input w3-border" type="text" runat="server" id="txtByPhoneCreateP">
+                <input class="w3-input w3-border" type="text" runat="server" id="txtByPhoneCreateP"/>
               </div>
             </div>
             <p></p>
@@ -44,7 +44,7 @@
                 &nbsp;
               </div>
               <div class="w3-cell">
-                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtSendCreateP" disabled>
+                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtSendCreateP" disabled="disabled" required="required"/>
               </div>
             </div>
             <p></p>
@@ -64,18 +64,18 @@
                 &nbsp;
               </div>
               <div class="w3-cell">
-                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtReceiveCreateP" disabled>
+                <input class="w3-input w3-border" type="text" placeholder="กรณีอื่นๆ โปรดระบุ.." runat="server" id="txtReceiveCreateP" disabled="disabled" required="required"/>
               </div>
             </div>
 
             <p></p>
             <div class="w3-cell">
-              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked>
+              <input class="w3-radio" type="radio" name="sendType" runat="server" id="nmCreateP" value="1" checked/>
               <label>ปกติ</label>
             </div>
             <div class="w3-cell">&nbsp;&nbsp;</div>
             <div class="w3-cell">
-              <input class="w3-radio" type="radio" name="sendType" runat="server" id="urCreateP" value="2">
+              <input class="w3-radio" type="radio" name="sendType" runat="server" id="urCreateP" value="2"/>
               <label>ด่วน</label>
             </div>
             <p></p>
@@ -83,19 +83,19 @@
             <div class="w3-cell-row">
               <div class="w3-cell">
                   <label>ชื่อผู้ติดต่อ</label>
-                  <input class="w3-input w3-border"  type="text" runat="server" id="txtContratNameCreateP" required>
+                  <input class="w3-input w3-border"  type="text" runat="server" id="txtContratNameCreateP" required="required"/>
               </div>
               <div class="w3-cell">
                  &nbsp;
               </div>
               <div class="w3-cell">
                 <label>เบอร์ติดต่อ</label>
-                <input class="w3-input w3-border" type="text" runat="server" id="txtContratPhoneCreateP" required>
+                <input class="w3-input w3-border" type="text" runat="server" id="txtContratPhoneCreateP" required="required"/>
               </div>
             </div>
             <p></p>
               <label>ที่อยู่ผู้ติดต่อ</label>
-              <textarea class = "w3-input  w3-border"  runat="server" id="txtContratAddrCreateP" required></textarea>
+              <textarea class = "w3-input  w3-border"  runat="server" id="txtContratAddrCreateP" required="required"></textarea>
             <p></p>
             <p></p>
               <label>แผนที่</label>
@@ -135,8 +135,8 @@
               <textarea class = "w3-input  w3-border" runat="server" id="txtRemarkCreatPage"></textarea>
             </p>
             <div class="w3-bar">
-                <asp:Button Text="อัพเดท" runat="server" class="w3-button w3-teal" ID="btnUpdate" OnClick="btnUpdate_Click" OnClientClick="return validate();" />
-                <asp:Button Text="ยกเลิกงานนี้" runat="server" class="w3-button w3-red" ID="btnCancel" OnClick="btnCancel_Click"/>
+                <asp:Button Text="อัพเดท" runat="server" class="w3-button w3-teal w3-round-xlarge" ID="btnUpdate" OnClick="btnUpdate_Click" OnClientClick="return validate();" />
+                <asp:Button Text="ยกเลิกงานนี้" runat="server" class="w3-button w3-red w3-round-xlarge" ID="btnCancel" OnClick="btnCancel_Click"/>
             </div>
         </div>
         <div class="w3-col" style="width:20%">
@@ -146,15 +146,16 @@
 
     <div id="id01" runat="server" class="w3-modal">
         <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-            <div class="w3-container w3-padding w3-deep-orange">
+            <div class="w3-container w3-padding w3-red">
+              <span  onclick="CloswaringModelCancel()" class="w3-button w3-red w3-right"><i class="fa fa-remove"></i></span>
               <h4>กรุณาระบุสาเหตุที่ยกเลิก</h4>
             </div>
             <div class="w3-container w3-padding">
                 <textarea class = "w3-input  w3-border" runat="server" id="Textarea1"></textarea>
                 <p></p>
                 <div class="w3-bar">
-                    <asp:Button Text="ยืนยัน" runat="server" class="w3-button w3-blue" ID="btnCancelRemark" OnClick="btnCancelRemark_Click"/>
-                    <button onclick="Closemodal()" type="button" class="w3-button w3-red">กลับหน้าหลัก</button>
+                    <asp:Button Text="ยืนยัน" runat="server" class="w3-button w3-blue w3-round-xlarge" ID="btnCancelRemark" OnClick="btnCancelRemark_Click"/>
+<%--                <button onclick="Closemodal()" type="button" class="w3-button w3-red w3-round-xlarge">กลับหน้าหลัก</button>--%>
                 </div>
             </div>
             
@@ -218,7 +219,7 @@
             return true;
           }
 
-          function Closemodal() {
+          function CloswaringModelCancel() {
               document.getElementById("<%=id01.ClientID %>").style.display = 'none'
           }
 

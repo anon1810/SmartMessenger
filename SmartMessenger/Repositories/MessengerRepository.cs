@@ -16,7 +16,7 @@ namespace SmartMessenger.Repositories
         }
 
         public bool isAdmin(string username) {
-            if (username == "SPP" || username == "SDR" || username == "TYK") {
+            if (username == "SYE" || username == "SDR" || username == "TYK") {
                 return true;
             } else {
                 return false;

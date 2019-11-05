@@ -133,6 +133,7 @@
     </Content>
     <Content Include="Resource\BG-Delivery2.jpg" />
     <Content Include="Resource\BG.jpg" />
+    <Content Include="Resource\footer-Logo-white.png" />
     <Content Include="Resource\footer-Logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -43,7 +43,7 @@ namespace SmartMessenger
                 chkRememberme(result.username, result.password);
                 Response.Redirect("HomePage.aspx");
             } else {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('Error')", true);
+                waringText.InnerText = "*Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง";
             }
         }
 

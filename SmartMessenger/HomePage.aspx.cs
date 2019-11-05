@@ -55,14 +55,14 @@ namespace SmartMessenger
         public void LoadGridData() {
             MessengerRepository mesRes = new MessengerRepository();
             if (isNotiAccept) {
-                gvMessager.Columns[16].Visible = false;
+                gvMessager.Columns[12].Visible = false;
                 mesList = mesRes.GetMessagerList().Where(a => a.msg_close_status == "รอปล่อยงาน").OrderByDescending(a => a.msg_id).ToList();
             } else if (isNotiClose) {
-                gvMessager.Columns[15].Visible = false;
+                gvMessager.Columns[11].Visible = false;
                 mesList = mesRes.GetMessagerList().Where(a => a.msg_close_status == "ดำเนินการ").OrderByDescending(a => a.msg_id).ToList();
             } else {
-                gvMessager.Columns[15].Visible = false;
-                gvMessager.Columns[16].Visible = false;
+                gvMessager.Columns[11].Visible = false;
+                gvMessager.Columns[12].Visible = false;
                 mesList = mesRes.GetMessagerList().OrderByDescending(a => a.msg_id).ToList();
             }
 
@@ -136,6 +136,11 @@ namespace SmartMessenger
             LoadGridData();
         }
 
+        public bool chkIsAdmin() {
+            MessengerRepository mesRes = new MessengerRepository();
+            return mesRes.isAdmin(Session["Username"].ToString());
+        }
+
 
 
         protected void Create_ServerClick(object sender, EventArgs e)
@@ -176,7 +181,7 @@ namespace SmartMessenger
                 string id = e.CommandArgument.ToString();
                 MessengerRepository mesRes = new MessengerRepository();
                 var result = mesRes.GetMessagerByID(int.Parse(id));
-                if (result.msg_accept_by != "" && !mesRes.isAdmin(Session["Username"].ToString())) {
+                if (result.msg_accept_by != null && !mesRes.isAdmin(Session["Username"].ToString())) {
                     waringModeEdit.Style["display"] = "block";
                     //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertSuccess", "alert('กรุณาติดต่อผู้ดูแลระบบ')", true);
                 } else {
@@ -231,7 +236,7 @@ namespace SmartMessenger
                 } else {
                     lnkBtnloadMap.Text = result.msg_map;
                 }
-                modaltd13.InnerText = result.msg_on_date.Value.ToShortDateString();
+                modaltd13.InnerText = result.msg_on_date.Value.ToString("dd/MM/yyyy");
                 modaltd14.InnerText = result.msg_remark;
                 modaltd15.InnerText = result.msg_msg_name;
                 modaltd16.InnerText = result.msg_close_status;
