@@ -47,6 +47,7 @@ namespace SmartMessenger
             //System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
             //pdfWriter.SetEncryption(PdfWriter.ENCRYPTION_AES_128, null, "mike", PdfWriter.AllowFillIn | PdfWriter.AllowScreenReaders);
             //pdfWriter.SetEncryption(null, encoding.GetBytes("our cod of lock"), PdfWriter.ALLOW_COPY, PdfWriter.STRENGTH40BITS);
+
             pdfDoc.Open();        
            
             //pdfWriter.PageEvent = new PDFFooter();
